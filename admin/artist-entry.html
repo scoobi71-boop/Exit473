@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Profile Entry — Admin · Exit 473</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body data-page="admin">
+
+  <!-- NAVIGATION -->
+  <nav class="site-nav solid" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Exit 473 home">
+        <img src="../images/logo.png" alt="Exit 473 logo" class="logo-img" onerror="this.style.display='none'">
+        <span class="logo-text">
+          <span class="logo-main">Exit 473</span>
+          <span class="logo-sub">Admin Panel</span>
+        </span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html">Site Home</a></li>
+        <li><a href="../carnival/carnival.html">Carnival</a></li>
+        <li><a href="../carnival/calypso-artists.html">Artist Profiles</a></li>
+        <li><a href="tent-entry.html">🎪 Tent Entry</a></li>
+        <li><a href="../update-guide.html">Update Guide</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- PAGE HERO -->
+    <div class="admin-page-hero">
+      <div class="container">
+        <span class="section-label">Content Management</span>
+        <h1>Calypso Artist Profile Entry</h1>
+        <p>Fill in the artist details and interview answers below, then click <strong>Generate Entry</strong> to create the data block. Copy and paste it into <code>data/calypso-artists.js</code>.</p>
+      </div>
+    </div>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="entry-form-wrap">
+
+          <!-- Tips -->
+          <div class="entry-tip" style="margin-bottom:1.5rem">
+            <strong>How to add an artist:</strong> Complete the form, click "Generate Entry", copy the output, and paste it into the <code>window.CALYPSO_ARTISTS_DATA</code> array in <strong>data/calypso-artists.js</strong>. Update the <code>id</code> to the next number in the sequence.
+          </div>
+
+          <!-- ===== BASIC INFO ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title">
+              <span class="section-icon">👤</span> Artist Information
+            </div>
+
+            <div class="entry-grid-3">
+              <div class="entry-field">
+                <label for="f-id">Record ID <span style="color:var(--red)">*</span></label>
+                <input type="number" id="f-id" placeholder="e.g. 6" min="1">
+                <div class="field-hint">Next available number in the data file.</div>
+              </div>
+              <div class="entry-field">
+                <label for="f-stage">Stage Name <span style="color:var(--red)">*</span></label>
+                <input type="text" id="f-stage" placeholder="e.g. Lady Spice">
+              </div>
+              <div class="entry-field">
+                <label for="f-real">Real Name <span style="color:var(--red)">*</span></label>
+                <input type="text" id="f-real" placeholder="e.g. Sandra Joseph">
+              </div>
+            </div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-parish">Parish / Hometown <span style="color:var(--red)">*</span></label>
+                <select id="f-parish">
+                  <option value="">Select parish…</option>
+                  <option>St. George's</option>
+                  <option>St. David's</option>
+                  <option>St. Andrew's</option>
+                  <option>St. Patrick's</option>
+                  <option>St. Mark's</option>
+                  <option>St. John's</option>
+                  <option>Carriacou</option>
+                  <option>Petite Martinique</option>
+                </select>
+              </div>
+              <div class="entry-field">
+                <label for="f-date">Date of Interview</label>
+                <input type="date" id="f-date">
+              </div>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-tent">Calypso Tent (optional)</label>
+              <select id="f-tent">
+                <option value="">— Independent / No tent —</option>
+              </select>
+              <div class="field-hint">Select the artist's tent. Tents are loaded from <code>data/calypso-tents.js</code>. Add new tents via <a href="tent-entry.html">Tent Entry</a>.</div>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-photo">Photo Path (optional)</label>
+              <input type="text" id="f-photo" placeholder="e.g. images/carnival/artist-name.jpg">
+              <div class="field-hint">Leave blank if no photo is available yet. Use a path relative to the site root.</div>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-bio">Short Bio (1–2 sentences)</label>
+              <textarea id="f-bio" rows="3" placeholder="A brief description of the artist displayed on the artist listing card…"></textarea>
+            </div>
+          </div>
+
+          <!-- ===== INTERVIEW ANSWERS ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title">
+              <span class="section-icon">🎤</span> Interview Questions &amp; Answers
+            </div>
+
+            <div class="entry-tip" style="margin-bottom:1.5rem">
+              <strong>Tip:</strong> Paste the artist's answers exactly as spoken or written. Quotes, contractions, and line breaks are preserved in the output.
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q1"><span class="q-number">1</span> Identity &amp; Roots</label>
+              <div class="field-hint" style="margin-bottom:.4rem">Tell us who you are and where you're from. How did growing up in Grenada shape the artist you're becoming?</div>
+              <textarea id="f-q1" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q2"><span class="q-number">2</span> Inspiration &amp; First Love</label>
+              <div class="field-hint" style="margin-bottom:.4rem">When did you first fall in love with calypso, and who were the artists or sounds that made you say, "That's what I want to do"?</div>
+              <textarea id="f-q2" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q3"><span class="q-number">3</span> Message &amp; Purpose</label>
+              <div class="field-hint" style="margin-bottom:.4rem">Calypso has always been the voice of the people. What topics, stories, or social issues do you feel called to sing about?</div>
+              <textarea id="f-q3" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q4"><span class="q-number">4</span> Sound &amp; Style</label>
+              <div class="field-hint" style="margin-bottom:.4rem">Describe your sound. How would you introduce your music to someone who has never heard Grenadian calypso before?</div>
+              <textarea id="f-q4" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q5"><span class="q-number">5</span> Defining Moments</label>
+              <div class="field-hint" style="margin-bottom:.4rem">What has been your most memorable performance or career moment so far, and what did it teach you about yourself as an artist?</div>
+              <textarea id="f-q5" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q6"><span class="q-number">6</span> The Tradition's Future</label>
+              <div class="field-hint" style="margin-bottom:.4rem">How do you see Grenadian calypso evolving, and what role do you want to play in keeping the tradition alive for the next generation?</div>
+              <textarea id="f-q6" rows="6"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-q7"><span class="q-number">7</span> What's Next</label>
+              <div class="field-hint" style="margin-bottom:.4rem">What's next for you? Tell us about what you're working on and what fans can look forward to.</div>
+              <textarea id="f-q7" rows="6"></textarea>
+            </div>
+          </div>
+
+          <!-- Generate bar -->
+          <div class="entry-generate-bar">
+            <p>When all fields are complete, generate the JavaScript entry and copy it into <strong>data/calypso-artists.js</strong>.</p>
+            <button class="btn btn-gold btn-lg" id="generate-btn" onclick="generateEntry()">⚡ Generate Entry</button>
+          </div>
+
+          <!-- Output block -->
+          <div class="entry-output" id="entry-output">
+            <div class="entry-output-header">
+              <h4>Generated JavaScript Entry</h4>
+              <button class="btn btn-outline-white btn-sm" onclick="copyOutput()">📋 Copy to Clipboard</button>
+            </div>
+            <pre id="output-pre"></pre>
+            <div class="entry-tip" style="margin-top:1rem;background:rgba(255,255,255,.05);border-left-color:var(--gold)">
+              <strong style="color:#FFD700">Next step:</strong> <span style="color:rgba(255,255,255,.7)">Open <code>data/calypso-artists.js</code>, find the last entry in the array, add a comma after its closing <code>}</code>, then paste this block before the closing <code>]</code>.</span>
+            </div>
+          </div>
+
+          <!-- Preview link -->
+          <div style="text-align:center;padding:1rem 0 2rem">
+            <a href="../carnival/calypso-artists.html" class="btn btn-outline btn-lg" target="_blank">👁 Preview Artist List →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Grenada. Admin panel — not for public access.</p>
+        <p><a href="../index.html">← Return to main site</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../data/calypso-tents.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    /* Populate tent select from tents data */
+    (function () {
+      const tents  = window.CALYPSO_TENTS_DATA || [];
+      const select = document.getElementById('f-tent');
+      if (!select) return;
+      tents.filter(t => t.active !== false).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value       = t.id;
+        opt.textContent = (t.shortName ? t.shortName + ' — ' : '') + t.name;
+        select.appendChild(opt);
+      });
+    }());
+
+    function getVal(id) {
+      return (document.getElementById(id)?.value || '').trim();
+    }
+
+    function escapeJs(str) {
+      return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+    }
+
+    function generateEntry() {
+      const id       = getVal('f-id');
+      const stage    = getVal('f-stage');
+      const real     = getVal('f-real');
+      const parish   = getVal('f-parish');
+      const date     = getVal('f-date');
+      const tent     = getVal('f-tent');
+      const photo    = getVal('f-photo');
+      const bio      = getVal('f-bio');
+      const q1       = getVal('f-q1');
+      const q2       = getVal('f-q2');
+      const q3       = getVal('f-q3');
+      const q4       = getVal('f-q4');
+      const q5       = getVal('f-q5');
+      const q6       = getVal('f-q6');
+      const q7       = getVal('f-q7');
+
+      if (!id || !stage || !real || !parish) {
+        alert('Please fill in ID, Stage Name, Real Name, and Parish before generating.');
+        return;
+      }
+
+      const entry = `  {
+    id: '${escapeJs(id)}',
+    stageName: '${escapeJs(stage)}',
+    realName: '${escapeJs(real)}',
+    parish: '${escapeJs(parish)}',
+    tentId: ${tent ? `'${escapeJs(tent)}'` : 'null'},
+    dateOfInterview: '${escapeJs(date)}',
+    photo: '${escapeJs(photo)}',
+    shortBio: '${escapeJs(bio)}',
+    q1: '${escapeJs(q1)}',
+    q2: '${escapeJs(q2)}',
+    q3: '${escapeJs(q3)}',
+    q4: '${escapeJs(q4)}',
+    q5: '${escapeJs(q5)}',
+    q6: '${escapeJs(q6)}',
+    q7: '${escapeJs(q7)}'
+  }`;
+
+      const outputEl = document.getElementById('entry-output');
+      const preEl    = document.getElementById('output-pre');
+      if (outputEl) outputEl.classList.add('visible');
+      if (preEl) preEl.textContent = entry;
+
+      outputEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('output-pre')?.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.entry-output .btn-outline-white');
+        if (btn) { const orig = btn.textContent; btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = orig, 2000); }
+      }).catch(() => {
+        alert('Copy failed — please select the text manually and copy it.');
+      });
+    }
+  </script>
+</body>
+</html>

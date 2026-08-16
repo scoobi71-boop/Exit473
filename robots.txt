@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /data/
+
+Sitemap: https://exit473.com/sitemap.xml

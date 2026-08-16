@@ -1,0 +1,1401 @@
+/* =====================================================================
+   CARNIVAL SUB-SITE — Supplementary Stylesheet
+   Extends ../css/styles.css for the Spicemas carnival subsite.
+   ===================================================================== */
+
+/* Prevent twemoji SVGs from inflating nav icon size on any carnival page */
+.csub-nav img.emoji,
+.csub-links img.emoji {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  display: inline-block;
+  margin: 0;
+}
+
+/* ── Carnival Sub-Site Navigation ─────────────────────────────────── */
+.csub-nav {
+  background: #070400;
+  border-bottom: 2px solid #B8860B;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  width: 100%;
+}
+.csub-nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.csub-logo {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.csub-logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.csub-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #DAA520;
+  line-height: 1.1;
+}
+.csub-logo-sub {
+  font-family: 'Nunito', sans-serif;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.55);
+  display: block;
+}
+.csub-links {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+.csub-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .35rem .75rem;
+  border-radius: 6px;
+  font-size: .88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  transition: background .18s, color .18s;
+  white-space: nowrap;
+}
+.csub-links a:hover,
+.csub-links a.active {
+  background: rgba(218,165,32,.14);
+  color: #DAA520;
+}
+.csub-back {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .32rem .85rem;
+  border-radius: 6px;
+  border: 1px solid rgba(218,165,32,.35);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: rgba(218,165,32,.75);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .18s, color .18s, border-color .18s;
+  flex-shrink: 0;
+}
+.csub-back:hover {
+  background: rgba(218,165,32,.12);
+  color: #DAA520;
+  border-color: #DAA520;
+}
+
+/* "← Exit 473" item inside the nav list — hidden on desktop, visible in mobile dropdown */
+.csub-back-mobile {
+  display: none;
+}
+
+.csub-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  margin-left: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+.csub-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #DAA520;
+  border-radius: 2px;
+}
+
+/* ── Carnival Hero (monarchs page) ────────────────────────────────── */
+.monarchs-hero {
+  background: linear-gradient(145deg, #0D0800 0%, #1A0A00 35%, #3B1800 65%, #1A0A00 100%);
+  padding: 4.5rem 0 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.monarchs-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 80% at 80% 50%, rgba(184,134,11,.18) 0%, transparent 70%);
+}
+.monarchs-hero-badge {
+  display: inline-block;
+  padding: .28rem .85rem;
+  border: 1px solid rgba(218,165,32,.45);
+  border-radius: 99px;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #DAA520;
+  margin-bottom: 1rem;
+}
+.monarchs-hero h1 {
+  color: #fff;
+  margin-bottom: .9rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,.5);
+}
+.monarchs-hero h1 em {
+  font-style: italic;
+  color: #DAA520;
+}
+.monarchs-hero-sub {
+  color: rgba(255,255,255,.68);
+  font-size: 1.05rem;
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+/* Stats bar */
+.monarchs-stats-bar {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: .5rem;
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #DAA520;
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-top: .2rem;
+}
+
+/* ── Controls (search + decade filter) ───────────────────────────── */
+.monarchs-controls {
+  background: #111008;
+  border-bottom: 1px solid rgba(184,134,11,.25);
+  padding: 1.1rem 0;
+  position: sticky;
+  top: 62px;
+  z-index: 800;
+}
+.monarchs-controls-inner {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.monarch-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(218,165,32,.25);
+  border-radius: 8px;
+  padding: .45rem .85rem;
+  flex: 1;
+  min-width: 200px;
+  max-width: 380px;
+}
+.monarch-search-wrap input {
+  background: none;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: .92rem;
+  font-family: 'Nunito', sans-serif;
+  flex: 1;
+  width: 100%;
+}
+.monarch-search-wrap input::placeholder { color: rgba(255,255,255,.35); }
+.monarch-search-icon { color: rgba(218,165,32,.55); font-size: 1rem; }
+.decade-filters {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+.decade-btn {
+  padding: .32rem .75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(218,165,32,.25);
+  background: transparent;
+  color: rgba(255,255,255,.55);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: 'Nunito', sans-serif;
+}
+.decade-btn:hover {
+  background: rgba(218,165,32,.1);
+  color: #DAA520;
+  border-color: rgba(218,165,32,.5);
+}
+.decade-btn.active {
+  background: #B8860B;
+  color: #fff;
+  border-color: #B8860B;
+}
+
+/* ── Results bar ──────────────────────────────────────────────────── */
+.monarchs-results-bar {
+  padding: .7rem 1.5rem;
+  font-size: .8rem;
+  color: rgba(255,255,255,.45);
+  background: #0D0900;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  letter-spacing: .05em;
+}
+
+/* ── Year Entries List ────────────────────────────────────────────── */
+.monarchs-list-section {
+  background: #0D0900;
+  padding: 1.5rem 0 4rem;
+}
+.monarchs-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.year-entry {
+  border-radius: 10px;
+  border: 1px solid rgba(184,134,11,.2);
+  background: rgba(255,255,255,.03);
+  overflow: hidden;
+  transition: border-color .18s;
+}
+.year-entry:hover { border-color: rgba(218,165,32,.45); }
+.year-entry.expanded { border-color: #B8860B; }
+.year-entry-header {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: .8rem 1rem .8rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+.year-badge {
+  background: linear-gradient(135deg, #3D1F00, #5A2E00);
+  color: #DAA520;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: .9rem;
+  font-weight: 700;
+  text-align: center;
+  padding: .5rem .3rem;
+  border-radius: 7px;
+  min-width: 52px;
+  line-height: 1.2;
+}
+.year-badge-cancelled {
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.3);
+}
+.year-entry-winner {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+}
+.year-medal { font-size: 1.15rem; flex-shrink: 0; }
+.year-winner-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.year-winner-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F5C840;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .15s;
+}
+.year-winner-name:hover { color: #fff; }
+.cancelled-text { color: rgba(255,255,255,.3); font-style: italic; font-size: .9rem; }
+.year-winner-song {
+  font-size: .8rem;
+  color: rgba(255,255,255,.45);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.year-winner-realname {
+  font-size: .78rem;
+  color: rgba(255,255,255,.38);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.year-winner-parish {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  white-space: nowrap;
+  margin-left: auto;
+  padding-right: .5rem;
+}
+.year-expand-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid rgba(218,165,32,.25);
+  background: rgba(218,165,32,.06);
+  color: rgba(218,165,32,.6);
+  font-size: .7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .18s;
+  flex-shrink: 0;
+}
+.year-expand-btn:hover { background: rgba(218,165,32,.15); color: #DAA520; }
+.year-entry.expanded .year-expand-btn {
+  background: rgba(218,165,32,.2);
+  color: #DAA520;
+  transform: rotate(180deg);
+}
+.year-note {
+  padding: .3rem 1rem .3rem 5rem;
+  font-size: .75rem;
+  color: rgba(218,165,32,.55);
+  font-style: italic;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+
+/* Finalists panel (expand/collapse) */
+.finalists-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.year-entry.expanded .finalists-panel { max-height: 300px; }
+.finalist-row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: .6rem 1rem;
+  border-top: 1px solid rgba(255,255,255,.04);
+  background: rgba(0,0,0,.25);
+}
+.finalist-medal { font-size: 1rem; text-align: center; }
+.finalist-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.finalist-name {
+  font-size: .9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.75);
+  text-decoration: none;
+  transition: color .15s;
+}
+.finalist-name:hover { color: #DAA520; }
+.finalist-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.finalist-song {
+  font-size: .78rem;
+  color: rgba(255,255,255,.35);
+  font-style: italic;
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.finalist-parish {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.25);
+  white-space: nowrap;
+}
+.no-results {
+  text-align: center;
+  color: rgba(255,255,255,.4);
+  padding: 4rem 1.5rem;
+  font-style: italic;
+}
+
+/* ── Records & Milestones Section ─────────────────────────────────── */
+.records-section {
+  background: #0a0700;
+  padding: 4rem 0 5rem;
+  border-top: 1px solid rgba(184,134,11,.2);
+}
+.records-section .section-label { color: #DAA520; }
+.records-section h2 { color: #fff; margin-bottom: 2rem; }
+.records-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+.record-card {
+  background: linear-gradient(145deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.02) 100%);
+  border: 1px solid rgba(184,134,11,.25);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: border-color .2s, box-shadow .2s;
+}
+.record-card:hover {
+  border-color: rgba(218,165,32,.55);
+  box-shadow: 0 4px 24px rgba(184,134,11,.12);
+}
+.record-card-gold { border-color: rgba(218,165,32,.45); }
+.record-icon { font-size: 1.75rem; margin-bottom: .65rem; }
+.record-label {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.65);
+  margin-bottom: .5rem;
+}
+.record-holder {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: .3rem;
+  line-height: 1.3;
+}
+.record-holder-num {
+  font-size: 2rem;
+  color: #F5C840;
+}
+.record-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color .15s;
+}
+.record-link:hover { color: #DAA520; }
+.record-detail {
+  font-size: .82rem;
+  color: rgba(255,255,255,.45);
+  line-height: 1.5;
+}
+.records-note {
+  margin-top: 2.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(218,165,32,.06);
+  border: 1px solid rgba(218,165,32,.18);
+  border-radius: 8px;
+  font-size: .8rem;
+  color: rgba(255,255,255,.45);
+  line-height: 1.6;
+}
+.records-note a { color: rgba(218,165,32,.7); text-decoration: underline; }
+
+/* ── Champion Decades Strip ───────────────────────────────────────── */
+.decade-strip {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.decade-block {
+  flex: 1;
+  min-width: 130px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(184,134,11,.2);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+.decade-block-year {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.5);
+  margin-bottom: .4rem;
+}
+.decade-block-winner {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: .95rem;
+  font-weight: 700;
+  color: #F5C840;
+}
+.decade-block-count {
+  font-size: .75rem;
+  color: rgba(255,255,255,.35);
+  margin-top: .2rem;
+}
+
+/* ── Carnival Sub-Footer ──────────────────────────────────────────── */
+.csub-footer {
+  background: #040300;
+  border-top: 1px solid rgba(184,134,11,.2);
+  padding: 2.5rem 0 1.5rem;
+}
+.csub-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.csub-footer-brand .csub-logo { margin-bottom: .75rem; }
+.csub-footer-brand p {
+  font-size: .85rem;
+  color: rgba(255,255,255,.4);
+  line-height: 1.6;
+}
+.csub-footer-col h4 {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.7);
+  margin-bottom: .8rem;
+}
+.csub-footer-col ul { list-style: none; padding: 0; margin: 0; }
+.csub-footer-col li { margin-bottom: .4rem; }
+.csub-footer-col a {
+  font-size: .87rem;
+  color: rgba(255,255,255,.45);
+  text-decoration: none;
+  transition: color .15s;
+}
+.csub-footer-col a:hover { color: #DAA520; }
+.csub-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.csub-footer-bottom p { font-size: .78rem; color: rgba(255,255,255,.3); }
+.csub-footer-bottom a { color: rgba(218,165,32,.5); text-decoration: none; }
+.csub-footer-bottom a:hover { color: #DAA520; }
+
+/* ── Monarch Detail Page ──────────────────────────────────────────── */
+.monarch-detail-hero {
+  background: linear-gradient(155deg, #0D0800 0%, #2A1200 45%, #1A0A00 100%);
+  padding: 3.5rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.monarch-detail-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 90% at 90% 50%, rgba(184,134,11,.15) 0%, transparent 65%);
+}
+.monarch-hero-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+}
+.monarch-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3D1F00, #5A2E00);
+  border: 3px solid rgba(218,165,32,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+.monarch-hero-tag {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.65);
+  margin-bottom: .5rem;
+}
+.monarch-hero-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: .2rem;
+  line-height: 1.15;
+}
+.monarch-hero-realname {
+  font-size: 1rem;
+  color: rgba(255,255,255,.5);
+  margin-bottom: .8rem;
+}
+.monarch-hero-chips {
+  display: flex;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+.monarch-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .28rem .75rem;
+  background: rgba(218,165,32,.1);
+  border: 1px solid rgba(218,165,32,.25);
+  border-radius: 99px;
+  font-size: .78rem;
+  font-weight: 700;
+  color: rgba(218,165,32,.85);
+}
+.monarch-chip.monarch-chip-gold {
+  background: rgba(218,165,32,.2);
+  border-color: rgba(218,165,32,.5);
+  color: #F5C840;
+}
+
+/* Monarch win stats */
+.monarch-stats-row {
+  display: flex;
+  gap: 1.5rem 2.5rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: 1.5rem;
+}
+.monarch-stat {
+  text-align: center;
+}
+.monarch-stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #F5C840;
+  line-height: 1;
+}
+.monarch-stat-lbl {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  margin-top: .3rem;
+}
+
+/* Artist bio */
+.monarch-bio {
+  font-size: 1rem;
+  color: rgba(255,255,255,.65);
+  line-height: 1.8;
+  max-width: 720px;
+  margin-bottom: 2rem;
+}
+
+/* Wins timeline */
+.wins-section {
+  background: #0D0900;
+  padding: 3rem 0 5rem;
+}
+.wins-section h2 { color: #fff; margin-bottom: 2rem; }
+.wins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.win-entry {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(184,134,11,.2);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.win-entry:hover { border-color: rgba(218,165,32,.4); }
+.win-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.2rem 1.5rem;
+}
+.win-year-badge {
+  background: linear-gradient(135deg, #B8860B, #DAA520);
+  color: #000;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: .5rem .8rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+  text-align: center;
+  min-width: 58px;
+}
+.win-trophy { font-size: 1.5rem; flex-shrink: 0; }
+.win-song-info { flex: 1; min-width: 0; }
+.win-song-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F5C840;
+  margin-bottom: .2rem;
+}
+.win-song-label {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.win-note {
+  font-size: .78rem;
+  color: rgba(218,165,32,.55);
+  font-style: italic;
+  padding: .3rem 1.5rem .5rem;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+
+/* YouTube embed */
+.youtube-wrap {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 1.25rem 1.5rem;
+  background: rgba(0,0,0,.3);
+}
+.youtube-label {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(218,165,32,.55);
+  margin-bottom: .75rem;
+}
+.youtube-player {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 640px;
+  background: #000;
+}
+.youtube-player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.youtube-unavailable {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .85rem 1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px dashed rgba(255,255,255,.12);
+  border-radius: 8px;
+  font-size: .85rem;
+  color: rgba(255,255,255,.35);
+  font-style: italic;
+}
+
+/* Artist profile — video grid (multiple embeds) */
+.artist-videos-section { padding: 1rem 0 3.5rem; }
+.artist-videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.artist-videos-grid .youtube-player { max-width: none; }
+
+/* ── Artist nav footer ────────────────────────────────────────────── */
+.monarch-artist-nav {
+  background: #0a0700;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(184,134,11,.15);
+}
+.monarch-artist-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Carnival sub-nav position corrections ────────────────────────── */
+/* csub-nav is 62px; override sticky top calculations based on --nav-h (72px) */
+.carnival-hero { padding-top: 62px; }
+.carnival-tabs-wrap {
+  top: 62px;
+  background: #0e0a00;
+  border-bottom: 1px solid rgba(184,134,11,.3);
+}
+.artist-detail-hero { padding-top: calc(62px + 2rem); }
+
+/* Dark-themed tab buttons (override styles.css light defaults) */
+.carnival-tab-btn { color: rgba(255,255,255,.62); }
+.carnival-tab-btn:hover { color: #fff; background: rgba(255,255,255,.07); }
+.carnival-tab-btn.active {
+  color: #DAA520;
+  border-bottom-color: #DAA520;
+  background: rgba(218,165,32,.08);
+}
+
+/* Dark-background text — calypso-artists + calypso-artist-detail */
+.lead { color: rgba(255,255,255,.7); }
+.artist-bio-text { color: rgba(255,255,255,.67); }
+.interview-question { color: rgba(255,255,255,.9); }
+.interview-answer {
+  color: rgba(255,255,255,.62);
+  border-left-color: rgba(184,134,11,.4);
+}
+.interview-section-header { border-bottom-color: rgba(184,134,11,.2); }
+.interview-section-title { color: #fff; }
+.artist-nav-footer {
+  background: #0a0700;
+  border-top: 1px solid rgba(184,134,11,.15);
+}
+
+/* Artist grid card borders adapt to dark background */
+.artists-grid {
+  border-color: rgba(184,134,11,.2) !important;
+  border-radius: 10px !important;
+}
+.artist-card {
+  border-bottom-color: rgba(184,134,11,.15) !important;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .csub-links { display: none; }
+  .csub-hamburger { display: flex; }
+  .csub-back { display: none; }
+  .csub-back-mobile {
+    display: block;
+    border-top: 1px solid rgba(218,165,32,.2);
+    margin-top: .4rem;
+    padding-top: .4rem;
+  }
+  .csub-back-mobile a {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .75rem;
+    border-radius: 6px;
+    font-size: .88rem;
+    font-weight: 700;
+    color: rgba(218,165,32,.75);
+    text-decoration: none;
+    letter-spacing: .04em;
+    transition: color .18s;
+  }
+  .csub-back-mobile a:hover { color: #DAA520; }
+  .csub-links.open {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    background: #070400;
+    border-bottom: 2px solid #B8860B;
+    padding: .75rem 1.5rem 1rem;
+    z-index: 850;
+    gap: .25rem;
+  }
+  .csub-nav-inner { position: relative; }
+  .year-entry-header { grid-template-columns: 48px 1fr auto; gap: .6rem; }
+  .year-winner-parish { display: none; }
+  .finalist-row { grid-template-columns: 48px 1fr auto; }
+  .finalist-parish { display: none; }
+  .monarchs-controls-inner { flex-direction: column; align-items: flex-start; }
+  .monarch-search-wrap { max-width: 100%; }
+  .csub-footer-grid { grid-template-columns: 1fr; }
+  .monarch-hero-layout { grid-template-columns: 1fr; }
+  .monarch-avatar { display: none; }
+  .records-grid { grid-template-columns: 1fr 1fr; }
+  .monarchs-stats-bar { gap: 1.25rem; }
+  .win-entry-header { flex-wrap: wrap; gap: .75rem; }
+}
+@media (max-width: 480px) {
+  .records-grid { grid-template-columns: 1fr; }
+  .decade-filters { gap: .25rem; }
+  .decade-btn { padding: .25rem .5rem; font-size: .72rem; }
+}
+
+/* ── Additional mobile improvements ──────────────────────────────── */
+@media (max-width: 640px) {
+  /* Carnival hero padding on mobile */
+  .carnival-hero { padding-top: 62px; padding-bottom: 2.5rem; }
+  /* CTA buttons stack and fill width */
+  .cta-actions { flex-direction: column; align-items: center; }
+  .cta-actions .btn { width: 100%; max-width: 340px; justify-content: center; text-align: center; }
+  /* Calypso CTA button column stacks */
+  .calypso-artists-cta > div:last-child { align-items: stretch !important; }
+  .calypso-artists-cta > div:last-child .btn { justify-content: center; text-align: center; }
+  /* Interview section spacing */
+  .interview-section { padding: 1.5rem 0 3rem; }
+  /* Monarch stats wrap tightly */
+  .monarch-stats-row { gap: 1rem 1.5rem; }
+  .monarch-stat-num { font-size: 1.75rem; }
+  /* Artist detail chips wrap */
+  .artist-detail-chips { gap: .4rem; }
+  .artist-detail-chip { font-size: .72rem; padding: .2rem .6rem; }
+}
+
+@media (max-width: 380px) {
+  .csub-links a { padding: .3rem .55rem; font-size: .8rem; }
+  .csub-logo-text { font-size: .92rem; }
+  .monarchs-hero h1 { font-size: 1.6rem; }
+  .monarch-hero-name { font-size: 1.6rem; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CALYPSO TENTS
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Tents hero ─────────────────────────────────────────────────── */
+.tents-hero {
+  background: linear-gradient(155deg, #1a0500 0%, #0D0900 50%, #0a1200 100%);
+  padding: calc(62px + 3rem) 0 3.5rem;
+  text-align: center;
+}
+.tents-hero h1 { color: #fff; margin-bottom: .75rem; }
+.tents-hero-sub {
+  color: rgba(255,255,255,.65);
+  font-size: 1.05rem;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* ── Tents grid ─────────────────────────────────────────────────── */
+.tents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.tent-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(184,134,11,.2);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: border-color .2s, transform .18s;
+}
+.tent-card:hover {
+  border-color: rgba(218,165,32,.5);
+  transform: translateY(-2px);
+}
+
+.tent-card-banner {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background: linear-gradient(135deg, rgba(184,134,11,.15) 0%, rgba(184,134,11,.04) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  overflow: hidden;
+}
+.tent-card-banner img { width: 100%; height: 100%; object-fit: cover; }
+
+.tent-card-body {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tent-card-short {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: #DAA520;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+
+.tent-card-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: .3rem;
+  line-height: 1.3;
+}
+
+.tent-card-community {
+  font-size: .8rem;
+  color: rgba(255,255,255,.38);
+  margin-bottom: .85rem;
+}
+
+.tent-card-desc {
+  font-size: .875rem;
+  color: rgba(255,255,255,.58);
+  line-height: 1.65;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tent-card-footer {
+  margin-top: 1rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .78rem;
+}
+.tent-card-artists-count { color: rgba(255,255,255,.4); }
+.tent-card-cta { color: rgba(218,165,32,.7); font-weight: 700; }
+
+/* ── Tent detail hero ───────────────────────────────────────────── */
+.tent-detail-hero {
+  background: linear-gradient(155deg, #1a0500 0%, #0D0900 55%, #0a1200 100%);
+  padding: calc(62px + 2.5rem) 0 3rem;
+}
+
+.tent-hero-layout {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.tent-logo-wrap {
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  background: rgba(184,134,11,.12);
+  border: 1px solid rgba(184,134,11,.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.25rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tent-logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+.tent-hero-shortname {
+  display: inline-block;
+  background: rgba(218,165,32,.12);
+  border: 1px solid rgba(218,165,32,.3);
+  color: #DAA520;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .18rem .6rem;
+  border-radius: 4px;
+  margin-bottom: .5rem;
+}
+
+.tent-hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .6rem;
+}
+
+.tent-hero-chip {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.65);
+  font-size: .75rem;
+  padding: .22rem .65rem;
+  border-radius: 20px;
+}
+
+/* ── Tent section blocks ────────────────────────────────────────── */
+.tent-section {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.tent-section:last-of-type { border-bottom: none; }
+
+.tent-section-title {
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #DAA520;
+  margin-bottom: 1.25rem;
+}
+
+.tent-description {
+  color: rgba(255,255,255,.72);
+  font-size: 1rem;
+  line-height: 1.85;
+  max-width: 720px;
+}
+
+/* ── Contact grid ───────────────────────────────────────────────── */
+.tent-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: .5rem;
+}
+
+.tent-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+}
+
+.tent-contact-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+
+.tent-contact-label {
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: .2rem;
+}
+
+.tent-contact-value {
+  font-size: .9rem;
+  color: rgba(255,255,255,.75);
+  word-break: break-word;
+}
+.tent-contact-value a { color: rgba(218,165,32,.8); text-decoration: none; }
+.tent-contact-value a:hover { color: #DAA520; }
+
+/* ── Schedule tables ────────────────────────────────────────────── */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: .5rem;
+  font-size: .9rem;
+}
+.schedule-table th {
+  text-align: left;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  padding: .5rem .75rem;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.schedule-table td {
+  padding: .7rem .75rem;
+  color: rgba(255,255,255,.7);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  vertical-align: top;
+}
+.schedule-table tr:last-child td { border-bottom: none; }
+.schedule-table tr:hover td { background: rgba(255,255,255,.02); }
+.schedule-table .sched-day { color: #DAA520; font-weight: 700; }
+.schedule-table .sched-note { font-size: .8rem; color: rgba(255,255,255,.38); margin-top: .2rem; }
+
+/* ── Gallery ────────────────────────────────────────────────────── */
+.tent-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .6rem;
+  margin-top: .5rem;
+}
+
+.tent-gallery-item {
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  transition: opacity .15s, border-color .15s;
+}
+.tent-gallery-item:hover { opacity: .82; border-color: rgba(218,165,32,.4); }
+.tent-gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ── Lightbox ───────────────────────────────────────────────────── */
+.tent-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.93);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.tent-lightbox.open { display: flex; }
+
+.tent-lightbox-img-wrap {
+  position: relative;
+  max-width: 90vw;
+  max-height: 88vh;
+}
+.tent-lightbox-img-wrap img {
+  max-width: 90vw;
+  max-height: 86vh;
+  border-radius: 6px;
+  object-fit: contain;
+  display: block;
+}
+
+.tent-lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.7);
+  font-size: 1.75rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color .15s;
+}
+.tent-lightbox-close:hover { color: #fff; }
+
+.tent-lightbox-prev,
+.tent-lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 1.4rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.tent-lightbox-prev { left: -3.5rem; }
+.tent-lightbox-next { right: -3.5rem; }
+.tent-lightbox-prev:hover,
+.tent-lightbox-next:hover { background: rgba(255,255,255,.22); }
+
+/* ── Tent artists section ───────────────────────────────────────── */
+.tent-artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: .5rem;
+}
+
+/* ── Artist card tent badge ─────────────────────────────────────── */
+.artist-tent-badge {
+  display: inline-block;
+  background: rgba(184,134,11,.12);
+  border: 1px solid rgba(184,134,11,.25);
+  color: rgba(218,165,32,.8);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .15rem .5rem;
+  border-radius: 4px;
+  margin-top: .3rem;
+}
+
+/* ── Tent filter on artists page ────────────────────────────────── */
+.tent-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.tent-filter-label {
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-right: .25rem;
+}
+
+.tent-filter-btn {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  color: rgba(255,255,255,.6);
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .3rem .85rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+  font-family: inherit;
+}
+.tent-filter-btn:hover {
+  background: rgba(255,255,255,.09);
+  color: #fff;
+}
+.tent-filter-btn.active {
+  background: rgba(218,165,32,.15);
+  border-color: rgba(218,165,32,.4);
+  color: #DAA520;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .tent-hero-layout { grid-template-columns: 68px 1fr; gap: 1rem; }
+  .tent-logo-wrap { width: 68px; height: 68px; font-size: 1.75rem; }
+  .tents-grid { grid-template-columns: 1fr; }
+  .tent-gallery-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .tent-lightbox-prev { left: .5rem; }
+  .tent-lightbox-next { right: .5rem; }
+  .tent-contact-grid { grid-template-columns: 1fr; }
+  .schedule-table { font-size: .82rem; }
+}

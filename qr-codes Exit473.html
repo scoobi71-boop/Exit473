@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business QR Codes</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f5f0e8;
+    --card: #ffffff;
+    --ink: #1a1209;
+    --accent: #c8521a;
+    --muted: #7a6e60;
+    --border: #e0d8cc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    padding: 48px 24px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  header p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+  }
+
+  .card .qr-wrap {
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card .qr-wrap canvas,
+  .card .qr-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .card .name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    text-align: center;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .card .slug {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    word-break: break-all;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+
+  .card .dl-btn {
+    margin-top: 4px;
+    padding: 6px 18px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .card .dl-btn:hover { background: var(--accent); }
+
+  @media print {
+    body { padding: 16px; background: white; }
+    .dl-btn { display: none; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Business <em>QR Codes</em></h1>
+  <p>exit473.com · Scan to visit each business page</p>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const businesses = [
+  { slug: "queens-grill",          name: "Queen's Grill" },
+  { slug: "tropical-squeeze",      name: "Tropical Squeeze" },
+  { slug: "madras-dosa",           name: "Madras Dosa" },
+  { slug: "champions",             name: "Champions" },
+  { slug: "taste-jamaica",         name: "Taste Jamaica" },
+  { slug: "soo-delicious",         name: "Soo Delicious" },
+  { slug: "bamboo-junction",       name: "Bamboo Junction" },
+  { slug: "josh-roti",             name: "Josh Roti" },
+  { slug: "fade-king",             name: "Fade King" },
+  { slug: "decorum",               name: "Decorum" },
+  { slug: "expression-barbershop", name: "Expression Barbershop" },
+  { slug: "perfume-shop",          name: "Perfume Shop" },
+  { slug: "la-galerie",            name: "La Galerie" },
+  { slug: "felicias-nigerian",     name: "Felicia's Nigerian" },
+  { slug: "wendys-organics",       name: "Wendy's Organics" },
+];
+
+const base = "https://exit473.com/bizsite/index.php?biz=";
+const grid = document.getElementById("grid");
+
+businesses.forEach(biz => {
+  const url = base + biz.slug;
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const wrap = document.createElement("div");
+  wrap.className = "qr-wrap";
+  wrap.id = "qr-" + biz.slug;
+
+  const nameEl = document.createElement("div");
+  nameEl.className = "name";
+  nameEl.textContent = biz.name;
+
+  const slugEl = document.createElement("div");
+  slugEl.className = "slug";
+  slugEl.textContent = "?biz=" + biz.slug;
+
+  const btn = document.createElement("button");
+  btn.className = "dl-btn";
+  btn.textContent = "Download";
+  btn.addEventListener("click", () => {
+    const canvas = wrap.querySelector("canvas");
+    if (!canvas) return;
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = biz.slug + "-qr.png";
+    a.click();
+  });
+
+  card.appendChild(wrap);
+  card.appendChild(nameEl);
+  card.appendChild(slugEl);
+  card.appendChild(btn);
+  grid.appendChild(card);
+
+  new QRCode(wrap, {
+    text: url,
+    width: 160,
+    height: 160,
+    colorDark: "#1a1209",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+});
+</script>
+</body>
+</html>

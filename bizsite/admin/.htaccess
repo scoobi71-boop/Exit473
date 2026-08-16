@@ -1,0 +1,5 @@
+Options -Indexes
+<Files "auth.php">
+    Order allow,deny
+    Deny from all
+</Files>

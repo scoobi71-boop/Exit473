@@ -1,0 +1,4 @@
+window.EXIT473_SPOTLIGHT_CSV = `id,type,title,subtitle,description,image,link_url,link_label,business_id,event_id,badge_label,start_date,end_date,active,sort_order
+1,business,"La Galerie","Business Spotlight","Art, spice, and living lounge — explore the heart and soul of Caribbean craft, food and culture in one mesmerizing space.",,business.html?id=16,"Visit La Galerie →",16,,"Spotlight",,,true,10
+2,event,"Island Nights","Upcoming Event","Join us for an intimate evening of food, art and conversation — five courses celebrating Caribbean flavour, presented through a refined contemporary lens. Held weekly — check the calendar for the next date.",,events.html,"See Event Details →",,2,"Upcoming Event",,,true,20
+`;

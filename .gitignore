@@ -1,0 +1,7 @@
+# Ignore local flight config with API keys
+/data/flight_config.php
+
+# Node / editor / system files (common)
+node_modules/
+.DS_Store
+/.vscode/

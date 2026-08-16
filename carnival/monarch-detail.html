@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calypso Monarch Profile — Grenada Spicemas</title>
+  <meta name="description" content="Profile and championship history of a Grenada Calypso Monarch.">
+  <link rel="canonical" href="https://exit473.com/carnival/monarch-detail.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Spicemas · Exit 473 Grenada">
+  <meta property="og:image" content="https://exit473.com/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=3">
+  <link rel="stylesheet" href="css/carnival.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-T6MG63FX84');</script>
+</head>
+<body style="background:#0D0900;color:#fff">
+
+  <!-- CARNIVAL SUB-NAV -->
+  <nav class="csub-nav" aria-label="Spicemas carnival navigation">
+    <div class="csub-nav-inner">
+      <a href="carnival.html" class="csub-logo" aria-label="Spicemas Carnival home">
+        <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+        <span>
+          <span class="csub-logo-text">Spicemas</span>
+          <span class="csub-logo-sub">Grenada Carnival</span>
+        </span>
+      </a>
+      <ul class="csub-links" id="csub-links" role="list">
+        <li><a href="calypso-monarchs.html" class="active">🏆 Calypso Monarchs</a></li>
+        <li><a href="calypso-artists.html">🎤 Artists</a></li>
+        <li><a href="calypso-tents.html">🎪 Tents</a></li>
+        <li><a href="carnival.html#panel-steelpan">🥁 Steel Pan</a></li>
+        <li><a href="carnival.html#panel-masquerade">🎭 Masquerade</a></li>
+        <li><a href="carnival.html#panel-traditions">🎉 Traditions</a></li>
+        <li class="csub-back-mobile"><a href="../index.html">← Exit 473</a></li>
+      </ul>
+      <a href="../index.html" class="csub-back">← Exit 473</a>
+      <button class="csub-hamburger" id="csub-ham" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="monarch-main">
+    <div style="padding:8rem 1rem;text-align:center;color:rgba(255,255,255,.4)">Loading champion profile…</div>
+  </main>
+
+  <!-- CARNIVAL FOOTER -->
+  <footer class="csub-footer" aria-label="Spicemas site footer">
+    <div class="container">
+      <div class="csub-footer-grid">
+        <div class="csub-footer-brand">
+          <a href="carnival.html" class="csub-logo">
+            <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+            <span>
+              <span class="csub-logo-text">Spicemas</span>
+              <span class="csub-logo-sub">Grenada Carnival</span>
+            </span>
+          </a>
+          <p>Celebrating the art, history, and living tradition of Grenada's greatest cultural festival.</p>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Carnival</h4>
+          <ul>
+            <li><a href="calypso-monarchs.html">Calypso Monarchs</a></li>
+            <li><a href="calypso-artists.html">Artist Profiles</a></li>
+            <li><a href="carnival.html#panel-steelpan">Steel Pan &amp; Panorama</a></li>
+            <li><a href="carnival.html#panel-masquerade">Masquerade &amp; Mas</a></li>
+            <li><a href="carnival.html#panel-traditions">Traditions &amp; Schedule</a></li>
+          </ul>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Exit 473</h4>
+          <ul>
+            <li><a href="../index.html">Main Site</a></li>
+            <li><a href="../directory.html">Business Directory</a></li>
+            <li><a href="../events.html">Events Calendar</a></li>
+            <li><a href="../about.html">About the Park</a></li>
+            <li><a href="../contact.html">Contact &amp; Location</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="csub-footer-bottom">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Spicemas Carnival · Grenada, West Indies.</p>
+        <p>Built with island pride · <a href="../index.html">Exit 473 Food & Lifestyle Park</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../data/calypso-monarchs.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    const DATA = window.CALYPSO_MONARCHS;
+    if (!DATA) return;
+
+    const artists = DATA.artists || {};
+    const results = (DATA.results || []).filter(r => !r.cancelled);
+
+    /* ── Parse query param ──────────────────────────────────────── */
+    const params   = new URLSearchParams(window.location.search);
+    const artistId = params.get('id') || '';
+    const artist   = artists[artistId];
+
+    /* ── Compute artist stats ───────────────────────────────────── */
+    function getArtistStats(id) {
+      const wins   = results.filter(r => r.winner.artistId === id).sort((a, b) => a.year - b.year);
+      const silver = results.filter(r => r.second?.artistId === id);
+      const bronze = results.filter(r => r.third?.artistId  === id);
+      const finals = results.filter(r =>
+        r.winner.artistId === id || r.second?.artistId === id || r.third?.artistId === id
+      );
+
+      /* Longest streak */
+      let streak = 0, streakStart = 0, streakEnd = 0, run = 1, runStart = 0;
+      const years = wins.map(r => r.year);
+      for (let i = 1; i < years.length; i++) {
+        if (years[i] === years[i - 1] + 1) {
+          run++;
+        } else {
+          if (run > streak) { streak = run; streakStart = years[runStart]; streakEnd = years[i - 1]; }
+          run = 1; runStart = i;
+        }
+      }
+      if (run > streak) { streak = run; streakStart = years[runStart]; streakEnd = years[years.length - 1]; }
+
+      return { wins, silver, bronze, finals, streak, streakStart, streakEnd };
+    }
+
+    /* ── Adjacent artist navigation ────────────────────────────── */
+    function getAdjacentArtists() {
+      const ids = Object.keys(artists);
+      const idx = ids.indexOf(artistId);
+      return {
+        prev: idx > 0          ? ids[idx - 1] : null,
+        next: idx < ids.length - 1 ? ids[idx + 1] : null
+      };
+    }
+
+    /* ── YouTube embed ──────────────────────────────────────────── */
+    function renderYouTube(youtubeId, songTitle) {
+      if (youtubeId) {
+        return `<div class="youtube-wrap">
+          <div class="youtube-label">🎬 Winning Performance</div>
+          <div class="youtube-player">
+            <iframe
+              src="https://www.youtube.com/embed/${esc(youtubeId)}?rel=0&modestbranding=1"
+              title="${esc(songTitle)} — Grenada Calypso"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"></iframe>
+          </div>
+        </div>`;
+      }
+      return `<div class="youtube-wrap">
+        <div class="youtube-unavailable">
+          <span style="font-size:1.4rem">🎵</span>
+          <span>No video recording on file for this performance.
+            <a href="https://www.youtube.com/results?search_query=${encodeURIComponent((artist?.stageName || '') + ' calypso grenada')}"
+               target="_blank" rel="noopener" style="color:rgba(218,165,32,.7);margin-left:.3rem">Search YouTube →</a>
+          </span>
+        </div>
+      </div>`;
+    }
+
+    /* ── Render a single win entry ──────────────────────────────── */
+    function renderWinEntry(r, stats) {
+      const isStreak = stats.streak > 1 &&
+        r.year >= stats.streakStart && r.year <= stats.streakEnd;
+      return `<div class="win-entry">
+        <div class="win-entry-header">
+          <div class="win-year-badge">${r.year}</div>
+          <span class="win-trophy">🏆</span>
+          <div class="win-song-info">
+            <div class="win-song-title">${esc(r.winner.song || '—')}</div>
+            <div class="win-song-label">Calypso Monarch · Dimanche Gras
+              ${isStreak ? `· <span style="color:#F5C840">Part of ${stats.streak}-year streak</span>` : ''}
+            </div>
+          </div>
+        </div>
+        ${r.note ? `<div class="win-note">${esc(r.note)}</div>` : ''}
+        ${renderYouTube(r.winner.youtubeId, r.winner.song)}
+      </div>`;
+    }
+
+    /* ── Render the full page ───────────────────────────────────── */
+    function renderPage() {
+      const main = document.getElementById('monarch-main');
+      if (!main) return;
+
+      if (!artist) {
+        main.innerHTML = `<div class="container" style="padding:6rem 1.5rem;text-align:center">
+          <div style="font-size:3rem;margin-bottom:1rem">🏆</div>
+          <h2 style="color:#fff;margin-bottom:1rem">Artist Not Found</h2>
+          <p style="color:rgba(255,255,255,.45);margin-bottom:2rem">We couldn't find a champion with that ID.</p>
+          <a href="calypso-monarchs.html" class="btn btn-gold">← All Champions</a>
+        </div>`;
+        return;
+      }
+
+      const stats = getArtistStats(artistId);
+      const { prev, next } = getAdjacentArtists();
+      const winsDesc = stats.wins.slice().reverse(); // newest first
+
+      /* Page meta */
+      document.title = `${artist.stageName} — Calypso Monarch · Spicemas Grenada`;
+      document.querySelector('meta[name="description"]')
+        ?.setAttribute('content', artist.bio || `${artist.stageName} — Grenada Calypso Monarch history and profile.`);
+
+      const prevLink = prev
+        ? `<a href="monarch-detail.html?id=${esc(prev)}" class="btn btn-outline btn-sm">← ${esc(artists[prev]?.stageName || prev)}</a>`
+        : '<span></span>';
+      const nextLink = next
+        ? `<a href="monarch-detail.html?id=${esc(next)}" class="btn btn-outline btn-sm">${esc(artists[next]?.stageName || next)} →</a>`
+        : '<span></span>';
+
+      const streakNote = stats.streak > 1
+        ? `<span class="monarch-chip"><span>🔥</span> ${stats.streak}-year streak (${stats.streakStart}–${stats.streakEnd})</span>`
+        : '';
+
+      const winsHtml = winsDesc.length
+        ? winsDesc.map(r => renderWinEntry(r, stats)).join('')
+        : `<p style="color:rgba(255,255,255,.35);padding:2rem 0">No Monarch titles recorded.</p>`;
+
+      /* Finalists appearances section */
+      const finalsSection = stats.finals.length > stats.wins.length ? (() => {
+        const silverYears = stats.silver.map(r => r.year).sort((a,b) => b-a);
+        const bronzeYears = stats.bronze.map(r =>r.year).sort((a,b) => b-a);
+        const parts = [];
+        if (silverYears.length) parts.push(`<div>
+          <div class="win-song-label" style="margin-bottom:.5rem">🥈 Runner-up (${silverYears.length}×)</div>
+          <div style="color:rgba(255,255,255,.55);font-size:.88rem">${silverYears.join(', ')}</div>
+        </div>`);
+        if (bronzeYears.length) parts.push(`<div>
+          <div class="win-song-label" style="margin-bottom:.5rem">🥉 Third Place (${bronzeYears.length}×)</div>
+          <div style="color:rgba(255,255,255,.55);font-size:.88rem">${bronzeYears.join(', ')}</div>
+        </div>`);
+        return `<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.5rem;display:flex;flex-wrap:wrap;gap:2rem;margin-bottom:2rem">
+          <div class="win-song-label" style="width:100%;margin-bottom:0">Other Finals Appearances</div>
+          ${parts.join('')}
+        </div>`;
+      })() : '';
+
+      main.innerHTML = `
+        <!-- ARTIST HERO -->
+        <div class="monarch-detail-hero">
+          <div class="container">
+            <a href="calypso-monarchs.html" class="artist-detail-back">← All Champions</a>
+            <div class="monarch-hero-layout">
+              <div class="monarch-avatar" aria-hidden="true">🎤</div>
+              <div>
+                <div class="monarch-hero-tag">🏆 Grenada Calypso Monarch · Spicemas</div>
+                <h1 class="monarch-hero-name">${esc(artist.stageName)}</h1>
+                <div class="monarch-hero-realname">${esc(artist.realName)}</div>
+                <div class="monarch-hero-chips">
+                  <span class="monarch-chip">📍 ${esc(artist.parish)}</span>
+                  ${artist.active ? `<span class="monarch-chip">🎵 ${esc(artist.active)}</span>` : ''}
+                  ${stats.wins.length ? `<span class="monarch-chip monarch-chip-gold">🏆 ${stats.wins.length} Title${stats.wins.length !== 1 ? 's' : ''}</span>` : ''}
+                  ${streakNote}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATS ROW -->
+        <div style="background:#0D0900;border-bottom:1px solid rgba(255,255,255,.06)">
+          <div class="container">
+            <div class="monarch-stats-row">
+              <div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.wins.length}</div>
+                <div class="monarch-stat-lbl">Monarch Titles</div>
+              </div>
+              ${stats.streak > 1 ? `<div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.streak}</div>
+                <div class="monarch-stat-lbl">Best Streak</div>
+              </div>` : ''}
+              ${stats.silver.length ? `<div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.silver.length}</div>
+                <div class="monarch-stat-lbl">Runner-up</div>
+              </div>` : ''}
+              ${stats.bronze.length ? `<div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.bronze.length}</div>
+                <div class="monarch-stat-lbl">Third Place</div>
+              </div>` : ''}
+              <div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.finals.length}</div>
+                <div class="monarch-stat-lbl">Finals Appearances</div>
+              </div>
+              ${stats.wins.length ? `<div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.wins[0].year}</div>
+                <div class="monarch-stat-lbl">First Title</div>
+              </div>` : ''}
+              ${stats.wins.length > 1 ? `<div class="monarch-stat">
+                <div class="monarch-stat-num">${stats.wins[stats.wins.length - 1].year}</div>
+                <div class="monarch-stat-lbl">Latest Title</div>
+              </div>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- BIO -->
+        ${artist.bio ? `<div style="background:#0D0900;padding:2rem 0">
+          <div class="container">
+            <span class="section-label" style="color:#DAA520">About the Artist</span>
+            <p class="monarch-bio">${esc(artist.bio)}</p>
+          </div>
+        </div>` : ''}
+
+        <!-- WINS TIMELINE -->
+        <div class="wins-section">
+          <div class="container">
+            <span class="section-label" style="color:#DAA520">Championship Record</span>
+            <h2>${esc(artist.stageName)}'s Monarch Titles</h2>
+            ${finalsSection}
+            <div class="wins-list">${winsHtml}</div>
+          </div>
+        </div>
+
+        <!-- ARTIST NAV -->
+        <div class="monarch-artist-nav">
+          <div class="container">
+            <div class="monarch-artist-nav-inner">
+              ${prevLink}
+              <a href="calypso-monarchs.html" class="btn btn-gold">🏆 All Champions</a>
+              ${nextLink}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPage();
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      /* Mobile hamburger */
+      const ham = document.getElementById('csub-ham');
+      const nav = document.getElementById('csub-links');
+      if (ham && nav) {
+        ham.addEventListener('click', () => {
+          const open = nav.classList.toggle('open');
+          ham.setAttribute('aria-expanded', open);
+        });
+      }
+    });
+
+  }());
+  </script>
+</body>
+</html>

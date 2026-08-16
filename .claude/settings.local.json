@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:madeingrenadawordpresscom.wordpress.com)",
+      "WebFetch(domain:www.caribmagplus.com)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "Bash(node -e \"require\\('vm'\\).runInNewContext\\(require\\('fs'\\).readFileSync\\('data/events.js','utf8'\\)\\); console.log\\('events.js OK'\\)\")",
+      "Bash(node -e \"require\\('vm'\\).runInNewContext\\(require\\('fs'\\).readFileSync\\('data/businesses.js','utf8'\\)\\); console.log\\('businesses.js OK'\\)\")",
+      "Bash(node -e \"require\\('vm'\\).runInNewContext\\(require\\('fs'\\).readFileSync\\('data/spotlight.js','utf8'\\)\\); console.log\\('spotlight.js OK'\\)\")",
+      "Bash(node -e \"require.resolve\\('jsdom'\\)\")",
+      "Bash(npm ls *)",
+      "Bash(npx --yes playwright install chromium)",
+      "Bash(npx --yes playwright --help)",
+      "Bash(node check.js)",
+      "Bash(netstat -ano)"
+    ]
+  }
+}

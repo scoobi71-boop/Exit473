@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calypso Artists — Grenada Spicemas · Exit 473</title>
+  <meta name="description" content="Meet the voices of Grenadian calypso — profiles of artists shaping the tradition, from veteran Monarchs to rising talents.">
+  <link rel="canonical" href="https://exit473.com/carnival/calypso-artists.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Exit 473">
+  <meta property="og:url" content="https://exit473.com/carnival/calypso-artists.html">
+  <meta property="og:title" content="Calypso Artists — Grenada Spicemas · Exit 473">
+  <meta property="og:description" content="Meet the voices of Grenadian calypso — artist profiles, stories, and interviews.">
+  <meta property="og:image" content="https://exit473.com/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=3">
+  <link rel="stylesheet" href="css/carnival.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-T6MG63FX84');</script>
+  <style>
+    .artists-controls select { color: #fff !important; background-color: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.12) !important; -webkit-text-fill-color: #fff !important; }
+    .artists-controls select option { color: #000 !important; background-color: #fff !important; }
+  </style>
+</head>
+<body style="background:#0D0900;color:#fff">
+
+  <!-- CARNIVAL SUB-NAV -->
+  <nav class="csub-nav" aria-label="Spicemas carnival navigation">
+    <div class="csub-nav-inner">
+      <a href="carnival.html" class="csub-logo" aria-label="Spicemas Carnival home">
+        <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+        <span>
+          <span class="csub-logo-text">Spicemas</span>
+          <span class="csub-logo-sub">Grenada Carnival</span>
+        </span>
+      </a>
+      <ul class="csub-links" id="csub-links" role="list">
+        <li><a href="calypso-monarchs.html">🏆 Calypso Monarchs</a></li>
+        <li><a href="calypso-artists.html" class="active">🎤 Artists</a></li>
+        <li><a href="calypso-tents.html">🎪 Tents</a></li>
+        <li><a href="carnival.html#panel-steelpan">🥁 Steel Pan</a></li>
+        <li><a href="carnival.html#panel-masquerade">🎭 Masquerade</a></li>
+        <li><a href="carnival.html#panel-traditions">🎉 Traditions</a></li>
+        <li class="csub-back-mobile"><a href="../index.html">← Exit 473</a></li>
+      </ul>
+      <a href="../index.html" class="csub-back">← Exit 473</a>
+      <button class="csub-hamburger" id="csub-ham" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- PAGE HERO -->
+    <div class="artist-detail-hero" style="background:linear-gradient(155deg,#4A0000 0%,#1A0505 42%,#B8860B 100%);padding-bottom:3.5rem">
+      <div class="container">
+        <a href="carnival.html#panel-calypso" class="artist-detail-back">← Back to Calypso</a>
+        <div class="carnival-badge" style="margin-bottom:1rem">🎵 Grenada Calypso · Spicemas</div>
+        <h1 style="color:var(--white);margin-bottom:.75rem">Calypso Artists</h1>
+        <p style="color:rgba(255,255,255,.72);font-size:1.05rem;max-width:560px;line-height:1.75">
+          The voices who carry Grenada's stories to the stage. Meet the artists shaping the calypso
+          tradition — from seasoned Monarchs to bold new voices.
+        </p>
+      </div>
+    </div>
+
+    <!-- ARTISTS GRID -->
+    <section class="section" aria-labelledby="artists-heading">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:2.5rem">
+          <span class="section-label">Featured Profiles</span>
+          <h2 id="artists-heading">The Artists</h2>
+          <p class="lead" id="artist-count-text">Loading artists…</p>
+        </div>
+        <div class="artists-controls" id="artists-controls" style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem">
+          <label style="display:flex;align-items:center;gap:.5rem;color:var(--text-light);">
+            <span style="font-size:.95rem">Search name:</span>
+            <input id="search-name" type="search" placeholder="Stage or real name" style="padding:.4rem .6rem;border-radius:4px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#fff;min-width:260px">
+          </label>
+          <label style="margin-left:auto;display:flex;align-items:center;gap:.5rem;color:var(--text-light)">
+            <span style="font-size:.95rem">Sort:</span>
+            <select id="artist-sort" style="padding:.4rem .6rem;border-radius:4px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.12)">
+              <option value="stage_asc">Stage name ↑</option>
+              <option value="stage_desc">Stage name ↓</option>
+              <option value="real_asc">Real name ↑</option>
+              <option value="real_desc">Real name ↓</option>
+              <option value="parish_asc">Parish ↑</option>
+              <option value="parish_desc">Parish ↓</option>
+            </select>
+          </label>
+        </div>
+        <div class="tent-filter-bar" id="tent-filter-bar" style="display:none">
+          <span class="tent-filter-label">Filter by tent:</span>
+          <div id="tent-filter-btns"></div>
+        </div>
+        <div class="artists-grid" id="artists-grid">
+          <div class="loading-spinner">Loading artist profiles…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section" aria-labelledby="artists-cta-heading">
+      <div class="container">
+        <span class="section-label" style="color:var(--gold-light)">Spicemas</span>
+        <h2 id="artists-cta-heading" style="color:var(--white)">Experience the Carnival Live</h2>
+        <p style="color:rgba(255,255,255,.7);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">
+          Explore the full world of Grenada's Spicemas — calypso, steel pan, masquerade, and the traditions that make this island celebration unforgettable.
+        </p>
+        <div class="cta-actions">
+          <a href="carnival.html" class="btn btn-gold btn-lg">🎉 Explore Carnival</a>
+          <a href="../events.html" class="btn btn-outline-white btn-lg">📅 Upcoming Events</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CARNIVAL FOOTER -->
+  <footer class="csub-footer" aria-label="Spicemas site footer">
+    <div class="container">
+      <div class="csub-footer-grid">
+        <div class="csub-footer-brand">
+          <a href="carnival.html" class="csub-logo">
+            <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+            <span>
+              <span class="csub-logo-text">Spicemas</span>
+              <span class="csub-logo-sub">Grenada Carnival</span>
+            </span>
+          </a>
+          <p>Celebrating the art, history, and living tradition of Grenada's greatest cultural festival.</p>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Carnival</h4>
+          <ul>
+            <li><a href="calypso-monarchs.html">Calypso Monarchs</a></li>
+            <li><a href="calypso-artists.html">Artist Profiles</a></li>
+            <li><a href="carnival.html#panel-steelpan">Steel Pan &amp; Panorama</a></li>
+            <li><a href="carnival.html#panel-masquerade">Masquerade &amp; Mas</a></li>
+            <li><a href="carnival.html#panel-traditions">Traditions &amp; Schedule</a></li>
+          </ul>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Exit 473</h4>
+          <ul>
+            <li><a href="../index.html">Main Site</a></li>
+            <li><a href="../directory.html">Business Directory</a></li>
+            <li><a href="../events.html">Events Calendar</a></li>
+            <li><a href="../about.html">About the Park</a></li>
+            <li><a href="../contact.html">Contact &amp; Location</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="csub-footer-bottom">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Spicemas Carnival · Grenada, West Indies.</p>
+        <p>Built with island pride · <a href="../index.html">Exit 473 Food & Lifestyle Park</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../data/calypso-tents.js"></script>
+  <script src="../data/calypso-artists.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>twemoji.parse(document.querySelector('main'),{folder:'svg',ext:'.svg'});</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      const ham = document.getElementById('csub-ham');
+      const nav = document.getElementById('csub-links');
+      if (ham && nav) {
+        ham.addEventListener('click', () => {
+          const open = nav.classList.toggle('open');
+          ham.setAttribute('aria-expanded', open);
+        });
+      }
+
+      const artists = window.CALYPSO_ARTISTS_DATA || [];
+      const tents   = window.CALYPSO_TENTS_DATA  || [];
+      const grid      = document.getElementById('artists-grid');
+      const countText = document.getElementById('artist-count-text');
+      const searchNameEl = document.getElementById('search-name');
+      const sortEl        = document.getElementById('artist-sort');
+
+      let searchName = '';
+      let sortMode = sortEl ? sortEl.value : 'stage_asc';
+
+      if (countText) countText.textContent = artists.length + ' artist' + (artists.length !== 1 ? 's' : '') + ' — each with a story worth hearing.';
+
+      if (!artists.length) {
+        if (grid) grid.innerHTML = '<p style="color:var(--text-light);padding:2rem 0">No artist profiles found. Add data to <code>../data/calypso-artists.js</code> or use the <a href="../admin/artist-entry.html">artist entry form</a>.</p>';
+        return;
+      }
+
+      if (searchNameEl) searchNameEl.addEventListener('input', (e) => { searchName = (e.target.value||'').trim().toLowerCase(); renderGrid(); });
+      if (sortEl)        sortEl.addEventListener('change', (e) => { sortMode = e.target.value; renderGrid(); });
+
+      function initials(name) {
+        return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      }
+
+      function formatDate(d) {
+        if (!d) return '';
+        const dt = new Date(d + 'T12:00:00');
+        return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      }
+
+      function normalizePhotoPath(photo) {
+        if (!photo) return '';
+        if (photo.startsWith('/')) return photo;
+        if (photo.startsWith('images/')) return '/' + photo;
+        return photo;
+      }
+
+      function esc(s) {
+        return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      /* ── Tent filter ──────────────────────────────────────────── */
+      let activeTentFilter = 'all';
+
+      const usedTentIds = new Set(artists.map(a => a.tentId).filter(Boolean));
+      const relevantTents = tents.filter(t => usedTentIds.has(t.id));
+
+      if (relevantTents.length > 0) {
+        const filterBar  = document.getElementById('tent-filter-bar');
+        const filterBtns = document.getElementById('tent-filter-btns');
+
+        function buildFilterBtns() {
+          const allBtn = `<button class="tent-filter-btn active" data-tent="all">All Artists</button>`;
+          const tentBtns = relevantTents.map(t =>
+            `<button class="tent-filter-btn" data-tent="${esc(t.id)}">${esc(t.shortName || t.name)}</button>`
+          ).join('');
+          const noTentCount = artists.filter(a => !a.tentId).length;
+          const noTentBtn = noTentCount > 0
+            ? `<button class="tent-filter-btn" data-tent="none">Independent</button>` : '';
+
+          filterBtns.innerHTML = allBtn + tentBtns + noTentBtn;
+
+          filterBtns.querySelectorAll('.tent-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              filterBtns.querySelectorAll('.tent-filter-btn').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              activeTentFilter = btn.dataset.tent;
+              renderGrid();
+            });
+          });
+        }
+
+        buildFilterBtns();
+        if (filterBar) filterBar.style.display = 'flex';
+      }
+
+      /* ── Artist card ──────────────────────────────────────────── */
+      function buildArtistCard(a) {
+        const photoSrc = normalizePhotoPath(a.photo);
+        const photoBlock = photoSrc
+          ? `<img src="${esc(photoSrc)}" alt="${esc(a.stageName)}" loading="lazy">`
+          : `<div class="artist-photo-placeholder">
+               <div class="placeholder-icon">🎤</div>
+               <div class="placeholder-initials">${esc(initials(a.realName || a.stageName))}</div>
+             </div>`;
+
+        const tent = a.tentId ? tents.find(t => t.id === a.tentId) : null;
+        const tentBadge = tent
+          ? `<a href="calypso-tent-detail.html?id=${esc(tent.id)}" class="artist-tent-badge" onclick="event.stopPropagation()">${esc(tent.shortName || tent.name)}</a>`
+          : '';
+
+        return `
+          <a href="calypso-artist-detail.html?id=${esc(a.id)}" class="artist-card" aria-label="${esc(a.stageName)} — read profile">
+            <div class="artist-photo-wrap">${photoBlock}</div>
+            <div class="artist-info">
+              <div class="artist-stage-name">${esc(a.stageName)}</div>
+              <div class="artist-real-name">${esc(a.realName)}</div>
+              <div class="artist-meta-row">
+                <span class="artist-meta-chip">📍 ${esc(a.parish)}</span>
+              </div>
+              ${tentBadge}
+              ${a.dateOfInterview ? `<div class="artist-interview-date">🗓 Interview: ${esc(formatDate(a.dateOfInterview))}</div>` : ''}
+              <div class="artist-card-cta">Read Profile →</div>
+            </div>
+          </a>`;
+      }
+
+      /* ── Render ───────────────────────────────────────────────── */
+      function renderGrid() {
+        let filtered = artists.slice();
+        // Tent filter
+        if (activeTentFilter === 'none') {
+          filtered = filtered.filter(a => !a.tentId);
+        } else if (activeTentFilter !== 'all') {
+          filtered = filtered.filter(a => a.tentId === activeTentFilter);
+        }
+        // Name search (matches stage OR real name)
+        if (searchName) {
+          filtered = filtered.filter(a => {
+            const s = (a.stageName||'').toLowerCase();
+            const r = (a.realName||'').toLowerCase();
+            return s.includes(searchName) || r.includes(searchName);
+          });
+        }
+        // Sorting
+        const cmp = (x,y) => (x||'').toString().localeCompare((y||'').toString(), 'en', { sensitivity: 'base' });
+        if (sortMode) {
+          const [key, dir] = sortMode.split('_');
+          filtered.sort((a,b) => {
+            let va = '';
+            let vb = '';
+            if (key === 'stage') { va = a.stageName; vb = b.stageName; }
+            else if (key === 'real') { va = a.realName; vb = b.realName; }
+            else if (key === 'parish') { va = a.parish; vb = b.parish; }
+            const r = cmp(va, vb);
+            return dir === 'desc' ? -r : r;
+          });
+        }
+
+        if (countText) countText.textContent = filtered.length + ' of ' + artists.length + ' artist' + (artists.length !== 1 ? 's' : '') + ' shown.';
+
+        if (grid) grid.innerHTML = filtered.length
+          ? filtered.map(buildArtistCard).join('')
+          : '<p style="color:rgba(255,255,255,.4);padding:2rem 0;font-style:italic">No artists match this filter.</p>';
+      }
+
+      renderGrid();
+    });
+  </script>
+</body>
+</html>

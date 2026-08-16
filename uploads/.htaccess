@@ -1,0 +1,19 @@
+# Prevent directory listing
+Options -Indexes
+
+# Block execution of any script in this directory
+<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|sh|cgi|rb|asp|aspx|jsf|jsp)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Serve media files with correct content types
+AddType video/mp4  .mp4 .m4v
+AddType video/quicktime .mov
+AddType video/x-msvideo .avi
+AddType video/webm .webm
+AddType audio/mpeg .mp3
+AddType audio/wav  .wav
+AddType audio/ogg  .ogg
+AddType audio/aac  .aac
+AddType audio/mp4  .m4a

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calypso Tent — Grenada Spicemas · Exit 473</title>
+  <meta name="description" content="Profile, schedule, gallery, and artists of a Grenadian calypso tent.">
+  <link rel="canonical" href="https://exit473.com/carnival/calypso-tent-detail.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Exit 473">
+  <meta property="og:image" content="https://exit473.com/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=3">
+  <link rel="stylesheet" href="css/carnival.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-T6MG63FX84');</script>
+</head>
+<body style="background:#0D0900;color:#fff">
+
+  <!-- CARNIVAL SUB-NAV -->
+  <nav class="csub-nav" aria-label="Spicemas carnival navigation">
+    <div class="csub-nav-inner">
+      <a href="carnival.html" class="csub-logo" aria-label="Spicemas Carnival home">
+        <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+        <span>
+          <span class="csub-logo-text">Spicemas</span>
+          <span class="csub-logo-sub">Grenada Carnival</span>
+        </span>
+      </a>
+      <ul class="csub-links" id="csub-links" role="list">
+        <li><a href="calypso-monarchs.html">🏆 Calypso Monarchs</a></li>
+        <li><a href="calypso-artists.html">🎤 Artists</a></li>
+        <li><a href="calypso-tents.html" class="active">🎪 Tents</a></li>
+        <li><a href="carnival.html#panel-steelpan">🥁 Steel Pan</a></li>
+        <li><a href="carnival.html#panel-masquerade">🎭 Masquerade</a></li>
+        <li><a href="carnival.html#panel-traditions">🎉 Traditions</a></li>
+        <li class="csub-back-mobile"><a href="../index.html">← Exit 473</a></li>
+      </ul>
+      <a href="../index.html" class="csub-back">← Exit 473</a>
+      <button class="csub-hamburger" id="csub-ham" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="tent-main">
+    <div style="padding:8rem 1rem;text-align:center;color:rgba(255,255,255,.4)">Loading tent profile…</div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="tent-lightbox" id="tent-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="tent-lightbox-img-wrap">
+      <button class="tent-lightbox-close" id="lb-close" aria-label="Close">✕</button>
+      <img id="lb-img" src="" alt="">
+      <button class="tent-lightbox-prev" id="lb-prev" aria-label="Previous image">‹</button>
+      <button class="tent-lightbox-next" id="lb-next" aria-label="Next image">›</button>
+    </div>
+  </div>
+
+  <!-- CARNIVAL FOOTER -->
+  <footer class="csub-footer" aria-label="Spicemas site footer">
+    <div class="container">
+      <div class="csub-footer-grid">
+        <div class="csub-footer-brand">
+          <a href="carnival.html" class="csub-logo">
+            <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+            <span>
+              <span class="csub-logo-text">Spicemas</span>
+              <span class="csub-logo-sub">Grenada Carnival</span>
+            </span>
+          </a>
+          <p>Celebrating the art, history, and living tradition of Grenada's greatest cultural festival.</p>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Carnival</h4>
+          <ul>
+            <li><a href="calypso-monarchs.html">Calypso Monarchs</a></li>
+            <li><a href="calypso-artists.html">Artist Profiles</a></li>
+            <li><a href="calypso-tents.html">Calypso Tents</a></li>
+            <li><a href="carnival.html#panel-steelpan">Steel Pan &amp; Panorama</a></li>
+            <li><a href="carnival.html#panel-masquerade">Masquerade &amp; Mas</a></li>
+          </ul>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Exit 473</h4>
+          <ul>
+            <li><a href="../index.html">Main Site</a></li>
+            <li><a href="../directory.html">Business Directory</a></li>
+            <li><a href="../events.html">Events Calendar</a></li>
+            <li><a href="../about.html">About the Park</a></li>
+            <li><a href="../contact.html">Contact &amp; Location</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="csub-footer-bottom">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Spicemas Carnival · Grenada, West Indies.</p>
+        <p>Built with island pride · <a href="../index.html">Exit 473 Food & Lifestyle Park</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../data/calypso-tents.js"></script>
+  <script src="../data/calypso-artists.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function formatDate(d) {
+      if (!d) return '';
+      const dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function initials(name) {
+      return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      const ham = document.getElementById('csub-ham');
+      const nav = document.getElementById('csub-links');
+      if (ham && nav) {
+        ham.addEventListener('click', () => {
+          const open = nav.classList.toggle('open');
+          ham.setAttribute('aria-expanded', open);
+        });
+      }
+
+      const tents   = window.CALYPSO_TENTS_DATA  || [];
+      const artists = window.CALYPSO_ARTISTS_DATA || [];
+      const main    = document.getElementById('tent-main');
+      const id      = new URLSearchParams(window.location.search).get('id');
+      const tent    = tents.find(t => t.id === id);
+
+      if (!tent) {
+        if (main) main.innerHTML = `
+          <div class="container" style="padding:6rem 1.5rem;text-align:center">
+            <div style="font-size:3rem;margin-bottom:1rem">🎪</div>
+            <h2 style="color:#fff">Tent Not Found</h2>
+            <p style="color:rgba(255,255,255,.5);margin:1rem 0 2rem">We couldn't find that tent profile.</p>
+            <a href="calypso-tents.html" class="btn btn-primary">← All Tents</a>
+          </div>`;
+        return;
+      }
+
+      /* Update page meta */
+      document.title = `${tent.name} — Calypso Tent · Exit 473`;
+      document.querySelector('meta[name="description"]')?.setAttribute('content',
+        tent.description ? tent.description.substring(0, 160) : `${tent.name} — Grenadian calypso tent profile.`);
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', `${tent.name} — Calypso Tent · Exit 473`);
+
+      /* Tent artists */
+      const tentArtists = artists.filter(a => a.tentId === tent.id);
+
+      /* ── Gallery images ───────────────────────────────────────── */
+      let galleryImages = tent.images || [];
+      let lbIndex = 0;
+      const lb    = document.getElementById('tent-lightbox');
+      const lbImg = document.getElementById('lb-img');
+
+      function openLightbox(i) {
+        lbIndex = i;
+        lbImg.src = galleryImages[i];
+        lbImg.alt = `${tent.name} — image ${i + 1}`;
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      function lbStep(dir) {
+        lbIndex = (lbIndex + dir + galleryImages.length) % galleryImages.length;
+        lbImg.src = galleryImages[lbIndex];
+        lbImg.alt = `${tent.name} — image ${lbIndex + 1}`;
+      }
+
+      document.getElementById('lb-close').addEventListener('click', closeLightbox);
+      document.getElementById('lb-prev').addEventListener('click', () => lbStep(-1));
+      document.getElementById('lb-next').addEventListener('click', () => lbStep(1));
+      lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+      document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft')  lbStep(-1);
+        if (e.key === 'ArrowRight') lbStep(1);
+      });
+
+      /* ── Contact items ────────────────────────────────────────── */
+      function contactItems() {
+        const items = [];
+        if (tent.address) items.push({ icon: '📍', label: 'Address', value: esc(tent.address) });
+        if (tent.phone)   items.push({ icon: '📞', label: 'Phone',   value: `<a href="tel:${esc(tent.phone)}">${esc(tent.phone)}</a>` });
+        if (tent.email)   items.push({ icon: '✉️',  label: 'Email',   value: `<a href="mailto:${esc(tent.email)}">${esc(tent.email)}</a>` });
+        if (tent.website) items.push({ icon: '🌐', label: 'Website', value: `<a href="${esc(tent.website)}" target="_blank" rel="noopener">${esc(tent.website.replace(/^https?:\/\//, ''))}</a>` });
+        if (tent.facebook) items.push({ icon: '📘', label: 'Facebook', value: `<a href="${esc(tent.facebook)}" target="_blank" rel="noopener">Facebook Page</a>` });
+        if (tent.instagram) items.push({ icon: '📸', label: 'Instagram', value: `<a href="${esc(tent.instagram)}" target="_blank" rel="noopener">@${esc(tent.instagram.split('/').filter(Boolean).pop())}</a>` });
+        return items;
+      }
+
+      const contacts = contactItems();
+      const contactHtml = contacts.length ? `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">Contact &amp; Location</div>
+            <div class="tent-contact-grid">
+              ${contacts.map(c => `
+                <div class="tent-contact-item">
+                  <span class="tent-contact-icon">${c.icon}</span>
+                  <div>
+                    <div class="tent-contact-label">${esc(c.label)}</div>
+                    <div class="tent-contact-value">${c.value}</div>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>` : '';
+
+      /* ── Practice schedule ────────────────────────────────────── */
+      const practice = tent.practiceSchedule || [];
+      const practiceHtml = practice.length ? `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">Practice Schedule</div>
+            <table class="schedule-table" aria-label="Practice schedule">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Time</th>
+                  <th>Location</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${practice.map(p => `
+                  <tr>
+                    <td><span class="sched-day">${esc(p.day)}</span></td>
+                    <td>${esc(p.time)}</td>
+                    <td>${esc(p.location)}</td>
+                    <td>${p.notes ? `<span class="sched-note">${esc(p.notes)}</span>` : '—'}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>` : '';
+
+      /* ── Show schedule ────────────────────────────────────────── */
+      const shows = tent.showSchedule || [];
+      const showsHtml = shows.length ? `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">Show Schedule</div>
+            <table class="schedule-table" aria-label="Show schedule">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Venue</th>
+                  <th>Time</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${shows.map(s => `
+                  <tr>
+                    <td><span class="sched-day">${s.date ? esc(formatDate(s.date)) : esc(s.dateLabel || '—')}</span></td>
+                    <td>${esc(s.venue)}</td>
+                    <td>${esc(s.time)}</td>
+                    <td>${s.notes ? `<span class="sched-note">${esc(s.notes)}</span>` : '—'}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>` : '';
+
+      /* ── Gallery ──────────────────────────────────────────────── */
+      const galleryHtml = galleryImages.length ? `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">Gallery</div>
+            <div class="tent-gallery-grid">
+              ${galleryImages.map((src, i) => `
+                <div class="tent-gallery-item" onclick="LB.open(${i})" role="button" tabindex="0"
+                     aria-label="View image ${i + 1} of ${galleryImages.length}"
+                     onkeydown="if(event.key==='Enter')LB.open(${i})">
+                  <img src="${esc(src)}" alt="${esc(tent.name)} — photo ${i + 1}" loading="lazy">
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>` : '';
+
+      /* Expose lightbox to inline onclick */
+      window.LB = { open: openLightbox };
+
+      /* ── Artists ──────────────────────────────────────────────── */
+      function buildArtistMini(a) {
+        const photo = a.photo
+          ? `<img src="${esc(a.photo)}" alt="${esc(a.stageName)}" loading="lazy">`
+          : `<div class="artist-photo-placeholder">
+               <div class="placeholder-icon">🎤</div>
+               <div class="placeholder-initials">${esc(initials(a.realName || a.stageName))}</div>
+             </div>`;
+        return `
+          <a href="calypso-artist-detail.html?id=${esc(a.id)}" class="artist-card" aria-label="${esc(a.stageName)} — read profile">
+            <div class="artist-photo-wrap">${photo}</div>
+            <div class="artist-info">
+              <div class="artist-stage-name">${esc(a.stageName)}</div>
+              <div class="artist-real-name">${esc(a.realName)}</div>
+              <div class="artist-meta-row">
+                <span class="artist-meta-chip">📍 ${esc(a.parish)}</span>
+              </div>
+              <div class="artist-card-cta">Read Profile →</div>
+            </div>
+          </a>`;
+      }
+
+      const artistsHtml = `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">Artists</div>
+            ${tentArtists.length
+              ? `<div class="artists-grid">${tentArtists.map(buildArtistMini).join('')}</div>`
+              : `<p style="color:rgba(255,255,255,.35);font-style:italic;padding:.5rem 0">No artist profiles linked to this tent yet.</p>`}
+          </div>
+        </div>`;
+
+      /* ── Assemble page ────────────────────────────────────────── */
+      const logoHtml = tent.logo
+        ? `<img src="${esc(tent.logo)}" alt="${esc(tent.name)} logo">`
+        : `<span>🎪</span>`;
+
+      main.innerHTML = `
+        <!-- HERO -->
+        <div class="tent-detail-hero">
+          <div class="container">
+            <a href="calypso-tents.html" class="artist-detail-back">← All Calypso Tents</a>
+            <div class="tent-hero-layout">
+              <div class="tent-logo-wrap">${logoHtml}</div>
+              <div>
+                ${tent.shortName ? `<div class="tent-hero-shortname">${esc(tent.shortName)}</div>` : ''}
+                <h1 style="color:#fff;margin:0 0 .3rem">${esc(tent.name)}</h1>
+                <div class="tent-hero-chips">
+                  <span class="tent-hero-chip">📍 ${esc(tent.community || tent.parish)}</span>
+                  ${tent.parish ? `<span class="tent-hero-chip">🗺 ${esc(tent.parish)}</span>` : ''}
+                  ${tent.founded ? `<span class="tent-hero-chip">📅 Est. ${esc(String(tent.founded))}</span>` : ''}
+                  <span class="tent-hero-chip">🎤 ${tentArtists.length} artist${tentArtists.length !== 1 ? 's' : ''}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        ${tent.description ? `
+        <div class="tent-section">
+          <div class="container">
+            <div class="tent-section-title">About the Tent</div>
+            <p class="tent-description">${esc(tent.description)}</p>
+          </div>
+        </div>` : ''}
+
+        ${contactHtml}
+        ${practiceHtml}
+        ${showsHtml}
+        ${galleryHtml}
+        ${artistsHtml}
+
+        <!-- BOTTOM NAV -->
+        <div class="artist-nav-footer">
+          <div class="container">
+            <div class="artist-nav-inner" style="justify-content:center">
+              <a href="calypso-tents.html" class="btn btn-gold">🎪 All Calypso Tents</a>
+            </div>
+          </div>
+        </div>`;
+    });
+  }());
+  </script>
+</body>
+</html>

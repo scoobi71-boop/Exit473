@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calypso Tent Entry — Admin · Exit 473</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .dynamic-row {
+      display: grid;
+      gap: .6rem;
+      background: rgba(0,0,0,.15);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      margin-bottom: .5rem;
+      position: relative;
+    }
+    .dynamic-row-remove {
+      position: absolute;
+      top: .6rem;
+      right: .75rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.3);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: .1rem .3rem;
+      border-radius: 4px;
+      transition: color .15s, background .15s;
+    }
+    .dynamic-row-remove:hover { color: #e05; background: rgba(255,0,80,.08); }
+    .add-row-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255,255,255,.05);
+      border: 1px dashed rgba(255,255,255,.2);
+      color: rgba(255,255,255,.55);
+      font-size: .85rem;
+      font-weight: 600;
+      padding: .45rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      font-family: inherit;
+      margin-top: .25rem;
+    }
+    .add-row-btn:hover { background: rgba(255,255,255,.09); color: #fff; }
+    .practice-grid { grid-template-columns: 1fr 1fr 1fr 2fr; padding-right: 2.5rem; }
+    .shows-grid    { grid-template-columns: 140px 1fr 120px 1.5fr; padding-right: 2.5rem; }
+    .gallery-row   { grid-template-columns: 1fr 180px; padding-right: 2.5rem; }
+    @media (max-width: 700px) {
+      .practice-grid,
+      .shows-grid,
+      .gallery-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="admin">
+
+  <!-- NAVIGATION -->
+  <nav class="site-nav solid" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo" aria-label="Exit 473 home">
+        <img src="../images/logo.png" alt="Exit 473 logo" class="logo-img" onerror="this.style.display='none'">
+        <span class="logo-text">
+          <span class="logo-main">Exit 473</span>
+          <span class="logo-sub">Admin Panel</span>
+        </span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="../index.html">Site Home</a></li>
+        <li><a href="../carnival/carnival.html">Carnival</a></li>
+        <li><a href="../carnival/calypso-tents.html">Calypso Tents</a></li>
+        <li><a href="artist-entry.html">Artist Entry</a></li>
+        <li><a href="../update-guide.html">Update Guide</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="admin-page-hero">
+      <div class="container">
+        <span class="section-label">Content Management</span>
+        <h1>Calypso Tent Entry</h1>
+        <p>Fill in the tent details below, then click <strong>Generate Entry</strong> to create the data block. Copy and paste it into <code>data/calypso-tents.js</code>.</p>
+      </div>
+    </div>
+
+    <section class="section-sm">
+      <div class="container">
+        <div class="entry-form-wrap">
+
+          <div class="entry-tip" style="margin-bottom:1.5rem">
+            <strong>How to add a tent:</strong> Complete the form, click "Generate Entry", copy the output, and paste it into the <code>window.CALYPSO_TENTS_DATA</code> array in <strong>data/calypso-tents.js</strong>.
+          </div>
+
+          <!-- ===== BASIC INFO ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title"><span class="section-icon">🎪</span> Tent Information</div>
+
+            <div class="entry-grid-3">
+              <div class="entry-field" style="grid-column:span 2">
+                <label for="f-name">Tent Name <span style="color:var(--red)">*</span></label>
+                <input type="text" id="f-name" placeholder="e.g. Northeast Village Pulse">
+              </div>
+              <div class="entry-field">
+                <label for="f-short">Short Name / Abbreviation</label>
+                <input type="text" id="f-short" placeholder="e.g. NVP">
+              </div>
+            </div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-id">Tent ID <span style="color:var(--red)">*</span></label>
+                <input type="text" id="f-id" placeholder="e.g. nvp (lowercase, no spaces)">
+                <div class="field-hint">Used in URLs and artist links. Use lowercase letters and hyphens only.</div>
+              </div>
+              <div class="entry-field">
+                <label for="f-parish">Parish <span style="color:var(--red)">*</span></label>
+                <select id="f-parish">
+                  <option value="">Select parish…</option>
+                  <option>St. George's</option>
+                  <option>St. David's</option>
+                  <option>St. Andrew's</option>
+                  <option>St. Patrick's</option>
+                  <option>St. Mark's</option>
+                  <option>St. John's</option>
+                  <option>Carriacou</option>
+                  <option>Petite Martinique</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-community">Community / Neighbourhood</label>
+                <input type="text" id="f-community" placeholder="e.g. Beaulieu, Northeast St. George's">
+              </div>
+              <div class="entry-field">
+                <label for="f-founded">Year Founded</label>
+                <input type="number" id="f-founded" placeholder="e.g. 2022" min="1900" max="2100">
+              </div>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-desc">Description</label>
+              <textarea id="f-desc" rows="6" placeholder="Full description of the tent — its history, mission, community role…"></textarea>
+            </div>
+
+            <div class="entry-field">
+              <label for="f-logo">Logo / Banner Image Path (optional)</label>
+              <input type="text" id="f-logo" placeholder="e.g. images/carnival/tents/nvp-logo.jpg">
+              <div class="field-hint">Path relative to the site root. Leave blank if not yet available.</div>
+            </div>
+          </div>
+
+          <!-- ===== CONTACT ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title"><span class="section-icon">📍</span> Contact &amp; Links</div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-address">Address</label>
+                <input type="text" id="f-address" placeholder="e.g. Beaulieu, Northeast St. George's, Grenada">
+              </div>
+              <div class="entry-field">
+                <label for="f-phone">Phone</label>
+                <input type="tel" id="f-phone" placeholder="e.g. +1 (473) 555-0000">
+              </div>
+            </div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-email">Email</label>
+                <input type="email" id="f-email" placeholder="e.g. info@nvpgrenada.com">
+              </div>
+              <div class="entry-field">
+                <label for="f-website">Website URL</label>
+                <input type="url" id="f-website" placeholder="e.g. https://nvpgrenada.com">
+              </div>
+            </div>
+
+            <div class="entry-grid-2">
+              <div class="entry-field">
+                <label for="f-facebook">Facebook URL</label>
+                <input type="url" id="f-facebook" placeholder="e.g. https://facebook.com/nvpgrenada">
+              </div>
+              <div class="entry-field">
+                <label for="f-instagram">Instagram URL</label>
+                <input type="url" id="f-instagram" placeholder="e.g. https://instagram.com/nvpgrenada">
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== PRACTICE SCHEDULE ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title"><span class="section-icon">🎵</span> Practice Schedule</div>
+            <div class="entry-tip" style="margin-bottom:1rem">Add a row for each regular practice session.</div>
+            <div id="practice-rows"></div>
+            <button class="add-row-btn" onclick="addPracticeRow()">+ Add Practice Session</button>
+          </div>
+
+          <!-- ===== SHOW SCHEDULE ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title"><span class="section-icon">🎭</span> Show Schedule</div>
+            <div class="entry-tip" style="margin-bottom:1rem">Add a row for each upcoming or recurring show.</div>
+            <div id="show-rows"></div>
+            <button class="add-row-btn" onclick="addShowRow()">+ Add Show</button>
+          </div>
+
+          <!-- ===== GALLERY ===== -->
+          <div class="entry-section">
+            <div class="entry-section-title"><span class="section-icon">🖼</span> Gallery Images</div>
+            <div class="entry-tip" style="margin-bottom:1rem">Add the path and an optional caption for each gallery image.</div>
+            <div id="gallery-rows"></div>
+            <button class="add-row-btn" onclick="addGalleryRow()">+ Add Image</button>
+          </div>
+
+          <!-- Generate bar -->
+          <div class="entry-generate-bar">
+            <p>When all fields are complete, generate the JavaScript entry and copy it into <strong>data/calypso-tents.js</strong>.</p>
+            <button class="btn btn-gold btn-lg" onclick="generateEntry()">⚡ Generate Entry</button>
+          </div>
+
+          <!-- Output block -->
+          <div class="entry-output" id="entry-output">
+            <div class="entry-output-header">
+              <h4>Generated JavaScript Entry</h4>
+              <button class="btn btn-outline-white btn-sm" onclick="copyOutput()">📋 Copy to Clipboard</button>
+            </div>
+            <pre id="output-pre"></pre>
+            <div class="entry-tip" style="margin-top:1rem;background:rgba(255,255,255,.05);border-left-color:var(--gold)">
+              <strong style="color:#FFD700">Next step:</strong>
+              <span style="color:rgba(255,255,255,.7)">Open <code>data/calypso-tents.js</code>, find the last entry in the array, add a comma after its closing <code>}</code>, then paste this block before the closing <code>]</code>.</span>
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:1rem 0 2rem">
+            <a href="../carnival/calypso-tents.html" class="btn btn-outline btn-lg" target="_blank">👁 Preview Tents Page →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Grenada. Admin panel — not for public access.</p>
+        <p><a href="../index.html">← Return to main site</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script>
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    let practiceCount = 0;
+    let showCount     = 0;
+    let galleryCount  = 0;
+
+    function getVal(id) {
+      return (document.getElementById(id)?.value || '').trim();
+    }
+
+    function escJs(str) {
+      return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/\r/g, '');
+    }
+
+    /* ── Practice rows ──────────────────────────────────────────── */
+    function addPracticeRow() {
+      const i   = practiceCount++;
+      const div = document.createElement('div');
+      div.className = 'dynamic-row practice-grid';
+      div.id = `pr-${i}`;
+      div.innerHTML = `
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Day</label>
+          <input type="text" id="pr-day-${i}" placeholder="e.g. Sunday">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Time</label>
+          <input type="text" id="pr-time-${i}" placeholder="e.g. 4:00 PM">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Location</label>
+          <input type="text" id="pr-loc-${i}" placeholder="e.g. Beaulieu Community Centre">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Notes (optional)</label>
+          <input type="text" id="pr-note-${i}" placeholder="e.g. Open to all community members">
+        </div>
+        <button class="dynamic-row-remove" onclick="document.getElementById('pr-${i}').remove()" title="Remove row">✕</button>`;
+      document.getElementById('practice-rows').appendChild(div);
+    }
+
+    function collectPracticeRows() {
+      const rows = [];
+      document.querySelectorAll('[id^="pr-"]').forEach(div => {
+        const i    = div.id.split('-')[1];
+        const day  = (document.getElementById(`pr-day-${i}`)?.value || '').trim();
+        const time = (document.getElementById(`pr-time-${i}`)?.value || '').trim();
+        const loc  = (document.getElementById(`pr-loc-${i}`)?.value || '').trim();
+        const note = (document.getElementById(`pr-note-${i}`)?.value || '').trim();
+        if (day || time || loc) rows.push({ day, time, location: loc, notes: note });
+      });
+      return rows;
+    }
+
+    /* ── Show rows ──────────────────────────────────────────────── */
+    function addShowRow() {
+      const i   = showCount++;
+      const div = document.createElement('div');
+      div.className = 'dynamic-row shows-grid';
+      div.id = `sh-${i}`;
+      div.innerHTML = `
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Date</label>
+          <input type="date" id="sh-date-${i}">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Venue</label>
+          <input type="text" id="sh-venue-${i}" placeholder="e.g. Beaulieu Sports Complex">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Time</label>
+          <input type="text" id="sh-time-${i}" placeholder="e.g. 7:00 PM">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Notes (optional)</label>
+          <input type="text" id="sh-note-${i}" placeholder="e.g. Opening Show · Free admission">
+        </div>
+        <button class="dynamic-row-remove" onclick="document.getElementById('sh-${i}').remove()" title="Remove row">✕</button>`;
+      document.getElementById('show-rows').appendChild(div);
+    }
+
+    function collectShowRows() {
+      const rows = [];
+      document.querySelectorAll('[id^="sh-"]').forEach(div => {
+        const i     = div.id.split('-')[1];
+        const date  = (document.getElementById(`sh-date-${i}`)?.value || '').trim();
+        const venue = (document.getElementById(`sh-venue-${i}`)?.value || '').trim();
+        const time  = (document.getElementById(`sh-time-${i}`)?.value || '').trim();
+        const note  = (document.getElementById(`sh-note-${i}`)?.value || '').trim();
+        if (date || venue) rows.push({ date, venue, time, notes: note });
+      });
+      return rows;
+    }
+
+    /* ── Gallery rows ───────────────────────────────────────────── */
+    function addGalleryRow() {
+      const i   = galleryCount++;
+      const div = document.createElement('div');
+      div.className = 'dynamic-row gallery-row';
+      div.id = `gl-${i}`;
+      div.innerHTML = `
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Image Path</label>
+          <input type="text" id="gl-src-${i}" placeholder="e.g. images/carnival/tents/nvp/photo1.jpg">
+        </div>
+        <div class="entry-field" style="margin:0">
+          <label style="font-size:.72rem">Caption (optional)</label>
+          <input type="text" id="gl-cap-${i}" placeholder="e.g. Opening night 2024">
+        </div>
+        <button class="dynamic-row-remove" onclick="document.getElementById('gl-${i}').remove()" title="Remove row">✕</button>`;
+      document.getElementById('gallery-rows').appendChild(div);
+    }
+
+    function collectGalleryRows() {
+      const images = [];
+      document.querySelectorAll('[id^="gl-"]').forEach(div => {
+        const i   = div.id.split('-')[1];
+        const src = (document.getElementById(`gl-src-${i}`)?.value || '').trim();
+        if (src) images.push(src);
+      });
+      return images;
+    }
+
+    /* ── Generate ───────────────────────────────────────────────── */
+    function generateEntry() {
+      const id        = getVal('f-id');
+      const name      = getVal('f-name');
+      const shortName = getVal('f-short');
+      const parish    = getVal('f-parish');
+      const community = getVal('f-community');
+      const desc      = getVal('f-desc');
+      const address   = getVal('f-address');
+      const phone     = getVal('f-phone');
+      const email     = getVal('f-email');
+      const website   = getVal('f-website');
+      const facebook  = getVal('f-facebook');
+      const instagram = getVal('f-instagram');
+      const logo      = getVal('f-logo');
+      const founded   = getVal('f-founded');
+
+      if (!id || !name || !parish) {
+        alert('Please fill in Tent ID, Tent Name, and Parish before generating.');
+        return;
+      }
+
+      if (!/^[a-z0-9-]+$/.test(id)) {
+        alert('Tent ID must use only lowercase letters, numbers, and hyphens (e.g. "nvp" or "north-east-stars").');
+        return;
+      }
+
+      const practice = collectPracticeRows();
+      const shows    = collectShowRows();
+      const images   = collectGalleryRows();
+
+      function jsStr(v) {
+        return v ? `'${escJs(v)}'` : 'null';
+      }
+
+      function jsArr(arr) {
+        if (!arr.length) return '[]';
+        const lines = arr.map(obj => {
+          const pairs = Object.entries(obj).map(([k, v]) => `${k}: ${jsStr(v)}`).join(', ');
+          return `      { ${pairs} }`;
+        });
+        return `[\n${lines.join(',\n')}\n    ]`;
+      }
+
+      function jsImgArr(arr) {
+        if (!arr.length) return '[]';
+        return `[\n${arr.map(s => `      '${escJs(s)}'`).join(',\n')}\n    ]`;
+      }
+
+      const entry = `  {
+    id: '${escJs(id)}',
+    name: '${escJs(name)}',
+    shortName: ${jsStr(shortName)},
+    parish: '${escJs(parish)}',
+    community: ${jsStr(community)},
+    description: ${jsStr(desc)},
+    address: ${jsStr(address)},
+    phone: ${jsStr(phone)},
+    email: ${jsStr(email)},
+    website: ${jsStr(website)},
+    facebook: ${jsStr(facebook)},
+    instagram: ${jsStr(instagram)},
+    logo: ${jsStr(logo)},
+    images: ${jsImgArr(images)},
+    practiceSchedule: ${jsArr(practice)},
+    showSchedule: ${jsArr(shows)},
+    founded: ${founded ? founded : 'null'},
+    active: true
+  }`;
+
+      const outputEl = document.getElementById('entry-output');
+      const preEl    = document.getElementById('output-pre');
+      if (outputEl) outputEl.classList.add('visible');
+      if (preEl)    preEl.textContent = entry;
+      outputEl?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('output-pre')?.textContent || '';
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('[onclick="copyOutput()"]');
+        if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => btn.textContent = '📋 Copy to Clipboard', 2000); }
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?php
+// Copy this file to data/flight_config.php and set your API key.
+return [
+    // AviationStack free tier works for basic schedules. Sign up at https://aviationstack.com
+    // Put your API access key here:
+    'aviationstack_api_key' => 'e6f124d0a57cce57624145af4308a683',
+];

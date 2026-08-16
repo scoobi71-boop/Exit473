@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calypso Monarch Hall of Champions — Grenada Spicemas</title>
+  <meta name="description" content="The complete historical record of Grenada's Calypso Monarch competition — every champion, finalist, song, and milestone from 1958 to the present.">
+  <link rel="canonical" href="https://exit473.com/carnival/calypso-monarchs.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Spicemas · Exit 473 Grenada">
+  <meta property="og:url" content="https://exit473.com/carnival/calypso-monarchs.html">
+  <meta property="og:title" content="Calypso Monarch Hall of Champions — Grenada Spicemas">
+  <meta property="og:description" content="Every champion, every song, every finalist — the definitive record of Grenada's Calypso Monarch competition.">
+  <meta property="og:image" content="https://exit473.com/images/logo.png">
+  <meta property="og:locale" content="en_GD">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=3">
+  <link rel="stylesheet" href="css/carnival.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-T6MG63FX84');</script>
+</head>
+<body style="background:#0D0900;color:#fff">
+
+  <!-- CARNIVAL SUB-NAV (independent from main site) -->
+  <nav class="csub-nav" aria-label="Spicemas carnival navigation">
+    <div class="csub-nav-inner">
+      <a href="carnival.html" class="csub-logo" aria-label="Spicemas Carnival home">
+        <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+        <span>
+          <span class="csub-logo-text">Spicemas</span>
+          <span class="csub-logo-sub">Grenada Carnival</span>
+        </span>
+      </a>
+      <ul class="csub-links" id="csub-links" role="list">
+        <li><a href="calypso-monarchs.html" class="active">🏆 Calypso Monarchs</a></li>
+        <li><a href="calypso-artists.html">🎤 Artists</a></li>
+        <li><a href="calypso-tents.html">🎪 Tents</a></li>
+        <li><a href="carnival.html#panel-steelpan">🥁 Steel Pan</a></li>
+        <li><a href="carnival.html#panel-masquerade">🎭 Masquerade</a></li>
+        <li><a href="carnival.html#panel-traditions">🎉 Traditions</a></li>
+        <li class="csub-back-mobile"><a href="../index.html">← Exit 473</a></li>
+      </ul>
+      <a href="../index.html" class="csub-back">← Exit 473</a>
+      <button class="csub-hamburger" id="csub-ham" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <div class="monarchs-hero">
+      <div class="container">
+        <div class="monarchs-hero-badge">🏆 &nbsp; Dimanche Gras · Spicemas Corporation · Grenada W.I.</div>
+        <h1>Calypso Monarch<br><em>Hall of Champions</em></h1>
+        <p class="monarchs-hero-sub">
+          Every year on Dimanche Gras Sunday, Grenada crowns its Calypso Monarch — the artist
+          whose song best captures the spirit, struggle, and soul of the island. This is the
+          complete record of every champion since the competition began.
+        </p>
+        <div class="monarchs-stats-bar" id="stats-bar">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS: Search + Decade filter -->
+    <div class="monarchs-controls" id="monarchs-controls">
+      <div class="container">
+        <div class="monarchs-controls-inner">
+          <div class="monarch-search-wrap">
+            <span class="monarch-search-icon">🔍</span>
+            <input type="search" id="monarch-search" placeholder="Search artist, year, song, parish…" autocomplete="off" aria-label="Search calypso monarchs">
+          </div>
+          <div class="decade-filters" role="group" aria-label="Filter by decade">
+            <button class="decade-btn active" data-decade="all">All Eras</button>
+            <button class="decade-btn" data-decade="2020">2020s</button>
+            <button class="decade-btn" data-decade="2010">2010s</button>
+            <button class="decade-btn" data-decade="2000">2000s</button>
+            <button class="decade-btn" data-decade="1990">1990s</button>
+            <button class="decade-btn" data-decade="1980">1980s</button>
+            <button class="decade-btn" data-decade="1970">1970s</button>
+            <button class="decade-btn" data-decade="1960">1960s</button>
+            <button class="decade-btn" data-decade="1950">1950s</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS COUNT BAR -->
+    <div class="monarchs-results-bar" id="results-count-bar">
+      Loading competition records…
+    </div>
+
+    <!-- MONARCHS LIST -->
+    <div class="monarchs-list-section">
+      <div class="container">
+        <div class="monarchs-list" id="monarchs-list" aria-live="polite">
+          <div class="no-results">Loading records…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECORDS & MILESTONES -->
+    <section class="records-section" id="records" aria-labelledby="records-heading">
+      <div class="container">
+        <span class="section-label">By the Numbers</span>
+        <h2 id="records-heading">Records &amp; Milestones</h2>
+        <div class="records-grid" id="records-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Decade Champions Strip -->
+        <div style="margin-top:3rem">
+          <span class="section-label" style="margin-bottom:1.25rem;display:block">Championship by Decade</span>
+          <div class="decade-strip" id="decade-strip">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="records-note">
+          Records compiled from available historical sources including the Spicemas Corporation archives.
+          Some details for earlier competitions may require verification. To submit corrections or additions,
+          <a href="../contact.html">contact us</a>.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CARNIVAL FOOTER -->
+  <footer class="csub-footer" aria-label="Spicemas site footer">
+    <div class="container">
+      <div class="csub-footer-grid">
+        <div class="csub-footer-brand">
+          <a href="carnival.html" class="csub-logo">
+            <img src="../images/logo.png" alt="Exit 473 logo" onerror="this.style.display='none'">
+            <span>
+              <span class="csub-logo-text">Spicemas</span>
+              <span class="csub-logo-sub">Grenada Carnival</span>
+            </span>
+          </a>
+          <p>Celebrating the art, history, and living tradition of Grenada's greatest cultural festival.</p>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Carnival</h4>
+          <ul>
+            <li><a href="calypso-monarchs.html">Calypso Monarchs</a></li>
+            <li><a href="calypso-artists.html">Artist Profiles</a></li>
+            <li><a href="carnival.html#panel-steelpan">Steel Pan &amp; Panorama</a></li>
+            <li><a href="carnival.html#panel-masquerade">Masquerade &amp; Mas</a></li>
+            <li><a href="carnival.html#panel-traditions">Traditions &amp; Schedule</a></li>
+          </ul>
+        </div>
+        <div class="csub-footer-col">
+          <h4>Exit 473</h4>
+          <ul>
+            <li><a href="../index.html">Main Site</a></li>
+            <li><a href="../directory.html">Business Directory</a></li>
+            <li><a href="../events.html">Events Calendar</a></li>
+            <li><a href="../about.html">About the Park</a></li>
+            <li><a href="../contact.html">Contact &amp; Location</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="csub-footer-bottom">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Spicemas Carnival · Grenada, West Indies.</p>
+        <p>Built with island pride · <a href="../index.html">Exit 473 Food & Lifestyle Park</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Data + App -->
+  <script src="../data/calypso-monarchs.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Utilities ──────────────────────────────────────────────── */
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    const DATA = window.CALYPSO_MONARCHS;
+    if (!DATA) return;
+
+    const artists  = DATA.artists  || {};
+    const results  = (DATA.results || []).slice().reverse(); // newest first
+
+    function getArtist(id) {
+      return artists[id] || { stageName: id || '—', realName: '—', parish: '—' };
+    }
+
+    /* ── Stats bar ──────────────────────────────────────────────── */
+    function renderStats() {
+      const valid = results.filter(r => !r.cancelled);
+      const unique = new Set(valid.map(r => r.winner.artistId));
+      const bar = document.getElementById('stats-bar');
+      if (!bar) return;
+      bar.innerHTML = [
+        [results.length, 'Years of Carnival'],
+        [valid.length, 'Competitions Held'],
+        [unique.size, 'Unique Champions'],
+        [results.find(r => !r.cancelled)?.year || '—', 'Most Recent']
+      ].map(([n, l]) =>
+        `<div class="stat-item"><div class="stat-num">${esc(String(n))}</div><div class="stat-lbl">${esc(l)}</div></div>`
+      ).join('');
+    }
+
+    /* ── Render a single year row ───────────────────────────────── */
+    function renderCancelled(r) {
+      return `<div class="year-entry year-entry-cancelled" data-year="${r.year}" data-search="${r.year}">
+        <div class="year-entry-header" style="cursor:default">
+          <div class="year-badge year-badge-cancelled">${r.year}</div>
+          <div class="year-entry-winner">
+            <span class="year-medal">⏸</span>
+            <div class="year-winner-info">
+              <span class="year-winner-name cancelled-text">Competition Not Held</span>
+              <span class="year-winner-song">${esc(r.reason || '')}</span>
+            </div>
+          </div>
+          <span></span>
+        </div>
+      </div>`;
+    }
+
+    function renderFinalistRow(place, artistId, song) {
+      const a = getArtist(artistId);
+      const medal = place === 2 ? '🥈' : '🥉';
+      const lbl   = place === 2 ? 'Runner-up' : 'Third Place';
+      return `<div class="finalist-row">
+        <span class="finalist-medal">${medal}</span>
+        <div class="finalist-info">
+          <a href="monarch-detail.html?id=${esc(artistId)}" class="finalist-name">${esc(a.stageName)}</a>
+          <span class="finalist-label">${lbl}</span>
+        </div>
+        <span class="finalist-song">${esc(song || '—')}</span>
+        <span class="finalist-parish">${esc(a.parish)}</span>
+      </div>`;
+    }
+
+    function renderYearEntry(r) {
+      const w           = getArtist(r.winner.artistId);
+      const s2          = r.second ? getArtist(r.second.artistId) : null;
+      const s3          = r.third  ? getArtist(r.third.artistId)  : null;
+      const hasFinalists = !!(r.second || r.third);
+      const songDisplay  = r.winner.song || null;
+
+      const searchStr = [
+        r.year, w.stageName, w.realName, w.parish, r.winner.song,
+        s2 ? s2.stageName : '', s3 ? s3.stageName : ''
+      ].join(' ').toLowerCase();
+
+      const finalists = hasFinalists ? [
+        r.second ? renderFinalistRow(2, r.second.artistId, r.second.song) : '',
+        r.third  ? renderFinalistRow(3, r.third.artistId,  r.third.song)  : ''
+      ].join('') : '';
+
+      const headerInteraction = hasFinalists
+        ? `role="button" tabindex="0" aria-expanded="false" onclick="CM.toggle(this)" onkeydown="if(event.key==='Enter'||event.key===' ')CM.toggle(this)"`
+        : `style="cursor:default"`;
+
+      return `<div class="year-entry" data-year="${r.year}" data-search="${esc(searchStr)}">
+        <div class="year-entry-header" ${headerInteraction}>
+          <div class="year-badge">${r.year}</div>
+          <div class="year-entry-winner">
+            <span class="year-medal">🏆</span>
+            <div class="year-winner-info">
+              <a href="monarch-detail.html?id=${esc(r.winner.artistId)}"
+                 class="year-winner-name"
+                 onclick="event.stopPropagation()">${esc(w.stageName)}</a>
+              ${w.realName && w.realName !== 'Pending verification' && w.realName !== w.stageName ? `<span class="year-winner-realname">${esc(w.realName)}</span>` : ''}
+              ${songDisplay ? `<span class="year-winner-song">${esc(songDisplay)}</span>` : ''}
+            </div>
+            <span class="year-winner-parish">${esc(w.parish)}</span>
+          </div>
+          ${hasFinalists ? `<button class="year-expand-btn" aria-label="Show finalists for ${r.year}" tabindex="-1">▾</button>` : '<span></span>'}
+        </div>
+        ${r.note ? `<div class="year-note">✦ ${esc(r.note)}</div>` : ''}
+        ${hasFinalists ? `<div class="finalists-panel">${finalists}</div>` : ''}
+      </div>`;
+    }
+
+    /* ── Render list ────────────────────────────────────────────── */
+    function renderList(items) {
+      const el = document.getElementById('monarchs-list');
+      const ct = document.getElementById('results-count-bar');
+      if (!el) return;
+
+      const held = items.filter(r => !r.cancelled).length;
+      if (ct) ct.textContent = `${items.length} year${items.length !== 1 ? 's' : ''} shown · ${held} competition${held !== 1 ? 's' : ''} held`;
+
+      if (!items.length) {
+        el.innerHTML = '<div class="no-results">No results match your search.</div>';
+        return;
+      }
+      el.innerHTML = items.map(r => r.cancelled ? renderCancelled(r) : renderYearEntry(r)).join('');
+    }
+
+    /* ── Toggle expand ──────────────────────────────────────────── */
+    window.CM = {
+      toggle(header) {
+        const entry = header.closest('.year-entry');
+        const expanded = entry.classList.toggle('expanded');
+        header.setAttribute('aria-expanded', expanded);
+        const btn = entry.querySelector('.year-expand-btn');
+        if (btn) btn.setAttribute('aria-expanded', expanded);
+      }
+    };
+
+    /* ── Filter state ───────────────────────────────────────────── */
+    let currentDecade = 'all';
+    let currentSearch = '';
+
+    function applyFilters() {
+      let filtered = results;
+
+      if (currentDecade !== 'all') {
+        const d = parseInt(currentDecade, 10);
+        filtered = filtered.filter(r => Math.floor(r.year / 10) * 10 === d);
+      }
+
+      if (currentSearch) {
+        const q = currentSearch.toLowerCase();
+        filtered = filtered.filter(r => {
+          if (r.cancelled) return String(r.year).includes(q);
+          const w  = getArtist(r.winner.artistId);
+          const s2 = r.second ? getArtist(r.second.artistId) : null;
+          const s3 = r.third  ? getArtist(r.third.artistId)  : null;
+          return [
+            r.year, w.stageName, w.realName, w.parish, r.winner.song,
+            s2 ? s2.stageName + ' ' + s2.parish : '',
+            s3 ? s3.stageName + ' ' + s3.parish : ''
+          ].join(' ').toLowerCase().includes(q);
+        });
+      }
+
+      renderList(filtered);
+    }
+
+    /* ── Records computation ────────────────────────────────────── */
+    function computeRecords() {
+      const valid = results.filter(r => !r.cancelled);
+
+      const winCounts    = {};
+      const finalsCounts = {};
+      const firstWinYear = {};
+
+      valid.forEach(r => {
+        const wId = r.winner.artistId;
+        winCounts[wId]    = (winCounts[wId]    || 0) + 1;
+        if (firstWinYear[wId] === undefined || r.year < firstWinYear[wId]) firstWinYear[wId] = r.year;
+        [wId, r.second?.artistId, r.third?.artistId].forEach(id => {
+          if (id) finalsCounts[id] = (finalsCounts[id] || 0) + 1;
+        });
+      });
+
+      /* Longest streak */
+      let longestStreak = { artistId: null, count: 0, start: 0, end: 0 };
+      Object.keys(winCounts).forEach(id => {
+        const years = valid
+          .filter(r => r.winner.artistId === id)
+          .map(r => r.year)
+          .sort((a, b) => a - b);
+        let run = 1, runStart = 0;
+        for (let i = 1; i < years.length; i++) {
+          if (years[i] === years[i - 1] + 1) {
+            run++;
+          } else {
+            if (run > longestStreak.count) {
+              longestStreak = { artistId: id, count: run, start: years[runStart], end: years[i - 1] };
+            }
+            run = 1; runStart = i;
+          }
+        }
+        if (run > longestStreak.count) {
+          longestStreak = { artistId: id, count: run, start: years[runStart], end: years[years.length - 1] };
+        }
+      });
+
+      const sortedByWins = Object.entries(winCounts).sort((a, b) => b[1] - a[1]);
+
+      /* Female champions */
+      const femaleIds  = new Set(Object.entries(artists).filter(([, a]) => a.female).map(([id]) => id));
+      const femaleWins = valid.filter(r => femaleIds.has(r.winner.artistId)).sort((a, b) => a.year - b.year);
+      const firstFemale = femaleWins[0] || null;
+
+      const recentChamp = valid[0]; // results are reversed → newest first
+
+      /* Longest active career (first win year to last win year) */
+      const careerSpan = Object.entries(winCounts).map(([id]) => {
+        const years = valid.filter(r => r.winner.artistId === id).map(r => r.year);
+        return { id, span: Math.max(...years) - Math.min(...years), first: Math.min(...years), last: Math.max(...years) };
+      }).sort((a, b) => b.span - a.span);
+
+      /* Decade leaders */
+      const decadeWins = {};
+      valid.forEach(r => {
+        const d = Math.floor(r.year / 10) * 10;
+        if (!decadeWins[d]) decadeWins[d] = {};
+        const id = r.winner.artistId;
+        decadeWins[d][id] = (decadeWins[d][id] || 0) + 1;
+      });
+      const decadeLeaders = {};
+      Object.entries(decadeWins).forEach(([dec, counts]) => {
+        const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+        decadeLeaders[dec] = { artistId: top[0], wins: top[1] };
+      });
+
+      return { sortedByWins, longestStreak, firstFemale, femaleWins, recentChamp, decadeLeaders, careerSpan, totalChampions: sortedByWins.length };
+    }
+
+    function renderRecords(rec) {
+      const grid = document.getElementById('records-grid');
+      if (!grid) return;
+
+      const [topId, topWins] = rec.sortedByWins[0] || ['?', 0];
+      const topArtist    = getArtist(topId);
+      const streakArtist = getArtist(rec.longestStreak.artistId);
+      const recentWinner = rec.recentChamp ? getArtist(rec.recentChamp.winner.artistId) : null;
+      const topCareer    = rec.careerSpan[0];
+
+      /* Female champions list */
+      const femaleChampionsList = rec.femaleWins.map(r => {
+        const a = getArtist(r.winner.artistId);
+        return `<a href="monarch-detail.html?id=${esc(r.winner.artistId)}" class="record-link">${esc(a.stageName)}</a> (${r.year})`;
+      }).join(' · ');
+
+      const cards = [
+        {
+          icon: '🏆', label: 'Most Monarch Titles', gold: true,
+          holder: `<a href="monarch-detail.html?id=${esc(topId)}" class="record-link">${esc(topArtist.stageName)}</a>`,
+          detail: `${topWins} Calypso Monarch title${topWins !== 1 ? 's' : ''}`
+        },
+        {
+          icon: '🔥', label: 'Longest Winning Streak',
+          holder: rec.longestStreak.count > 0
+            ? `<a href="monarch-detail.html?id=${esc(rec.longestStreak.artistId)}" class="record-link">${esc(streakArtist.stageName)}</a>`
+            : '—',
+          detail: rec.longestStreak.count > 0
+            ? `${rec.longestStreak.count} consecutive titles (${rec.longestStreak.start}–${rec.longestStreak.end})`
+            : '—'
+        },
+        rec.femaleWins.length ? {
+          icon: '👑', label: `Female Champions (${rec.femaleWins.length})`, gold: true,
+          holder: `<a href="monarch-detail.html?id=${esc(rec.femaleWins[0].winner.artistId)}" class="record-link">${esc(getArtist(rec.femaleWins[0].winner.artistId).stageName)}</a>`,
+          detail: femaleChampionsList + ' — historic trailblazers'
+        } : null,
+        recentWinner ? {
+          icon: '🌟', label: 'Most Recent Champion',
+          holder: `<a href="monarch-detail.html?id=${esc(rec.recentChamp.winner.artistId)}" class="record-link">${esc(recentWinner.stageName)}</a>`,
+          detail: `${rec.recentChamp.year} · ${esc(recentWinner.parish)}`
+        } : null,
+        topCareer && topCareer.span > 0 ? {
+          icon: '📅', label: 'Longest Active Career',
+          holder: `<a href="monarch-detail.html?id=${esc(topCareer.id)}" class="record-link">${esc(getArtist(topCareer.id).stageName)}</a>`,
+          detail: `${topCareer.span} years between first and last title (${topCareer.first}–${topCareer.last})`
+        } : null,
+        {
+          icon: '🏛️', label: 'Unique Champions',
+          holder: `<span class="record-holder-num">${rec.totalChampions}</span>`,
+          detail: 'Artists have worn the Calypso Monarch crown'
+        },
+        rec.sortedByWins.length > 1 ? {
+          icon: '📖', label: 'Second Most Titles',
+          holder: `<a href="monarch-detail.html?id=${esc(rec.sortedByWins[1][0])}" class="record-link">${esc(getArtist(rec.sortedByWins[1][0]).stageName)}</a>`,
+          detail: `${rec.sortedByWins[1][1]} title${rec.sortedByWins[1][1] !== 1 ? 's' : ''}`
+        } : null,
+        rec.sortedByWins.length > 2 ? {
+          icon: '⭐', label: 'Third Most Titles',
+          holder: `<a href="monarch-detail.html?id=${esc(rec.sortedByWins[2][0])}" class="record-link">${esc(getArtist(rec.sortedByWins[2][0]).stageName)}</a>`,
+          detail: `${rec.sortedByWins[2][1]} title${rec.sortedByWins[2][1] !== 1 ? 's' : ''}`
+        } : null
+      ].filter(Boolean);
+
+      grid.innerHTML = cards.map(c => `
+        <div class="record-card${c.gold ? ' record-card-gold' : ''}">
+          <div class="record-icon">${c.icon}</div>
+          <div class="record-label">${esc(c.label)}</div>
+          <div class="record-holder">${c.holder}</div>
+          <div class="record-detail">${c.detail}</div>
+        </div>`).join('');
+
+      /* Decade strip */
+      const strip = document.getElementById('decade-strip');
+      if (strip) {
+        const decades = Object.keys(rec.decadeLeaders).sort((a, b) => b - a);
+        strip.innerHTML = decades.map(d => {
+          const { artistId, wins } = rec.decadeLeaders[d];
+          const a = getArtist(artistId);
+          return `<div class="decade-block">
+            <div class="decade-block-year">${d}s</div>
+            <div class="decade-block-winner">
+              <a href="monarch-detail.html?id=${esc(artistId)}" style="color:inherit;text-decoration:none">${esc(a.stageName)}</a>
+            </div>
+            <div class="decade-block-count">${wins} title${wins !== 1 ? 's' : ''}</div>
+          </div>`;
+        }).join('');
+      }
+    }
+
+    /* ── Event listeners ────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderStats();
+      applyFilters();
+      const rec = computeRecords();
+      renderRecords(rec);
+
+      document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+      const search = document.getElementById('monarch-search');
+      if (search) {
+        search.addEventListener('input', e => { currentSearch = e.target.value.trim(); applyFilters(); });
+      }
+
+      document.querySelectorAll('.decade-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.decade-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentDecade = btn.dataset.decade;
+          applyFilters();
+        });
+      });
+
+      /* Mobile hamburger */
+      const ham = document.getElementById('csub-ham');
+      const nav = document.getElementById('csub-links');
+      if (ham && nav) {
+        ham.addEventListener('click', () => {
+          const open = nav.classList.toggle('open');
+          ham.setAttribute('aria-expanded', open);
+        });
+      }
+    });
+
+  }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+id,category,name,description,price,image
+1,Starters,Callaloo Soup,"Creamy callaloo with coconut milk, herbs and dasheen",8.00,
+2,Starters,Fried Bake & Saltfish,"Traditional bake with seasoned saltfish and fresh tomato",10.00,
+3,Starters,Garlic Bread,"Toasted sourdough with herb butter and roasted garlic",5.00,
+4,Mains,Oildown,"Grenada's national dish — breadfruit, provisions, salted meat and coconut milk",22.00,
+5,Mains,Grilled Snapper,"Fresh local catch, grilled with herbs, served with rice and peas",28.00,
+6,Mains,Pelau Rice,"One-pot rice with chicken, pigeon peas and caramelised sugar",18.00,
+7,Mains,Veggie Curry,"Seasonal vegetables in aromatic curry sauce with roti",16.00,
+8,Desserts,Coconut Cheesecake,"Creamy cheesecake with toasted coconut and mango coulis",9.00,
+9,Desserts,Bread Pudding,"Warm spiced bread pudding with rum-raisin sauce",8.00,
+10,Drinks,Fresh Limeade,"Freshly squeezed lime with cane sugar and mint",5.00,
+11,Drinks,Rum Punch,"House blend — white rum, fruit juices, grenadine and spice",9.00,
+12,Drinks,Sorrel Cooler,"Hibiscus sorrel with ginger and local spices",6.00,

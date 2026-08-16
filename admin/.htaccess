@@ -1,0 +1,13 @@
+Options -Indexes
+
+# Block direct access to the password file
+<Files ".adminpass">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Block direct access to auth include
+<Files "auth.php">
+    Order allow,deny
+    Deny from all
+</Files>

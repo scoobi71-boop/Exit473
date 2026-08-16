@@ -1,0 +1,38 @@
+name: Update cached flights
+
+on:
+  schedule:
+    # Runs every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    env:
+      AVIATIONSTACK_API_KEY: ${{ secrets.AVIATIONSTACK_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Run flight fetcher
+        run: php admin/fetch_flights.php
+
+      - name: Commit updated flights.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/flights.json || true
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Update cached flights data [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
