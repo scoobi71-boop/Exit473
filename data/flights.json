@@ -1,14 +1,38 @@
 {
-    "fetched_at": "2026-08-16T01:45:32+00:00",
+    "fetched_at": "2026-08-16T06:20:53+00:00",
     "source": "aviationstack",
     "arrivals": [
+        {
+            "time": "2026-08-16T14:30:00+00:00",
+            "flight": "RV1858",
+            "from": "Lester B. Pearson International",
+            "airline": "Air Canada",
+            "aircraft": "RV",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-16T08:10:00+00:00",
+            "flight": "BW430",
+            "from": "Piarco International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-16T05:55:00+00:00",
+            "flight": "BW532",
+            "from": "Piarco International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
         {
             "time": "2026-08-15T23:11:00+00:00",
             "flight": "QR3907",
             "from": "John F Kennedy International",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T19:56:00+00:00",
@@ -24,7 +48,7 @@
             "from": "E. T. Joshua",
             "airline": "interCaribbean Airways",
             "aircraft": "JY",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-15T23:11:00+00:00",
@@ -32,7 +56,7 @@
             "from": "John F Kennedy International",
             "airline": "JetBlue",
             "aircraft": "B6",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T16:55:00+00:00",
@@ -40,7 +64,7 @@
             "from": "Hewanorra",
             "airline": "British Airways",
             "aircraft": "BA",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-15T16:55:00+00:00",
@@ -48,7 +72,7 @@
             "from": "Hewanorra",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-15T16:45:00+00:00",
@@ -205,12 +229,36 @@
     ],
     "departures": [
         {
+            "time": "2026-08-16T08:00:00+00:00",
+            "flight": "JY703",
+            "from": "E. T. Joshua",
+            "airline": "interCaribbean Airways",
+            "aircraft": "JY",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-16T07:05:00+00:00",
+            "flight": "BW532",
+            "from": "John F Kennedy International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-16T05:01:00+00:00",
+            "flight": "B61550",
+            "from": "John F Kennedy International",
+            "airline": "JetBlue",
+            "aircraft": "B6",
+            "status": "scheduled"
+        },
+        {
             "time": "2026-08-15T22:30:00+00:00",
             "flight": "",
             "from": "Piarco International",
             "airline": "empty",
             "aircraft": "",
-            "status": "scheduled"
+            "status": ""
         },
         {
             "time": "2026-08-15T18:35:00+00:00",
@@ -218,7 +266,7 @@
             "from": "Hewanorra",
             "airline": "British Airways",
             "aircraft": "BA",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T18:35:00+00:00",
@@ -226,7 +274,7 @@
             "from": "Hewanorra",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T17:40:00+00:00",
@@ -234,7 +282,7 @@
             "from": "Grantley Adams International",
             "airline": "Virgin Atlantic",
             "aircraft": "VS",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T17:40:00+00:00",
@@ -242,7 +290,7 @@
             "from": "Grantley Adams International",
             "airline": "El Al",
             "aircraft": "LY",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T17:40:00+00:00",
@@ -250,7 +298,7 @@
             "from": "Grantley Adams International",
             "airline": "Kenya Airways",
             "aircraft": "KQ",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T17:40:00+00:00",
@@ -258,7 +306,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T17:15:00+00:00",
@@ -266,7 +314,7 @@
             "from": "V. C. Bird International",
             "airline": "Liat Air",
             "aircraft": "5L",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T17:15:00+00:00",
@@ -274,7 +322,7 @@
             "from": "V. C. Bird International",
             "airline": "",
             "aircraft": "X1",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T16:59:00+00:00",
@@ -298,7 +346,7 @@
             "from": "John F Kennedy International",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T15:45:00+00:00",
@@ -306,7 +354,7 @@
             "from": "Hartsfield-jackson Atlanta International",
             "airline": "Delta Air Lines",
             "aircraft": "DL",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T15:45:00+00:00",
@@ -338,7 +386,7 @@
             "from": "Charlotte Douglas",
             "airline": "American Airlines",
             "aircraft": "AA",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T14:15:00+00:00",
@@ -346,7 +394,7 @@
             "from": "Grantley Adams International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T12:20:00+00:00",
@@ -406,7 +454,7 @@
         }
     ],
     "meta": {
-        "arr_count": 25,
-        "dep_count": 25
+        "arr_count": 28,
+        "dep_count": 28
     }
 }
