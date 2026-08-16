@@ -1,5 +1,5 @@
 {
-    "fetched_at": "2026-08-15T23:20:45+00:00",
+    "fetched_at": "2026-08-16T01:45:32+00:00",
     "source": "aviationstack",
     "arrivals": [
         {
@@ -24,7 +24,7 @@
             "from": "E. T. Joshua",
             "airline": "interCaribbean Airways",
             "aircraft": "JY",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T23:11:00+00:00",
@@ -40,7 +40,7 @@
             "from": "Hewanorra",
             "airline": "British Airways",
             "aircraft": "BA",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T16:55:00+00:00",
@@ -48,7 +48,7 @@
             "from": "Hewanorra",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T16:45:00+00:00",
@@ -56,7 +56,7 @@
             "from": "Piarco International",
             "airline": "Liat Air",
             "aircraft": "5L",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T16:45:00+00:00",
@@ -64,7 +64,7 @@
             "from": "Piarco International",
             "airline": "",
             "aircraft": "X1",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T16:55:00+00:00",
@@ -128,7 +128,7 @@
             "from": "Punta Cana International",
             "airline": "empty",
             "aircraft": "",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T13:30:00+00:00",
@@ -136,7 +136,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T15:59:00+00:00",
@@ -144,7 +144,7 @@
             "from": "Miami International Airport",
             "airline": "American Airlines",
             "aircraft": "AA",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T14:25:00+00:00",
@@ -201,182 +201,6 @@
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
             "status": "landed"
-        },
-        {
-            "time": "2026-08-14T23:11:00+00:00",
-            "flight": "QR3907",
-            "from": "John F Kennedy International",
-            "airline": "Qatar Airways",
-            "aircraft": "QR",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T22:30:00+00:00",
-            "flight": "BW438",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "active"
-        },
-        {
-            "time": "2026-08-14T20:25:00+00:00",
-            "flight": "JY764",
-            "from": "E. T. Joshua",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T14:16:00+00:00",
-            "flight": "LXJ583",
-            "from": "Naples",
-            "airline": "Flexjet",
-            "aircraft": "LXJ",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T23:11:00+00:00",
-            "flight": "B61549",
-            "from": "John F Kennedy International",
-            "airline": "JetBlue",
-            "aircraft": "B6",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T14:10:00+00:00",
-            "flight": "QR3972",
-            "from": "John F Kennedy International",
-            "airline": "Qatar Airways",
-            "aircraft": "QR",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:05:00+00:00",
-            "flight": "BW632",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:25:00+00:00",
-            "flight": "JY918",
-            "from": "Grantley Adams International",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T14:55:00+00:00",
-            "flight": "JY748",
-            "from": "Grantley Adams International",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T13:30:00+00:00",
-            "flight": "BW233",
-            "from": "Grantley Adams International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:57:00+00:00",
-            "flight": "AA1135",
-            "from": "Miami International Airport",
-            "airline": "American Airlines",
-            "aircraft": "AA",
-            "status": "active"
-        },
-        {
-            "time": "2026-08-14T11:14:00+00:00",
-            "flight": "LXJ572",
-            "from": "Naples",
-            "airline": "Flexjet",
-            "aircraft": "LXJ",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T14:25:00+00:00",
-            "flight": "AA1546",
-            "from": "Miami International Airport",
-            "airline": "American Airlines",
-            "aircraft": "AA",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T10:20:00+00:00",
-            "flight": "5L304",
-            "from": "E. T. Joshua",
-            "airline": "Liat Air",
-            "aircraft": "5L",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T10:20:00+00:00",
-            "flight": "X11423",
-            "from": "E. T. Joshua",
-            "airline": "",
-            "aircraft": "X1",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T09:55:00+00:00",
-            "flight": "BW232",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "active"
-        },
-        {
-            "time": "2026-08-14T14:10:00+00:00",
-            "flight": "B6149",
-            "from": "John F Kennedy International",
-            "airline": "JetBlue",
-            "aircraft": "B6",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T16:25:00+00:00",
-            "flight": "2683",
-            "from": "CRU",
-            "airline": "empty",
-            "aircraft": "",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T09:05:00+00:00",
-            "flight": "5L322",
-            "from": "Piarco International",
-            "airline": "Liat Air",
-            "aircraft": "5L",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T09:05:00+00:00",
-            "flight": "X12375",
-            "from": "Piarco International",
-            "airline": "",
-            "aircraft": "X1",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T08:10:00+00:00",
-            "flight": "BW430",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T08:00:00+00:00",
-            "flight": "BW530",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
         }
     ],
     "departures": [
@@ -394,7 +218,7 @@
             "from": "Hewanorra",
             "airline": "British Airways",
             "aircraft": "BA",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-15T18:35:00+00:00",
@@ -402,7 +226,7 @@
             "from": "Hewanorra",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-15T17:40:00+00:00",
@@ -434,7 +258,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "landed"
+            "status": "active"
         },
         {
             "time": "2026-08-15T17:15:00+00:00",
@@ -458,7 +282,7 @@
             "from": "Miami International Airport",
             "airline": "American Airlines",
             "aircraft": "AA",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T16:00:00+00:00",
@@ -466,7 +290,7 @@
             "from": "John F Kennedy International",
             "airline": "JetBlue",
             "aircraft": "B6",
-            "status": "scheduled"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T16:00:00+00:00",
@@ -506,7 +330,7 @@
             "from": "Miami International Airport",
             "airline": "American Airlines",
             "aircraft": "AA",
-            "status": "scheduled"
+            "status": "landed"
         },
         {
             "time": "2026-08-15T15:05:00+00:00",
@@ -530,7 +354,7 @@
             "from": "Grantley Adams International",
             "airline": "interCaribbean Airways",
             "aircraft": "JY",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-15T09:20:00+00:00",
@@ -579,170 +403,10 @@
             "airline": "JetBlue",
             "aircraft": "B6",
             "status": "landed"
-        },
-        {
-            "time": "2026-08-14T16:57:00+00:00",
-            "flight": "5L771",
-            "from": "V. C. Bird International",
-            "airline": "Liat Air",
-            "aircraft": "5L",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T16:57:00+00:00",
-            "flight": "AA1135",
-            "from": "Miami International Airport",
-            "airline": "American Airlines",
-            "aircraft": "AA",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T16:25:00+00:00",
-            "flight": "BW632",
-            "from": "Lester B. Pearson International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T15:55:00+00:00",
-            "flight": "JY919",
-            "from": "Grantley Adams International",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:35:00+00:00",
-            "flight": "B6350",
-            "from": "John F Kennedy International",
-            "airline": "JetBlue",
-            "aircraft": "B6",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:35:00+00:00",
-            "flight": "QR3948",
-            "from": "John F Kennedy International",
-            "airline": "Qatar Airways",
-            "aircraft": "QR",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:25:00+00:00",
-            "flight": "AA1546",
-            "from": "Miami International Airport",
-            "airline": "American Airlines",
-            "aircraft": "AA",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T15:25:00+00:00",
-            "flight": "JY749",
-            "from": "Grantley Adams International",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T14:15:00+00:00",
-            "flight": "BW233",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T10:50:00+00:00",
-            "flight": "5L304",
-            "from": "V. C. Bird International",
-            "airline": "Liat Air",
-            "aircraft": "5L",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T10:50:00+00:00",
-            "flight": "X11423",
-            "from": "V. C. Bird International",
-            "airline": "",
-            "aircraft": "X1",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T10:40:00+00:00",
-            "flight": "BW232",
-            "from": "Grantley Adams International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T09:35:00+00:00",
-            "flight": "5L322",
-            "from": "Grantley Adams International",
-            "airline": "Liat Air",
-            "aircraft": "5L",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T09:35:00+00:00",
-            "flight": "X12375",
-            "from": "Grantley Adams International",
-            "airline": "",
-            "aircraft": "X1",
-            "status": "scheduled"
-        },
-        {
-            "time": "2026-08-14T09:20:00+00:00",
-            "flight": "2682",
-            "from": "CRU",
-            "airline": "empty",
-            "aircraft": "",
-            "status": ""
-        },
-        {
-            "time": "2026-08-14T09:20:00+00:00",
-            "flight": "BW530",
-            "from": "John F Kennedy International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T09:10:00+00:00",
-            "flight": "JY703",
-            "from": "E. T. Joshua",
-            "airline": "interCaribbean Airways",
-            "aircraft": "JY",
-            "status": "active"
-        },
-        {
-            "time": "2026-08-14T08:55:00+00:00",
-            "flight": "BW431",
-            "from": "Piarco International",
-            "airline": "Caribbean Airlines",
-            "aircraft": "BW",
-            "status": "landed"
-        },
-        {
-            "time": "2026-08-14T08:45:00+00:00",
-            "flight": "2691",
-            "from": "J. F. Mitchell",
-            "airline": "empty",
-            "aircraft": "",
-            "status": "active"
-        },
-        {
-            "time": "2026-08-14T05:01:00+00:00",
-            "flight": "B61550",
-            "from": "John F Kennedy International",
-            "airline": "JetBlue",
-            "aircraft": "B6",
-            "status": "landed"
         }
     ],
     "meta": {
-        "arr_count": 47,
-        "dep_count": 45
+        "arr_count": 25,
+        "dep_count": 25
     }
 }
