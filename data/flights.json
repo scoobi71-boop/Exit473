@@ -1,7 +1,39 @@
 {
-    "fetched_at": "2026-08-17T06:31:16+00:00",
+    "fetched_at": "2026-08-17T12:19:34+00:00",
     "source": "aviationstack",
     "arrivals": [
+        {
+            "time": "2026-08-17T11:29:00+00:00",
+            "flight": "",
+            "from": "Punta Cana International",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-17T15:57:00+00:00",
+            "flight": "AA1135",
+            "from": "Miami International Airport",
+            "airline": "American Airlines",
+            "aircraft": "AA",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-17T14:25:00+00:00",
+            "flight": "AA1546",
+            "from": "Miami International Airport",
+            "airline": "American Airlines",
+            "aircraft": "AA",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-17T09:10:00+00:00",
+            "flight": "2691",
+            "from": "CRU",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "scheduled"
+        },
         {
             "time": "2026-08-17T14:10:00+00:00",
             "flight": "B6149",
@@ -16,7 +48,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-17T09:25:00+00:00",
@@ -40,7 +72,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-16T20:25:00+00:00",
@@ -221,6 +253,22 @@
     ],
     "departures": [
         {
+            "time": "2026-08-17T10:55:00+00:00",
+            "flight": "M6814",
+            "from": "Miami International Airport",
+            "airline": "Amerijet International",
+            "aircraft": "M6",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-17T09:20:00+00:00",
+            "flight": "2682",
+            "from": "CRU",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "scheduled"
+        },
+        {
             "time": "2026-08-17T08:55:00+00:00",
             "flight": "BW431",
             "from": "Piarco International",
@@ -242,7 +290,7 @@
             "from": "Piarco International",
             "airline": "Caribbean Airlines",
             "aircraft": "BW",
-            "status": "scheduled"
+            "status": "landed"
         },
         {
             "time": "2026-08-17T05:01:00+00:00",
@@ -250,7 +298,7 @@
             "from": "John F Kennedy International",
             "airline": "JetBlue",
             "aircraft": "B6",
-            "status": "scheduled"
+            "status": "active"
         },
         {
             "time": "2026-08-16T18:35:00+00:00",
@@ -406,7 +454,7 @@
         }
     ],
     "meta": {
-        "arr_count": 27,
-        "dep_count": 23
+        "arr_count": 31,
+        "dep_count": 25
     }
 }
