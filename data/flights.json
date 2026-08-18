@@ -1,7 +1,23 @@
 {
-    "fetched_at": "2026-08-18T00:34:47+00:00",
+    "fetched_at": "2026-08-18T06:23:00+00:00",
     "source": "aviationstack",
     "arrivals": [
+        {
+            "time": "2026-08-18T14:10:00+00:00",
+            "flight": "B6149",
+            "from": "John F Kennedy International",
+            "airline": "JetBlue",
+            "aircraft": "B6",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T08:10:00+00:00",
+            "flight": "BW430",
+            "from": "Piarco International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
         {
             "time": "2026-08-17T15:15:00+00:00",
             "flight": "BW432",
@@ -85,6 +101,14 @@
     ],
     "departures": [
         {
+            "time": "2026-08-18T08:00:00+00:00",
+            "flight": "JY703",
+            "from": "E. T. Joshua",
+            "airline": "interCaribbean Airways",
+            "aircraft": "JY",
+            "status": "scheduled"
+        },
+        {
             "time": "2026-08-17T16:00:00+00:00",
             "flight": "BW433",
             "from": "Piarco International",
@@ -98,7 +122,7 @@
             "from": "Miami International Airport",
             "airline": "American Airlines",
             "aircraft": "AA",
-            "status": "active"
+            "status": "landed"
         },
         {
             "time": "2026-08-17T15:35:00+00:00",
@@ -106,7 +130,7 @@
             "from": "John F Kennedy International",
             "airline": "JetBlue",
             "aircraft": "B6",
-            "status": "scheduled"
+            "status": "diverted"
         },
         {
             "time": "2026-08-17T15:35:00+00:00",
@@ -114,7 +138,7 @@
             "from": "John F Kennedy International",
             "airline": "Qatar Airways",
             "aircraft": "QR",
-            "status": "active"
+            "status": "diverted"
         },
         {
             "time": "2026-08-17T15:25:00+00:00",
@@ -174,7 +198,7 @@
         }
     ],
     "meta": {
-        "arr_count": 10,
-        "dep_count": 11
+        "arr_count": 12,
+        "dep_count": 12
     }
 }
