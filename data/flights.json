@@ -1,7 +1,79 @@
 {
-    "fetched_at": "2026-08-18T06:23:00+00:00",
+    "fetched_at": "2026-08-18T12:21:16+00:00",
     "source": "aviationstack",
     "arrivals": [
+        {
+            "time": "2026-08-18T15:45:00+00:00",
+            "flight": "VS187",
+            "from": "Grantley Adams International",
+            "airline": "Virgin Atlantic",
+            "aircraft": "VS",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T15:45:00+00:00",
+            "flight": "LY4717",
+            "from": "Grantley Adams International",
+            "airline": "El Al",
+            "aircraft": "LY",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T15:45:00+00:00",
+            "flight": "KQ7152",
+            "from": "Grantley Adams International",
+            "airline": "Kenya Airways",
+            "aircraft": "KQ",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T14:05:00+00:00",
+            "flight": "BW240",
+            "from": "Piarco International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T14:25:00+00:00",
+            "flight": "AA1546",
+            "from": "Miami International Airport",
+            "airline": "American Airlines",
+            "aircraft": "AA",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T11:50:00+00:00",
+            "flight": "JY718",
+            "from": "Grantley Adams International",
+            "airline": "interCaribbean Airways",
+            "aircraft": "JY",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T10:25:00+00:00",
+            "flight": "5L304",
+            "from": "E. T. Joshua",
+            "airline": "Liat Air",
+            "aircraft": "5L",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T10:25:00+00:00",
+            "flight": "X11423",
+            "from": "E. T. Joshua",
+            "airline": "",
+            "aircraft": "X1",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T08:35:00+00:00",
+            "flight": "2691",
+            "from": "CRU",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "scheduled"
+        },
         {
             "time": "2026-08-18T14:10:00+00:00",
             "flight": "B6149",
@@ -32,7 +104,7 @@
             "from": "E. T. Joshua",
             "airline": "interCaribbean Airways",
             "aircraft": "JY",
-            "status": "active"
+            "status": "scheduled"
         },
         {
             "time": "2026-08-17T14:10:00+00:00",
@@ -100,6 +172,62 @@
         }
     ],
     "departures": [
+        {
+            "time": "2026-08-18T14:50:00+00:00",
+            "flight": "BW240",
+            "from": "Grantley Adams International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T12:20:00+00:00",
+            "flight": "JY719",
+            "from": "Grantley Adams International",
+            "airline": "interCaribbean Airways",
+            "aircraft": "JY",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T09:20:00+00:00",
+            "flight": "2682",
+            "from": "CRU",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T08:45:00+00:00",
+            "flight": "2691",
+            "from": "J. F. Mitchell",
+            "airline": "empty",
+            "aircraft": "",
+            "status": "active"
+        },
+        {
+            "time": "2026-08-18T10:55:00+00:00",
+            "flight": "5L304",
+            "from": "V. C. Bird International",
+            "airline": "Liat Air",
+            "aircraft": "5L",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T10:55:00+00:00",
+            "flight": "X11423",
+            "from": "V. C. Bird International",
+            "airline": "",
+            "aircraft": "X1",
+            "status": "scheduled"
+        },
+        {
+            "time": "2026-08-18T08:55:00+00:00",
+            "flight": "BW431",
+            "from": "Piarco International",
+            "airline": "Caribbean Airlines",
+            "aircraft": "BW",
+            "status": "active"
+        },
         {
             "time": "2026-08-18T08:00:00+00:00",
             "flight": "JY703",
@@ -198,7 +326,7 @@
         }
     ],
     "meta": {
-        "arr_count": 12,
-        "dep_count": 12
+        "arr_count": 21,
+        "dep_count": 19
     }
 }
