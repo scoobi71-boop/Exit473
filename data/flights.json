@@ -1,10 +1,6 @@
 {
-    "fetched_at": "2026-08-20T18:21:29+00:00",
-    "source": "aviationstack",
+    "fetched_at": "2026-08-20T22:47:48+00:00",
+    "error": "No API key configured. Create data/flight_config.php or set AVIATIONSTACK_API_KEY.",
     "arrivals": [],
-    "departures": [],
-    "meta": {
-        "arr_count": 0,
-        "dep_count": 0
-    }
+    "departures": []
 }
