@@ -9,6 +9,7 @@ on:
 # Ensure the workflow has write permission to repository contents so it can create branches/PRs
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   fetch:
