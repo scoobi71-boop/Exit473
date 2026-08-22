@@ -194,10 +194,15 @@
       return artists[id] || { stageName: id || '—', realName: '—', parish: '—' };
     }
 
+    /* A year's winner is normally a single artist; coWinner (tied result) is optional. */
+    function winnersOf(r) {
+      return r.coWinner ? [r.winner, r.coWinner] : [r.winner];
+    }
+
     /* ── Stats bar ──────────────────────────────────────────────── */
     function renderStats() {
       const valid = results.filter(r => !r.cancelled);
-      const unique = new Set(valid.map(r => r.winner.artistId));
+      const unique = new Set(valid.flatMap(r => winnersOf(r).map(w => w.artistId)));
       const bar = document.getElementById('stats-bar');
       if (!bar) return;
       bar.innerHTML = [
@@ -243,14 +248,16 @@
     }
 
     function renderYearEntry(r) {
-      const w           = getArtist(r.winner.artistId);
-      const s2          = r.second ? getArtist(r.second.artistId) : null;
-      const s3          = r.third  ? getArtist(r.third.artistId)  : null;
+      const winners      = winnersOf(r).map(ref => ({ id: ref.artistId, artist: getArtist(ref.artistId) }));
+      const s2           = r.second ? getArtist(r.second.artistId) : null;
+      const s3           = r.third  ? getArtist(r.third.artistId)  : null;
       const hasFinalists = !!(r.second || r.third);
       const songDisplay  = r.winner.song || null;
 
       const searchStr = [
-        r.year, w.stageName, w.realName, w.parish, r.winner.song,
+        r.year,
+        ...winners.flatMap(w => [w.artist.stageName, w.artist.realName, w.artist.parish]),
+        r.winner.song,
         s2 ? s2.stageName : '', s3 ? s3.stageName : ''
       ].join(' ').toLowerCase();
 
@@ -263,19 +270,26 @@
         ? `role="button" tabindex="0" aria-expanded="false" onclick="CM.toggle(this)" onkeydown="if(event.key==='Enter'||event.key===' ')CM.toggle(this)"`
         : `style="cursor:default"`;
 
+      const namesMarkup = winners.map((w, i) =>
+        (i > 0 ? '<span class="year-tied-sep">&amp;</span>' : '') +
+        `<a href="monarch-detail.html?id=${esc(w.id)}" class="year-winner-name" onclick="event.stopPropagation()">${esc(w.artist.stageName)}</a>`
+      ).join('');
+
+      const realNamesMarkup = winners
+        .filter(w => w.artist.realName && w.artist.realName !== 'Pending verification' && w.artist.realName !== w.artist.stageName)
+        .map(w => esc(w.artist.realName)).join(' &amp; ');
+
       return `<div class="year-entry" data-year="${r.year}" data-search="${esc(searchStr)}">
         <div class="year-entry-header" ${headerInteraction}>
           <div class="year-badge">${r.year}</div>
           <div class="year-entry-winner">
             <span class="year-medal">🏆</span>
             <div class="year-winner-info">
-              <a href="monarch-detail.html?id=${esc(r.winner.artistId)}"
-                 class="year-winner-name"
-                 onclick="event.stopPropagation()">${esc(w.stageName)}</a>
-              ${w.realName && w.realName !== 'Pending verification' && w.realName !== w.stageName ? `<span class="year-winner-realname">${esc(w.realName)}</span>` : ''}
+              <div class="year-winner-names">${namesMarkup}</div>
+              ${realNamesMarkup ? `<span class="year-winner-realname">${realNamesMarkup}</span>` : ''}
               ${songDisplay ? `<span class="year-winner-song">${esc(songDisplay)}</span>` : ''}
             </div>
-            <span class="year-winner-parish">${esc(w.parish)}</span>
+            <span class="year-winner-parish">${esc(winners[0].artist.parish)}</span>
           </div>
           ${hasFinalists ? `<button class="year-expand-btn" aria-label="Show finalists for ${r.year}" tabindex="-1">▾</button>` : '<span></span>'}
         </div>
@@ -327,11 +341,13 @@
         const q = currentSearch.toLowerCase();
         filtered = filtered.filter(r => {
           if (r.cancelled) return String(r.year).includes(q);
-          const w  = getArtist(r.winner.artistId);
+          const winners = winnersOf(r).map(ref => getArtist(ref.artistId));
           const s2 = r.second ? getArtist(r.second.artistId) : null;
           const s3 = r.third  ? getArtist(r.third.artistId)  : null;
           return [
-            r.year, w.stageName, w.realName, w.parish, r.winner.song,
+            r.year,
+            ...winners.flatMap(w => [w.stageName, w.realName, w.parish]),
+            r.winner.song,
             s2 ? s2.stageName + ' ' + s2.parish : '',
             s3 ? s3.stageName + ' ' + s3.parish : ''
           ].join(' ').toLowerCase().includes(q);
@@ -350,10 +366,12 @@
       const firstWinYear = {};
 
       valid.forEach(r => {
-        const wId = r.winner.artistId;
-        winCounts[wId]    = (winCounts[wId]    || 0) + 1;
-        if (firstWinYear[wId] === undefined || r.year < firstWinYear[wId]) firstWinYear[wId] = r.year;
-        [wId, r.second?.artistId, r.third?.artistId].forEach(id => {
+        const wIds = winnersOf(r).map(w => w.artistId);
+        wIds.forEach(wId => {
+          winCounts[wId] = (winCounts[wId] || 0) + 1;
+          if (firstWinYear[wId] === undefined || r.year < firstWinYear[wId]) firstWinYear[wId] = r.year;
+        });
+        [...wIds, r.second?.artistId, r.third?.artistId].forEach(id => {
           if (id) finalsCounts[id] = (finalsCounts[id] || 0) + 1;
         });
       });
@@ -362,7 +380,7 @@
       let longestStreak = { artistId: null, count: 0, start: 0, end: 0 };
       Object.keys(winCounts).forEach(id => {
         const years = valid
-          .filter(r => r.winner.artistId === id)
+          .filter(r => winnersOf(r).some(w => w.artistId === id))
           .map(r => r.year)
           .sort((a, b) => a - b);
         let run = 1, runStart = 0;
@@ -385,14 +403,14 @@
 
       /* Female champions */
       const femaleIds  = new Set(Object.entries(artists).filter(([, a]) => a.female).map(([id]) => id));
-      const femaleWins = valid.filter(r => femaleIds.has(r.winner.artistId)).sort((a, b) => a.year - b.year);
+      const femaleWins = valid.filter(r => winnersOf(r).some(w => femaleIds.has(w.artistId))).sort((a, b) => a.year - b.year);
       const firstFemale = femaleWins[0] || null;
 
       const recentChamp = valid[0]; // results are reversed → newest first
 
       /* Longest active career (first win year to last win year) */
       const careerSpan = Object.entries(winCounts).map(([id]) => {
-        const years = valid.filter(r => r.winner.artistId === id).map(r => r.year);
+        const years = valid.filter(r => winnersOf(r).some(w => w.artistId === id)).map(r => r.year);
         return { id, span: Math.max(...years) - Math.min(...years), first: Math.min(...years), last: Math.max(...years) };
       }).sort((a, b) => b.span - a.span);
 
@@ -401,8 +419,9 @@
       valid.forEach(r => {
         const d = Math.floor(r.year / 10) * 10;
         if (!decadeWins[d]) decadeWins[d] = {};
-        const id = r.winner.artistId;
-        decadeWins[d][id] = (decadeWins[d][id] || 0) + 1;
+        winnersOf(r).forEach(w => {
+          decadeWins[d][w.artistId] = (decadeWins[d][w.artistId] || 0) + 1;
+        });
       });
       const decadeLeaders = {};
       Object.entries(decadeWins).forEach(([dec, counts]) => {
@@ -418,16 +437,20 @@
       if (!grid) return;
 
       const [topId, topWins] = rec.sortedByWins[0] || ['?', 0];
-      const topArtist    = getArtist(topId);
-      const streakArtist = getArtist(rec.longestStreak.artistId);
-      const recentWinner = rec.recentChamp ? getArtist(rec.recentChamp.winner.artistId) : null;
-      const topCareer    = rec.careerSpan[0];
+      const topArtist     = getArtist(topId);
+      const streakArtist  = getArtist(rec.longestStreak.artistId);
+      const recentWinners = rec.recentChamp ? winnersOf(rec.recentChamp).map(w => ({ id: w.artistId, artist: getArtist(w.artistId) })) : [];
+      const topCareer     = rec.careerSpan[0];
 
-      /* Female champions list */
-      const femaleChampionsList = rec.femaleWins.map(r => {
-        const a = getArtist(r.winner.artistId);
-        return `<a href="monarch-detail.html?id=${esc(r.winner.artistId)}" class="record-link">${esc(a.stageName)}</a> (${r.year})`;
-      }).join(' · ');
+      /* Female champions list — a tie can put the female champion in either winner or coWinner */
+      const femaleIdsForList = new Set(Object.entries(artists).filter(([, a]) => a.female).map(([id]) => id));
+      const femaleWinnerPairs = rec.femaleWins.flatMap(r =>
+        winnersOf(r).filter(w => femaleIdsForList.has(w.artistId)).map(w => ({ id: w.artistId, artist: getArtist(w.artistId), year: r.year }))
+      );
+      const femaleChampionsList = femaleWinnerPairs
+        .map(p => `<a href="monarch-detail.html?id=${esc(p.id)}" class="record-link">${esc(p.artist.stageName)}</a> (${p.year})`)
+        .join(' · ');
+      const firstFemaleWinner = femaleWinnerPairs[0] || null;
 
       const cards = [
         {
@@ -444,15 +467,15 @@
             ? `${rec.longestStreak.count} consecutive titles (${rec.longestStreak.start}–${rec.longestStreak.end})`
             : '—'
         },
-        rec.femaleWins.length ? {
-          icon: '👑', label: `Female Champions (${rec.femaleWins.length})`, gold: true,
-          holder: `<a href="monarch-detail.html?id=${esc(rec.femaleWins[0].winner.artistId)}" class="record-link">${esc(getArtist(rec.femaleWins[0].winner.artistId).stageName)}</a>`,
+        firstFemaleWinner ? {
+          icon: '👑', label: `Female Champions (${femaleWinnerPairs.length})`, gold: true,
+          holder: `<a href="monarch-detail.html?id=${esc(firstFemaleWinner.id)}" class="record-link">${esc(firstFemaleWinner.artist.stageName)}</a>`,
           detail: femaleChampionsList + ' — historic trailblazers'
         } : null,
-        recentWinner ? {
+        recentWinners.length ? {
           icon: '🌟', label: 'Most Recent Champion',
-          holder: `<a href="monarch-detail.html?id=${esc(rec.recentChamp.winner.artistId)}" class="record-link">${esc(recentWinner.stageName)}</a>`,
-          detail: `${rec.recentChamp.year} · ${esc(recentWinner.parish)}`
+          holder: recentWinners.map(p => `<a href="monarch-detail.html?id=${esc(p.id)}" class="record-link">${esc(p.artist.stageName)}</a>`).join(' &amp; '),
+          detail: `${rec.recentChamp.year} · ${esc(recentWinners[0].artist.parish)}`
         } : null,
         topCareer && topCareer.span > 0 ? {
           icon: '📅', label: 'Longest Active Career',

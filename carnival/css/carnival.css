@@ -347,6 +347,8 @@
   transition: color .15s;
 }
 .year-winner-name:hover { color: #fff; }
+.year-winner-names { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem; min-width: 0; }
+.year-tied-sep { font-size: .85rem; font-weight: 400; color: rgba(255,255,255,.4); }
 .cancelled-text { color: rgba(255,255,255,.3); font-style: italic; font-size: .9rem; }
 .year-winner-song {
   font-size: .8rem;

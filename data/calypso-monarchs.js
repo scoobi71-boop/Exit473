@@ -1,6 +1,6 @@
 /* =====================================================================
    CALYPSO MONARCHS DATA — Exit 473 / Spicemas Carnival
-   Grenada Calypso Monarch Competition — Official Results 1958 – 2025
+   Grenada Calypso Monarch Competition — Official Results 1958 – 2026
 
    Source: Spicemas Corporation records and historical archives.
 
@@ -229,8 +229,8 @@ window.CALYPSO_MONARCHS = {
       stageName: "Sour Serpent",
       realName: "Sean Niles",
       parish: "St. David's",
-      active: "2019",
-      bio: "The 2019 Calypso Monarch, Sour Serpent delivered a stinging performance worthy of the crown — in what proved to be the last Dimanche Gras competition before the COVID-19 interruption."
+      active: "2019 – 2026",
+      bio: "A two-time Calypso Monarch (2019 and 2026), Sour Serpent's first title came in what proved to be the last Dimanche Gras competition before the COVID-19 interruption; his second, in 2026, was shared in a tie with Jelo."
     },
     "innocent": {
       stageName: "Innocent",
@@ -238,6 +238,13 @@ window.CALYPSO_MONARCHS = {
       parish: "St. Andrew's",
       active: "2024",
       bio: "The 2024 Calypso Monarch, Innocent brought St. Andrew's pride to the Dimanche Gras stage, earning Grenada's highest calypso honour with a performance of genuine distinction."
+    },
+    "jelo": {
+      stageName: "Jelo",
+      realName: "Jelonie Fleming",
+      parish: "Pending verification",
+      active: "2026",
+      bio: "Co-Calypso Monarch of 2026 alongside Sour Serpent, Jelo — Jelonie Fleming — shared one of the rare tied victories in the competition's history."
     }
   },
 
@@ -319,6 +326,9 @@ window.CALYPSO_MONARCHS = {
     { year: 2022, winner: { artistId: "scholar",         song: null, youtubeId: null } },
     { year: 2023, winner: { artistId: "rootsman-kelly",  song: null, youtubeId: null } },
     { year: 2024, winner: { artistId: "innocent",        song: null, youtubeId: null } },
-    { year: 2025, winner: { artistId: "scholar",         song: null, youtubeId: null } }
+    { year: 2025, winner: { artistId: "scholar",         song: null, youtubeId: null } },
+    { year: 2026, winner: { artistId: "sour-serpent",    song: null, youtubeId: null },
+                  coWinner: { artistId: "jelo",           song: null, youtubeId: null },
+                  note: "Sour Serpent and Jelo tied for first place — a shared Calypso Monarch title." }
   ]
 };

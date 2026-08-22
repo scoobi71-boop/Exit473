@@ -111,13 +111,22 @@
     const artistId = params.get('id') || '';
     const artist   = artists[artistId];
 
+    /* A year's winner is normally a single artist; coWinner (tied result) is optional. */
+    function wonBy(r, id) {
+      return r.winner.artistId === id || r.coWinner?.artistId === id;
+    }
+    /* This artist's own winner/coWinner record for a given year (song, youtubeId belong per-artist). */
+    function myEntry(r, id) {
+      return r.coWinner && r.coWinner.artistId === id ? r.coWinner : r.winner;
+    }
+
     /* ── Compute artist stats ───────────────────────────────────── */
     function getArtistStats(id) {
-      const wins   = results.filter(r => r.winner.artistId === id).sort((a, b) => a.year - b.year);
+      const wins   = results.filter(r => wonBy(r, id)).sort((a, b) => a.year - b.year);
       const silver = results.filter(r => r.second?.artistId === id);
       const bronze = results.filter(r => r.third?.artistId  === id);
       const finals = results.filter(r =>
-        r.winner.artistId === id || r.second?.artistId === id || r.third?.artistId === id
+        wonBy(r, id) || r.second?.artistId === id || r.third?.artistId === id
       );
 
       /* Longest streak */
@@ -173,22 +182,26 @@
     }
 
     /* ── Render a single win entry ──────────────────────────────── */
-    function renderWinEntry(r, stats) {
+    function renderWinEntry(r, stats, id) {
       const isStreak = stats.streak > 1 &&
         r.year >= stats.streakStart && r.year <= stats.streakEnd;
+      const mine = myEntry(r, id);
+      const tiedWithId = r.coWinner ? (r.coWinner.artistId === id ? r.winner.artistId : r.coWinner.artistId) : null;
+      const tiedWith = tiedWithId ? artists[tiedWithId] : null;
       return `<div class="win-entry">
         <div class="win-entry-header">
           <div class="win-year-badge">${r.year}</div>
           <span class="win-trophy">🏆</span>
           <div class="win-song-info">
-            <div class="win-song-title">${esc(r.winner.song || '—')}</div>
+            <div class="win-song-title">${esc(mine.song || '—')}</div>
             <div class="win-song-label">Calypso Monarch · Dimanche Gras
+              ${tiedWith ? `· <span style="color:#F5C840">Tied with <a href="monarch-detail.html?id=${esc(tiedWithId)}" style="color:inherit">${esc(tiedWith.stageName)}</a></span>` : ''}
               ${isStreak ? `· <span style="color:#F5C840">Part of ${stats.streak}-year streak</span>` : ''}
             </div>
           </div>
         </div>
         ${r.note ? `<div class="win-note">${esc(r.note)}</div>` : ''}
-        ${renderYouTube(r.winner.youtubeId, r.winner.song)}
+        ${renderYouTube(mine.youtubeId, mine.song)}
       </div>`;
     }
 
@@ -228,7 +241,7 @@
         : '';
 
       const winsHtml = winsDesc.length
-        ? winsDesc.map(r => renderWinEntry(r, stats)).join('')
+        ? winsDesc.map(r => renderWinEntry(r, stats, artistId)).join('')
         : `<p style="color:rgba(255,255,255,.35);padding:2rem 0">No Monarch titles recorded.</p>`;
 
       /* Finalists appearances section */
