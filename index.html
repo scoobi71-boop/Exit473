@@ -25,6 +25,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v=3">
   <style>img.emoji { height:1em; width:1em; vertical-align:-0.1em; display:inline-block; }</style>
+  <style>
+    /* Flight widget: make linkable, lighter/more prominent, and high-contrast text */
+    .flight-widget-link { display:block; margin-top:1.25rem; background: rgba(255,255,255,0.96); padding:.65rem; border-radius:8px; max-width:760px; color:var(--text); box-shadow: 0 10px 30px rgba(0,0,0,0.12); border:1px solid rgba(0,0,0,0.06); }
+    .flight-widget-link .widget-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:.35rem; text-decoration:none; color:inherit; }
+    .flight-widget-link .widget-header:hover .widget-title { text-decoration:underline; }
+    .flight-widget-link .widget-left { display:flex;align-items:center;gap:.6rem }
+    .flight-widget-link svg.icon { width:42px;height:42px;flex-shrink:0 }
+    .flight-widget-link .widget-title { font-weight:700;color:var(--text); }
+    .flight-widget-link .widget-sub { color:var(--text-light); font-size:.9rem }
+    .flight-widget-link .widget-body { display:flex;gap:1rem }
+    .flight-widget-link .widget-col { flex:1 }
+    .flight-widget-link .widget-arrival-row, .flight-widget-link .widget-depart-row { display:flex;justify-content:space-between;padding:.12rem 0 }
+    .widget-toggle { display:none; align-items:center; gap:.25rem; margin-top:.5rem; padding:.3rem .6rem; background:transparent; border:1px solid rgba(0,0,0,0.12); border-radius:6px; color:var(--text-light); font-size:.85rem; font-weight:600; cursor:pointer; }
+    .widget-toggle:hover { background:rgba(0,0,0,0.04); color:var(--text); }
+  </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
   <script>
@@ -101,21 +116,39 @@
             <a href="directory.html" class="btn btn-primary btn-lg">🍽️ Explore All Businesses</a>
             <a href="about.html" class="btn btn-outline-white btn-lg">Learn Our Story</a>
           </div>
-          <div id="flight-widget" style="margin-top:1.25rem;background:rgba(255,255,255,0.02);padding:.6rem;border-radius:6px;max-width:760px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
-              <div style="font-weight:600">Maurice Bishop Intl. (GND)</div>
-              <a href="/flights.html" style="color:var(--teal)">Full flight board</a>
-            </div>
-            <div id="flight-widget-tables" style="display:flex;gap:1rem">
-              <div style="flex:1">
+          <div id="flight-widget" class="flight-widget-link">
+            <a class="widget-header" href="/flights.html" aria-label="Open full flight board">
+              <div class="widget-left">
+                <svg class="icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect x="1" y="1" width="62" height="62" rx="16" fill="#C9D6DE"/>
+                  <rect x="11" y="18" width="42" height="28" rx="5" fill="none" stroke="#2A3542" stroke-width="2.4"/>
+                  <circle cx="40" cy="18" r="3.6" fill="#C9D6DE"/>
+                  <circle cx="40" cy="46" r="3.6" fill="#C9D6DE"/>
+                  <line x1="40" y1="18" x2="40" y2="46" stroke="#2A3542" stroke-width="2" stroke-dasharray="3 3.2"/>
+                  <g transform="translate(15,22) scale(0.62)" fill="#2A3542">
+                    <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-1.5V21l2-.5 2 .5v-6.5l8 1.5z"/>
+                  </g>
+                  <line x1="44" y1="27" x2="49" y2="27" stroke="#2A3542" stroke-width="1.8" stroke-linecap="round"/>
+                  <line x1="44" y1="32" x2="49" y2="32" stroke="#2A3542" stroke-width="1.8" stroke-linecap="round"/>
+                  <line x1="44" y1="37" x2="47.5" y2="37" stroke="#2A3542" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <div>
+                  <div class="widget-title">Maurice Bishop Intl. (GND)</div>
+                  <div class="widget-sub">Click to open full flight board</div>
+                </div>
+              </div>
+            </a>
+            <div id="flight-widget-tables" class="widget-body">
+              <div class="widget-col">
                 <div style="font-size:.9rem;color:var(--text-light);margin-bottom:.25rem">Arrivals</div>
                 <div id="widget-arrivals" style="font-size:.9rem;color:var(--text);">Loading…</div>
               </div>
-              <div style="flex:1">
+              <div class="widget-col">
                 <div style="font-size:.9rem;color:var(--text-light);margin-bottom:.25rem">Departures</div>
                 <div id="widget-departures" style="font-size:.9rem;color:var(--text);">Loading…</div>
               </div>
             </div>
+            <button id="flight-widget-toggle" class="widget-toggle" type="button" aria-expanded="false">Show more ▾</button>
           </div>
           <div class="hero-stats" aria-label="Quick facts">
             <div>
@@ -334,20 +367,112 @@
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
   <script>twemoji.parse(document.body, {folder:'svg',ext:'.svg'});</script>
   <script>
+    let widgetArrivals = [];
+    let widgetDepartures = [];
+    let widgetExpanded = false;
+    const WIDGET_EXPANDED_LIMIT = 4;
+
+    const widgetFormatDate = (iso) => {
+      if(!iso) return '';
+      try{ return new Date(iso).toLocaleDateString(undefined,{month:'short', day:'numeric'}); }catch(e){ return ''; }
+    };
+    const widgetFormatTime = (iso) => {
+      if(!iso) return '';
+      try{ return new Date(iso).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit',hour12:true}); }catch(e){
+        const d = new Date(iso);
+        let hh = d.getHours(); const mm = String(d.getMinutes()).padStart(2,'0'); const ampm = hh>=12? 'PM':'AM'; hh = hh%12||12; return hh+':'+mm+' '+ampm;
+      }
+    };
+    const widgetFormatPlace = (raw) => {
+      if(!raw) return '';
+      raw = raw.trim();
+      const key = raw.toLowerCase().replace(/[\.,'"\u2019]/g,'').replace(/\s+/g,' ');
+      const AIRPORT_MAP = {
+        'john f kennedy international': 'New York (JFK)',
+        'john f kennedy': 'New York (JFK)',
+        'jfk': 'New York (JFK)',
+        'tampa international': 'Tampa (TPA)',
+        'miami international airport': 'Miami (MIA)',
+        'miami international': 'Miami (MIA)',
+        'charlotte douglas': 'Charlotte (CLT)',
+        'hartsfield-jackson atlanta international': 'Atlanta (ATL)',
+        'piarco international': 'Port of Spain (POS)',
+        'grantley adams international': 'Bridgetown (BGI)',
+        'hewanorra': 'Vieux Fort (UVF)',
+        'punta cana international': 'Punta Cana (PUJ)'
+      };
+      if(AIRPORT_MAP[key]) return AIRPORT_MAP[key];
+      const m = raw.match(/\b([A-Z]{3})\b/);
+      const code = m?m[1]:'';
+      let city = raw.replace(/\b(International|Airport|Intl|Int'l|Field|Airfield|Terminal)\b/ig,'').replace(/\s+\(.+\)/,'').trim();
+      if(!city) city = raw;
+      return code ? (city + ' ('+code+')') : city;
+    };
+    const WIDGET_AIRLINE_URLS = {
+      'qatar airways': 'https://www.qatarairways.com/',
+      'jetblue': 'https://www.jetblue.com/',
+      'british airways': 'https://www.britishairways.com/',
+      'intercaribbean airways': 'https://www.intercaribbean.com/',
+      'liat air': 'https://www.liat.com/',
+      'caribbean airlines': 'https://www.caribbean-airlines.com/',
+      'klm': 'https://www.klm.com/',
+      'virgin atlantic': 'https://www.virginatlantic.com/',
+      'el al': 'https://www.elal.com/',
+      'kenya airways': 'https://www.kenya-airways.com/',
+      'american airlines': 'https://www.aa.com/',
+      'delta air lines': 'https://www.delta.com/'
+    };
+    const widgetAirlineLink = (name) => {
+      if(!name) return '';
+      const key = name.toLowerCase().trim();
+      const href = WIDGET_AIRLINE_URLS[key] || ('https://www.google.com/search?q='+encodeURIComponent(name+' airline'));
+      return `<a href="${href}" target="_blank" rel="noopener">${name}</a>`;
+    };
+    const widgetRow = (item) => {
+      const place = widgetFormatPlace(item.from || item.to || '');
+      const date = widgetFormatDate(item.time);
+      const time = widgetFormatTime(item.time);
+      return `<div style="display:flex;justify-content:space-between;padding:.12rem 0"><div><div style="font-weight:600">${date} \u00b7 ${time} <span style="color:var(--text-light);font-weight:400">${place}</span></div><div style="color:var(--text-light);font-size:.9rem">${widgetAirlineLink(item.airline||'')}</div></div><div style="margin-left:1rem;font-weight:700">${item.flight||''}</div></div>`;
+    };
+
+    function renderWidgetLists(){
+      const wa = document.getElementById('widget-arrivals');
+      const wd = document.getElementById('widget-departures');
+      if (!wa || !wd) return;
+      const limit = widgetExpanded ? WIDGET_EXPANDED_LIMIT : 1;
+      const arr = widgetArrivals.slice(0, limit);
+      const dep = widgetDepartures.slice(0, limit);
+      wa.innerHTML = arr.length ? arr.map(widgetRow).join('') : '<div style="color:var(--text-light)">No arrivals available</div>';
+      wd.innerHTML = dep.length ? dep.map(widgetRow).join('') : '<div style="color:var(--text-light)">No departures available</div>';
+
+      const toggleBtn = document.getElementById('flight-widget-toggle');
+      if (toggleBtn) {
+        const hasMore = widgetArrivals.length > 1 || widgetDepartures.length > 1;
+        toggleBtn.style.display = hasMore ? 'inline-flex' : 'none';
+        toggleBtn.textContent = widgetExpanded ? 'Show less \u25b2' : 'Show more \u25be';
+        toggleBtn.setAttribute('aria-expanded', String(widgetExpanded));
+      }
+    }
+
     async function renderFlightWidget(){
       try{
         const res = await fetch('data/flights.json');
         const j = await res.json();
-        const arr = (j.arrivals||[]).slice(0,4);
-        const dep = (j.departures||[]).slice(0,4);
-        const wa = document.getElementById('widget-arrivals');
-        const wd = document.getElementById('widget-departures');
-        if (!wa || !wd) return;
-        wa.innerHTML = arr.length ? arr.map(a=>`<div style="display:flex;justify-content:space-between;padding:.15rem 0"><span>${a.time? a.time.replace('T',' ').split('+')[0]:''}</span><strong>${a.flight||''}</strong></div>`).join('') : '<div style="color:var(--text-light)">No arrivals available</div>';
-        wd.innerHTML = dep.length ? dep.map(d=>`<div style="display:flex;justify-content:space-between;padding:.15rem 0"><span>${d.time? d.time.replace('T',' ').split('+')[0]:''}</span><strong>${d.flight||''}</strong></div>`).join('') : '<div style="color:var(--text-light)">No departures available</div>';
+        widgetArrivals = j.arrivals || [];
+        widgetDepartures = j.departures || [];
+        renderWidgetLists();
       }catch(e){ console.warn('Flight widget load failed', e); }
     }
     renderFlightWidget();
+
+    document.addEventListener('click', (ev) => {
+      const toggleBtn = ev.target && ev.target.closest && ev.target.closest('#flight-widget-toggle');
+      if (toggleBtn) {
+        ev.preventDefault();
+        widgetExpanded = !widgetExpanded;
+        renderWidgetLists();
+      }
+    });
   </script>
 </body>
 </html>

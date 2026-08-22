@@ -10,62 +10,297 @@
     table.flights { width:100%; border-collapse:collapse; margin-bottom:2rem }
     table.flights th, table.flights td { padding:.5rem .6rem; border-bottom:1px solid rgba(0,0,0,.06); text-align:left }
     .flights-legend { text-align:center; margin-bottom:1rem }
+    /* Page-specific background to match other inner pages */
+    body[data-page="flights"] { background: var(--sand); padding-top: calc(var(--nav-h) + 0.25rem); }
+    /* Make nav bar red on this page to match branding */
+    body[data-page="flights"] .site-nav { background: var(--red); }
+    /* Reduce hero/section vertical padding on flights page */
+    .section.page-hero { padding: 1.5rem 0 2rem; }
+    /* Make page title smaller and use body font to match table */
+    .flights-grid h1 { font-family: var(--font-body); font-size: 1.4rem; font-weight:700; margin-bottom: .25rem; }
+    /* Ensure text outside tables is visible and uses the same body font */
+    .flights-grid { color: var(--white); font-family: var(--font-body); }
+    .flights-grid .flights-legend { color: var(--gold-light); }
+    .flights-grid h2, .flights-grid h1 { color: var(--white); font-family: var(--font-body); }
+    .flights-grid small { color: var(--gold-light); }
+    /* Table styling: white card with more prominent light-grey grid lines */
+      table.flights { background: var(--white); border: 1px solid var(--gray-300); border-radius: 8px; overflow: hidden; }
+      /* Responsive table wrapper */
+      .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.flights th { background: var(--white); border-bottom: 1px solid var(--gray-300); color: var(--text); }
+    table.flights td, table.flights th { border-bottom: 1px solid var(--gray-300); color: var(--text); }
+    table.flights tbody tr td { border-right: 1px solid var(--gray-300); }
+    /* Alternating row background using theme color */
+    table.flights tbody tr:nth-child(odd) { background: var(--gray-100); }
+    /* Row hover highlight for better affordance on desktop and touch */
+    table.flights tbody tr:hover { background: var(--gray-200); }
+    table.flights thead tr th:last-child, table.flights tbody tr td:last-child { border-right: none; }
+    /* Airline links styled blue to indicate URL */
+    table.flights a, .airline-link { color: #0b6efd; text-decoration: underline; }
+    .flights-grid .btn { font-weight:600 }
+    /* Make the small counts consistent and tighten header spacing */
+    .flights-grid h2 { margin-bottom: .25rem; }
+    /* Toggle buttons: white text to match page */
+    .flights-grid #toggle-arrivals, .flights-grid #toggle-departures { color: var(--white); background: transparent; border: 1px solid rgba(255,255,255,0.08); }
+    
+      /* Mobile: stack table rows for better legibility */
+      @media (max-width: 640px) {
+        .flights-grid { padding: 0 1rem; }
+        table.flights { border-radius: 10px; }
+        table.flights thead { display: none; }
+        table.flights tbody tr { display: block; border-bottom: 1px solid var(--gray-300); padding: .6rem; }
+        /* Ensure alternating background remains visible on stacked rows */
+        table.flights tbody tr:nth-child(odd) { background: var(--gray-100); }
+        table.flights tbody tr td { display: flex; justify-content: space-between; padding: .25rem 0; border-right: none; }
+        table.flights tbody tr td:nth-child(1) { min-width: 65px; }
+        table.flights tbody tr td:nth-child(2) { min-width: 85px; font-weight:700; }
+        table.flights tbody tr td:nth-child(3) { flex-basis: 110px; text-align:right }
+        table.flights tbody tr td:nth-child(4), table.flights tbody tr td:nth-child(5) { flex-basis: 45%; text-align:right }
+        .table-responsive { overflow: visible; }
+        .table-scroll { overflow-x:auto; }
+      }
   </style>
 </head>
-<body>
+<body data-page="flights">
+
+  <!-- NAVIGATION (site-wide) -->
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Exit 473 home">
+        <img src="images/logo.png" alt="Exit 473 logo" class="logo-img" onerror="this.style.display='none'">
+        <span class="logo-text">
+          <span class="logo-main">Exit 473</span>
+          <span class="logo-sub">Food & Lifestyle Park · Grenada</span>
+        </span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="exit473_aerial_map.php">Site Map</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="carnival/carnival.html">Carnival</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
   <main>
-    <section class="section">
+    <section class="section page-hero">
       <div class="container">
         <div class="section-header">
           <span class="section-label">Airport</span>
           <h1>Grenada — Maurice Bishop International (GND)</h1>
-          <p class="lead">Arrivals and departures (cached). Data refreshed periodically.</p>
         </div>
         <div class="flights-grid" id="flights-grid">
-          <div class="flights-legend" id="flights-meta">Loading flight data…</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+            <div class="flights-legend" id="flights-meta">Loading flight data…</div>
+            <div>
+              <a href="/" class="btn" style="margin-right:.5rem">Home</a>
+            </div>
+          </div>
 
-          <h2>Arrivals</h2>
-          <table class="flights" id="arrivals-table">
+          <h2>Arrivals <small id="arrivals-count" style="font-weight:400;color:var(--text-light)"></small></h2>
+          <div style="text-align:right;margin-bottom:.25rem"><button id="toggle-arrivals" class="btn">Show all</button></div>
+          <div class="table-responsive"><table class="flights" id="arrivals-table">
             <thead>
-              <tr><th>TIME</th><th>FLIGHT</th><th>FROM</th><th>AIRLINE</th><th>AIRCRAFT</th><th>STATUS</th></tr>
+              <tr><th>DATE</th><th>TIME</th><th>FLIGHT</th><th>FROM</th><th>AIRLINE</th><th>AIRCRAFT</th><th>STATUS</th></tr>
             </thead>
             <tbody></tbody>
-          </table>
+          </table></div>
 
-          <h2>Departures</h2>
-          <table class="flights" id="departures-table">
+          <h2>Departures <small id="departures-count" style="font-weight:400;color:var(--text-light)"></small></h2>
+          <div style="text-align:right;margin-bottom:.25rem"><button id="toggle-departures" class="btn">Show all</button></div>
+          <div class="table-responsive"><table class="flights" id="departures-table">
             <thead>
-              <tr><th>TIME</th><th>FLIGHT</th><th>TO</th><th>AIRLINE</th><th>AIRCRAFT</th><th>STATUS</th></tr>
+              <tr><th>DATE</th><th>TIME</th><th>FLIGHT</th><th>TO</th><th>AIRLINE</th><th>AIRCRAFT</th><th>STATUS</th></tr>
             </thead>
             <tbody></tbody>
-          </table>
+          </table></div>
 
-          <p style="text-align:center;margin-top:1rem">Source: cached on-site dataset. For live API key and cron setup see <a href="/admin/fetch_flights.php">fetch script</a>.</p>
+          
         </div>
       </div>
     </section>
   </main>
 
   <script>
+    // Configuration
+    const DEFAULT_LIMIT = 10;
+    let showAllArrivals = false;
+    let showAllDepartures = false;
+
+    function formatTimeTo12(iso){
+      if(!iso) return '';
+      const d = new Date(iso);
+      try{
+        return d.toLocaleTimeString(undefined, {hour:'numeric',minute:'2-digit',hour12:true});
+      }catch(e){
+        // fallback
+        let hh = d.getHours();
+        const mm = String(d.getMinutes()).padStart(2,'0');
+        const ampm = hh>=12 ? 'PM' : 'AM';
+        hh = hh%12 || 12;
+        return hh + ':' + mm + ' ' + ampm;
+      }
+    }
+
+    function formatDateShort(iso){
+      if(!iso) return '';
+      const d = new Date(iso);
+      try{
+        return d.toLocaleDateString(undefined, {month:'short', day:'numeric'});
+      }catch(e){
+        return '';
+      }
+    }
+
+    // Check whether a timestamp falls on the same UTC day as the fetched dataset
+    function isSameFetchDay(iso, fetchedAt){
+      if(!iso) return false;
+      const d = new Date(iso);
+      const ref = fetchedAt ? new Date(fetchedAt) : new Date();
+      return d.getUTCFullYear()===ref.getUTCFullYear() && d.getUTCMonth()===ref.getUTCMonth() && d.getUTCDate()===ref.getUTCDate();
+    }
+
+    function formatPlace(raw){
+      if(!raw) return '';
+      raw = raw.trim();
+      const key = raw.toLowerCase().replace(/[\.,'"\u2019]/g,'').replace(/\s+/g,' ');
+
+      // Known airport name -> City (CODE) map
+      const AIRPORT_MAP = {
+        'john f kennedy international': 'New York (JFK)',
+        'john f kennedy': 'New York (JFK)',
+        'jfk': 'New York (JFK)',
+        'tampa international': 'Tampa (TPA)',
+        'miami international airport': 'Miami (MIA)',
+        'miami international': 'Miami (MIA)',
+        'charlotte douglas': 'Charlotte (CLT)',
+        'hartsfield-jackson atlanta international': 'Atlanta (ATL)',
+        'hartsfield jackson atlanta international': 'Atlanta (ATL)',
+        'piarco international': 'Port of Spain (POS)',
+        'grantley adams international': 'Bridgetown (BGI)',
+        'hewanorra': 'Vieux Fort (UVF)',
+        'punta cana international': 'Punta Cana (PUJ)',
+        'e t joshua': 'Kingstown (SVD)',
+        'e t joshua airport': 'Kingstown (SVD)',
+        'cru': 'Carriacou (CRU)'
+      };
+      if(AIRPORT_MAP[key]) return AIRPORT_MAP[key];
+      // if raw is just a 3-letter code
+      if(/^[A-Z]{3}$/.test(raw)) return raw + ' (' + raw + ')';
+      // attempt to extract code token (e.g. 'MIA' or 'CRU')
+      const m = raw.match(/\b([A-Z]{3})\b/);
+      let code = m ? m[1] : '';
+      // derive city by removing common words
+      let city = raw.replace(/\b(International|Airport|Intl|Int'l|Field|Airfield|Terminal)\b/ig,'').replace(/\s+\(.+\)/,'').trim();
+      if(!city) city = raw;
+      return code ? (city + ' ('+code+')') : city;
+    }
+
+    function formatAircraft(raw){
+      if(!raw) return '';
+      const s = String(raw).trim();
+      // common model tokens
+      const m1 = s.match(/\b(A|B)\s?-?\d{2,3}\b/i); // A321, B737
+      if(m1) return m1[0].replace(/\s|-/g,'').toUpperCase();
+      const m2 = s.match(/\bATR[- ]?(\d{2})\b/i); // ATR42/72
+      if(m2){ return 'AT' + m2[1].charAt(0); } // ATR42 -> AT4, ATR72 -> AT7
+      const m3 = s.match(/\bDHC[- ]?(\d+)\b/i) || s.toLowerCase().includes('de havilland') ? 'DHT' : null;
+      if(m3 === 'DHT') return 'DHT';
+      if(m3 && m3[0]) return 'DHT';
+      const m4 = s.match(/\b(EMB|E|ERJ)[- ]?(\d{2,3})\b/i); // Embraer
+      if(m4) return (m4[1].toUpperCase()+m4[2]);
+      // fallback: build a 3-letter code from initials
+      const words = s.replace(/[()\-\/]/g,' ').split(/\s+/).filter(Boolean);
+      if(words.length===1) return words[0].toUpperCase().slice(0,4);
+      const initials = words.map(w=>w[0]||'').join('').toUpperCase();
+      return initials.slice(0,3);
+    }
+
     async function loadFlights(){
       try{
         const res = await fetch('data/flights.json?_=' + Date.now());
         const j = await res.json();
-        document.getElementById('flights-meta').textContent = 'Last updated: ' + (j.fetched_at || 'unknown') + ' — arrivals: ' + (j.meta?.arr_count||0) + ', departures: ' + (j.meta?.dep_count||0);
+        // format fetched_at to 12-hour local time
+        let fetchedText = j.fetched_at ? (new Date(j.fetched_at)).toLocaleString(undefined, { month:'short', day:'numeric', hour:'numeric', minute:'2-digit', hour12:true }) : 'unknown';
+        document.getElementById('flights-meta').textContent = 'Last updated: ' + fetchedText;
         const arrT = document.querySelector('#arrivals-table tbody'); arrT.innerHTML='';
         const depT = document.querySelector('#departures-table tbody'); depT.innerHTML='';
-        (j.arrivals||[]).forEach(a => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${a.time||''}</td><td>${a.flight||''}</td><td>${a.from||''}</td><td>${a.airline||''}</td><td>${a.aircraft||''}</td><td>${a.status||''}</td>`;
-          arrT.appendChild(tr);
-        });
-        (j.departures||[]).forEach(d => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${d.time||''}</td><td>${d.flight||''}</td><td>${d.from||''}</td><td>${d.airline||''}</td><td>${d.aircraft||''}</td><td>${d.status||''}</td>`;
-          depT.appendChild(tr);
-        });
+        // Use fetched_at (UTC) as the reference day so cached data shows consistently
+        const fetchedRef = j.fetched_at || new Date().toISOString();
+        const arrivals = (j.arrivals||[]).filter(item => isSameFetchDay(item.time, fetchedRef));
+        const departures = (j.departures||[]).filter(item => isSameFetchDay(item.time, fetchedRef));
+        document.getElementById('arrivals-count').textContent = arrivals.length ? `(${arrivals.length})` : '';
+        document.getElementById('departures-count').textContent = departures.length ? `(${departures.length})` : '';
+
+        // Airline url mapping
+        const AIRLINE_URLS = {
+          'qatar airways': 'https://www.qatarairways.com/',
+          'jetblue': 'https://www.jetblue.com/',
+          'british airways': 'https://www.britishairways.com/',
+          'intercaribbean airways': 'https://www.intercaribbean.com/',
+          'liat air': 'https://www.liat.com/',
+          'caribbean airlines': 'https://www.caribbean-airlines.com/',
+          'klm': 'https://www.klm.com/',
+          'virgin atlantic': 'https://www.virginatlantic.com/',
+          'el al': 'https://www.elal.com/',
+          'kenya airways': 'https://www.kenya-airways.com/',
+          'american airlines': 'https://www.aa.com/',
+          'delta air lines': 'https://www.delta.com/'
+        };
+
+        const getAirlineLink = (name)=>{
+          if(!name) return document.createTextNode('');
+          const key = name.toLowerCase().trim();
+          const href = AIRLINE_URLS[key] || ('https://www.google.com/search?q='+encodeURIComponent(name+' airline'));
+          const a = document.createElement('a');
+          a.href = href;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = name;
+          return a;
+        };
+
+        const renderRows = (list, tbody, isArrivals)=>{
+          const limit = (isArrivals? showAllArrivals : showAllDepartures) ? list.length : Math.min(DEFAULT_LIMIT, list.length);
+          for(let i=0;i<limit;i++){
+            const item = list[i];
+            const tr = document.createElement('tr');
+            const date = formatDateShort(item.time);
+            const time = formatTimeTo12(item.time);
+            const place = formatPlace(item.from || item.to || '');
+            tr.innerHTML = `<td>${date||''}</td><td>${time||''}</td><td>${item.flight||''}</td><td>${place||''}</td><td class="airline-cell"></td><td>${formatAircraft(item.aircraft||'')}</td><td>${item.status||''}</td>`;
+            // replace airline cell with link
+            const airlineCell = tr.querySelector('.airline-cell');
+            const link = getAirlineLink(item.airline || '');
+            airlineCell.appendChild(link);
+            tbody.appendChild(tr);
+          }
+        };
+
+        renderRows(arrivals, arrT, true);
+        renderRows(departures, depT, false);
       }catch(e){ document.getElementById('flights-meta').textContent = 'Error loading flights.'; console.error(e); }
     }
+    // toggle handlers
+    document.addEventListener('click', (ev)=>{
+      if(ev.target && ev.target.id==='toggle-arrivals'){
+        showAllArrivals = !showAllArrivals;
+        ev.target.textContent = showAllArrivals ? 'Show top 10' : 'Show all';
+        loadFlights();
+      }
+      if(ev.target && ev.target.id==='toggle-departures'){
+        showAllDepartures = !showAllDepartures;
+        ev.target.textContent = showAllDepartures ? 'Show top 10' : 'Show all';
+        loadFlights();
+      }
+    });
+
     loadFlights();
   </script>
 </body>
