@@ -1,17 +1,49 @@
 {
-    "fetched_at": "2026-08-20T23:24:00+00:00",
+    "fetched_at": "2026-08-22T01:13:20+00:00",
     "source": "aerodatabox",
     "arrivals": [
         {
-            "time": "2026-08-20T18:25:00+00:00",
-            "flight": "AA 1546",
-            "from": "Miami (MIA)",
-            "airline": "American",
-            "aircraft": "Airbus A321 (Sharklets)",
+            "time": "2026-08-22T20:55:00+00:00",
+            "flight": "BW 241",
+            "from": "Bridgetown (BGI)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T18:10:00+00:00",
+            "time": "2026-08-22T20:55:00+00:00",
+            "flight": "BA 2159",
+            "from": "Vieux Fort (UVF)",
+            "airline": "British",
+            "aircraft": "Boeing 777",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T20:25:00+00:00",
+            "flight": "W1 2683",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T20:05:00+00:00",
+            "flight": "5L 371",
+            "from": "St. George (ANU)",
+            "airline": "TAC",
+            "aircraft": "Embraer RJ145",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T19:45:00+00:00",
+            "flight": "VS 187",
+            "from": "Bridgetown (BGI)",
+            "airline": "Virgin Atlantic",
+            "aircraft": "Airbus A330-300",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T18:35:00+00:00",
             "flight": "B6 149",
             "from": "New York (JFK)",
             "airline": "JetBlue",
@@ -19,23 +51,63 @@
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T15:50:00+00:00",
+            "time": "2026-08-22T18:30:00+00:00",
+            "flight": "DL 2781",
+            "from": "Atlanta (ATL)",
+            "airline": "Delta Air Lines",
+            "aircraft": "Boeing 737-800",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T18:25:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
+            "aircraft": "Airbus A321",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T17:30:00+00:00",
+            "flight": "BW 240",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T15:50:00+00:00",
             "flight": "JY 718",
             "from": "Bridgetown (BGI)",
             "airline": "interCaribbean",
             "aircraft": "ATR 42-300",
-            "status": "Unknown"
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T12:10:00+00:00",
+            "time": "2026-08-22T13:10:00+00:00",
+            "flight": "W1 2699",
+            "from": "Argyle (SVD)",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T12:10:00+00:00",
             "flight": "BW 430",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T02:30:00+00:00",
+            "flight": "BW 438",
             "from": "Port of Spain (POS)",
             "airline": "Caribbean",
             "aircraft": "ATR 72",
             "status": "Unknown"
         },
         {
-            "time": "2026-08-20T00:25:00+00:00",
+            "time": "2026-08-22T00:25:00+00:00",
             "flight": "JY 764",
             "from": "Argyle (SVD)",
             "airline": "interCaribbean",
@@ -45,48 +117,120 @@
     ],
     "departures": [
         {
-            "time": "2026-08-20T19:35:00+00:00",
+            "time": "2026-08-22T22:35:00+00:00",
+            "flight": "BA 2158",
+            "from": "Vieux Fort (UVF)",
+            "airline": "British",
+            "aircraft": "Boeing 777",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T21:40:00+00:00",
+            "flight": "BW 241",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T21:40:00+00:00",
+            "flight": "VS 188",
+            "from": "Bridgetown (BGI)",
+            "airline": "Virgin Atlantic",
+            "aircraft": "Airbus A330-300",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T20:35:00+00:00",
+            "flight": "5L 371",
+            "from": "Port of Spain (POS)",
+            "airline": "TAC",
+            "aircraft": "Embraer RJ145",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T20:00:00+00:00",
             "flight": "B6 350",
             "from": "New York (JFK)",
             "airline": "JetBlue",
+            "aircraft": "Airbus A320",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T20:00:00+00:00",
+            "flight": "B6 350",
+            "from": "New York (JFK)",
+            "airline": "JetBlue",
+            "aircraft": "Airbus A320",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T19:45:00+00:00",
+            "flight": "DL 2878",
+            "from": "Atlanta (ATL)",
+            "airline": "Delta Air Lines",
+            "aircraft": "Boeing 737-800",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T19:25:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
             "aircraft": "Airbus A321",
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T19:25:00+00:00",
-            "flight": "AA 1546",
-            "from": "Miami (MIA)",
-            "airline": "American",
-            "aircraft": "Airbus A321 (Sharklets)",
-            "status": "Departed"
+            "time": "2026-08-22T18:15:00+00:00",
+            "flight": "BW 240",
+            "from": "Bridgetown (BGI)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T16:20:00+00:00",
+            "time": "2026-08-22T16:20:00+00:00",
             "flight": "JY 719",
             "from": "Bridgetown (BGI)",
             "airline": "interCaribbean",
             "aircraft": "ATR 42-300",
-            "status": "Unknown"
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T12:55:00+00:00",
+            "time": "2026-08-22T13:20:00+00:00",
+            "flight": "W1 2682",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T12:55:00+00:00",
             "flight": "BW 431",
             "from": "Port of Spain (POS)",
             "airline": "Caribbean",
             "aircraft": "ATR 72",
-            "status": "Unknown"
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T12:00:00+00:00",
+            "time": "2026-08-22T12:00:00+00:00",
             "flight": "JY 703",
             "from": "Argyle (SVD)",
             "airline": "interCaribbean",
             "aircraft": "ATR 42-300",
-            "status": "Unknown"
+            "status": "Expected"
+        },
+        {
+            "time": "2026-08-22T09:50:00+00:00",
+            "flight": "BW 439",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
         }
     ],
     "meta": {
-        "arr_count": 5,
-        "dep_count": 5
+        "arr_count": 14,
+        "dep_count": 14
     }
 }
