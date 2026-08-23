@@ -1,0 +1,13 @@
+Options -Indexes
+
+# Block direct access to the secrets file
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Schema files are for the Supabase SQL Editor, not public serving
+<FilesMatch "\.sql$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

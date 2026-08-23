@@ -1,6 +1,9 @@
 # Ignore local flight config with API keys
 /data/flight_config.php
 
+# Ignore local event-portal config with Supabase/Stripe/Resend keys
+/portal/config.php
+
 # Node / editor / system files (common)
 node_modules/
 .DS_Store

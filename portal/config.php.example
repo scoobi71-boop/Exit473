@@ -1,0 +1,23 @@
+<?php
+// Copy this file to portal/config.php and fill in your keys.
+// portal/config.php is gitignored — never commit real keys.
+return [
+    // Supabase project settings (Project Settings → API in the Supabase dashboard).
+    'supabase_url'              => 'https://YOUR-PROJECT-REF.supabase.co',
+    'supabase_anon_key'         => '',
+    // SERVICE ROLE KEY — full database access, bypasses Row Level Security.
+    // Only ever used server-side (webhook handler, admin actions). Never send
+    // this to the browser or log it.
+    'supabase_service_role_key' => '',
+
+    // Stripe (Developers → API keys). Use test-mode keys (sk_test_...) until
+    // you're ready to go live.
+    'stripe_secret_key'         => '',
+    // Set after registering the webhook endpoint (Developers → Webhooks).
+    'stripe_webhook_secret'     => '',
+
+    // Resend (resend.com) — used for ticket confirmation / event-status emails.
+    'resend_api_key'            => '',
+    // Must be an address on a domain you've verified in Resend.
+    'resend_from_address'       => 'tickets@exit473.com',
+];
