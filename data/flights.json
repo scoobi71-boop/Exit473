@@ -1,33 +1,33 @@
 {
-    "fetched_at": "2026-08-20T23:24:00+00:00",
+    "fetched_at": "2026-08-27T07:51:43+00:00",
     "source": "aerodatabox",
     "arrivals": [
         {
-            "time": "2026-08-20T18:25:00+00:00",
+            "time": "2026-08-27T18:25:00+00:00",
             "flight": "AA 1546",
             "from": "Miami (MIA)",
             "airline": "American",
-            "aircraft": "Airbus A321 (Sharklets)",
+            "aircraft": "Airbus A321",
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T18:10:00+00:00",
+            "time": "2026-08-27T18:10:00+00:00",
             "flight": "B6 149",
             "from": "New York (JFK)",
             "airline": "JetBlue",
-            "aircraft": "Airbus A320",
+            "aircraft": "Airbus A321",
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T15:50:00+00:00",
+            "time": "2026-08-27T16:55:00+00:00",
             "flight": "JY 718",
-            "from": "Bridgetown (BGI)",
+            "from": "Bridgetown",
             "airline": "interCaribbean",
             "aircraft": "ATR 42-300",
-            "status": "Unknown"
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T12:10:00+00:00",
+            "time": "2026-08-27T12:10:00+00:00",
             "flight": "BW 430",
             "from": "Port of Spain (POS)",
             "airline": "Caribbean",
@@ -35,7 +35,7 @@
             "status": "Unknown"
         },
         {
-            "time": "2026-08-20T00:25:00+00:00",
+            "time": "2026-08-27T00:25:00+00:00",
             "flight": "JY 764",
             "from": "Argyle (SVD)",
             "airline": "interCaribbean",
@@ -45,7 +45,7 @@
     ],
     "departures": [
         {
-            "time": "2026-08-20T19:35:00+00:00",
+            "time": "2026-08-27T19:35:00+00:00",
             "flight": "B6 350",
             "from": "New York (JFK)",
             "airline": "JetBlue",
@@ -53,23 +53,23 @@
             "status": "Expected"
         },
         {
-            "time": "2026-08-20T19:25:00+00:00",
+            "time": "2026-08-27T19:25:00+00:00",
             "flight": "AA 1546",
             "from": "Miami (MIA)",
             "airline": "American",
-            "aircraft": "Airbus A321 (Sharklets)",
-            "status": "Departed"
+            "aircraft": "Airbus A321",
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T16:20:00+00:00",
+            "time": "2026-08-27T17:25:00+00:00",
             "flight": "JY 719",
-            "from": "Bridgetown (BGI)",
+            "from": "Bridgetown",
             "airline": "interCaribbean",
             "aircraft": "ATR 42-300",
-            "status": "Unknown"
+            "status": "Expected"
         },
         {
-            "time": "2026-08-20T12:55:00+00:00",
+            "time": "2026-08-27T12:55:00+00:00",
             "flight": "BW 431",
             "from": "Port of Spain (POS)",
             "airline": "Caribbean",
@@ -77,7 +77,7 @@
             "status": "Unknown"
         },
         {
-            "time": "2026-08-20T12:00:00+00:00",
+            "time": "2026-08-27T12:00:00+00:00",
             "flight": "JY 703",
             "from": "Argyle (SVD)",
             "airline": "interCaribbean",
