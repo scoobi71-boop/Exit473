@@ -15,6 +15,7 @@ $nav_profile = function_exists('admin_current_profile') ? admin_current_profile(
     <a href="dashboard.php"  class="<?= nav_active('dashboard.php') ?>">Dashboard</a>
     <?php if (in_array($nav_profile['role'] ?? '', ['site_owner', 'content_manager'], true)): ?>
       <a href="events.php"     class="<?= nav_active('events.php') ?>">Events</a>
+      <a href="/portal/admin/events.php">🎟️ Ticketing</a>
       <a href="businesses.php"      class="<?= nav_active('businesses.php') ?>">Businesses</a>
       <a href="spotlight.php"       class="<?= nav_active('spotlight.php') ?>">✨ Spotlight</a>
       <a href="calypso-artists.php" class="<?= nav_active('calypso-artists.php') ?>">Artists</a>

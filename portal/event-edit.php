@@ -3,6 +3,7 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/resend.php';
 require_once __DIR__ . '/tickets.php';
 require_once __DIR__ . '/event_media.php';
+require_once __DIR__ . '/admin_look.php';
 portal_require_auth();
 
 $token = portal_access_token();
@@ -88,9 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
 
             if ($postedId) {
+                $prev = load_event($postedId, $token);
                 $resp = supabase_table_update('events', 'id=eq.' . urlencode($postedId), $payload, $token);
                 if ($resp['status'] === 200 && !empty($resp['data'][0])) {
-                    header('Location: event-edit.php?id=' . urlencode($postedId) . '&saved=1'); exit;
+                    header('Location: event-edit.php?id=' . urlencode($postedId) . '&saved=1&was=' . urlencode($prev['status'] ?? '')); exit;
                 }
                 $error = 'Could not save changes.';
             } else {
@@ -186,7 +188,11 @@ if ($event && isset($_GET['export']) && $_GET['export'] === 'csv') {
     exit;
 }
 
-if (isset($_GET['saved'])) $msg = 'Changes saved. Since this event was already reviewed, editing it sends it back for admin approval before it\'s public again.';
+if (isset($_GET['saved'])) {
+    $msg = (($_GET['was'] ?? '') === 'pending' || ($_GET['was'] ?? '') === '')
+        ? 'Changes saved. Your event is still waiting for admin approval.'
+        : 'Changes saved. Since this event was already reviewed, editing it sends it back for admin approval before it\'s public again.';
+}
 if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket type below, then it\'ll be queued for admin approval.';
 ?>
 <!DOCTYPE html>
@@ -196,72 +202,100 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= $event ? 'Edit Event' : 'Create Event' ?> — Exit 473 Event Portal</title>
 <meta name="robots" content="noindex">
-<?php include 'head_styles.php'; ?>
+<?php admin_look_head(); ?>
 <style>
-.tt-row { display:flex; gap:.75rem; align-items:center; padding:.6rem 0; border-bottom:1px solid var(--gray-300); }
+.tt-row { display:flex; gap:.75rem; align-items:center; padding:.6rem 0; border-bottom:1px solid #EAE2E2; flex-wrap:wrap; }
 .tt-row:last-child { border-bottom:none; }
-.tt-name { flex:1; font-weight:700; }
-.tt-price { color:var(--text-light); }
-.tt-qty { color:var(--text-light); font-size:.85rem; }
-.status-pill { display:inline-block; padding:.2rem .6rem; border-radius:99px; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
-.status-pending { background:#FFF8E1; color:#8D6E00; border:1px solid #FFE082; }
-.status-published { background:#E8F5E9; color:#1B5E20; border:1px solid #A5D6A7; }
-.status-rejected { background:#FFEBEE; color:#B71C1C; border:1px solid #FFCDD2; }
-.status-cancelled { background:#ECEFF1; color:#455A64; border:1px solid #CFD8DC; }
+.tt-name { flex:1; font-weight:700; min-width:140px; }
+.tt-price, .tt-qty { color:#7A6565; font-size:.88rem; }
+.review-note { background:#FFF9F0; border:1px solid #F3D9A4; color:#6B4E00; border-radius:8px; padding:.7rem 1rem; font-size:.88rem; margin-bottom:1.25rem; }
 </style>
 </head>
-<body data-portal>
-  <?php include 'nav.php'; ?>
-  <div class="portal-wrap wide">
+<body>
+<nav class="admin-nav">
+  <div class="brand">Exit 473 <span>Event Portal</span></div>
+  <div class="nav-links-admin">
+    <a href="dashboard.php">My Events</a>
+    <a href="event-edit.php"<?= $event ? '' : ' class="active"' ?>>+ New Event</a>
+    <a href="events.php" target="_blank">Public Listing</a>
+  </div>
+  <div class="nav-right">
+    <?php if (!empty($_SESSION['portal_user_email'])): ?><span style="color:#7A6565"><?= h($_SESSION['portal_user_email']) ?></span><?php endif; ?>
+    <a href="/members.php">Members</a>
+    <a href="/index.html" target="_blank">View Site ↗</a>
+    <a href="logout.php">Log Out</a>
+  </div>
+</nav>
+<main class="wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+    <h1 class="page-title" style="margin:0"><?= $event ? 'Edit Event' : 'Create Event' ?></h1>
+    <div style="display:flex;gap:.5rem;align-items:center">
+      <?php if ($event): ?><span class="status-pill status-<?= h($event['status']) ?>"><?= h($event['status']) ?></span>
+      <a href="e.php?slug=<?= h($event['slug']) ?>" class="btn btn-outline" target="_blank"><?= $event['status'] === 'published' ? 'View Page ↗' : 'Preview ↗' ?></a><?php endif; ?>
+      <a href="dashboard.php" class="btn btn-outline">← My Events</a>
+    </div>
+  </div>
 
-    <div class="portal-card" style="margin-bottom:1.25rem">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.5rem">
-        <h1 style="margin:0"><?= $event ? 'Edit Event' : 'Create Event' ?></h1>
-        <?php if ($event): ?><span class="status-pill status-<?= h($event['status']) ?>"><?= h($event['status']) ?></span><?php endif; ?>
-      </div>
-      <?php if ($msg): ?><div class="portal-alert portal-alert-ok"><?= h($msg) ?></div><?php endif; ?>
-      <?php if ($error): ?><div class="portal-alert portal-alert-error"><?= h($error) ?></div><?php endif; ?>
+  <?php if ($msg): ?><div class="alert alert-ok"><?= h($msg) ?></div><?php endif; ?>
+  <?php if ($error): ?><div class="alert alert-error"><?= h($error) ?></div><?php endif; ?>
 
-      <form method="post">
-        <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
-        <input type="hidden" name="action" value="save_event">
-        <input type="hidden" name="id" value="<?= h($event['id'] ?? '') ?>">
+  <?php if ($event): ?>
+  <div class="review-note">
+    <?php if ($event['status'] === 'pending'): ?>
+      ⏳ <strong>Waiting for approval.</strong> You can keep editing this event (details, tickets, banner and posters) until an admin approves it.
+    <?php elseif ($event['status'] === 'published'): ?>
+      ✅ <strong>Live.</strong> Ticket prices and quantities can be updated directly. Changing the event details, banner or posters sends it back to admin review, and it's hidden until re-approved.
+    <?php elseif ($event['status'] === 'rejected'): ?>
+      ❌ <strong>Not approved.</strong> Edit and save to resubmit it for review.
+    <?php else: ?>
+      This event was cancelled.
+    <?php endif; ?>
+  </div>
+  <?php endif; ?>
 
-        <div class="portal-form-row">
-          <label for="title">Event Title</label>
+  <div class="panel" id="event-form">
+    <h2 class="panel-title">Event Details</h2>
+    <form method="post">
+      <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
+      <input type="hidden" name="action" value="save_event">
+      <input type="hidden" name="id" value="<?= h($event['id'] ?? '') ?>">
+
+      <div class="form-grid">
+        <div class="form-row" style="grid-column:1/-1">
+          <label for="title">Event Title *</label>
           <input type="text" id="title" name="title" required value="<?= h($event['title'] ?? '') ?>" placeholder="e.g. Spicemas Fete Night">
         </div>
-        <div class="portal-form-row">
-          <label for="description">Description</label>
-          <textarea id="description" name="description" rows="5" placeholder="What's this event about?"><?= h($event['description'] ?? '') ?></textarea>
+        <div class="form-row">
+          <label for="start_at">Starts (Grenada time) *</label>
+          <input type="datetime-local" id="start_at" name="start_at" required
+                 value="<?= h(!empty($event['start_at']) ? (new DateTime($event['start_at']))->setTimezone(new DateTimeZone('America/Grenada'))->format('Y-m-d\TH:i') : '') ?>">
         </div>
-        <div class="portal-form-row">
+        <div class="form-row">
+          <label for="end_at">Ends</label>
+          <input type="datetime-local" id="end_at" name="end_at"
+                 value="<?= h(!empty($event['end_at']) ? (new DateTime($event['end_at']))->setTimezone(new DateTimeZone('America/Grenada'))->format('Y-m-d\TH:i') : '') ?>">
+        </div>
+        <div class="form-row" style="grid-column:1/-1">
           <label for="venue">Venue</label>
           <input type="text" id="venue" name="venue" value="<?= h($event['venue'] ?? '') ?>" placeholder="e.g. Exit 473, Grand Anse">
         </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <div class="portal-form-row" style="flex:1;min-width:220px">
-            <label for="start_at">Starts (Grenada time)</label>
-            <input type="datetime-local" id="start_at" name="start_at" required
-                   value="<?= h(!empty($event['start_at']) ? (new DateTime($event['start_at']))->setTimezone(new DateTimeZone('America/Grenada'))->format('Y-m-d\TH:i') : '') ?>">
-          </div>
-          <div class="portal-form-row" style="flex:1;min-width:220px">
-            <label for="end_at">Ends (optional)</label>
-            <input type="datetime-local" id="end_at" name="end_at"
-                   value="<?= h(!empty($event['end_at']) ? (new DateTime($event['end_at']))->setTimezone(new DateTimeZone('America/Grenada'))->format('Y-m-d\TH:i') : '') ?>">
-          </div>
+        <div class="form-row" style="grid-column:1/-1">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="5" placeholder="What's this event about?"><?= h($event['description'] ?? '') ?></textarea>
         </div>
-        <div class="portal-form-row">
-          <label for="cover_image_url">Cover Image URL <small style="font-weight:400;text-transform:none;color:var(--text-light)">(optional — link to an image hosted elsewhere)</small></label>
+        <div class="form-row" style="grid-column:1/-1">
+          <label for="cover_image_url">Cover Image URL</label>
           <input type="url" id="cover_image_url" name="cover_image_url" value="<?= h($event['cover_image_url'] ?? '') ?>" placeholder="https://...">
+          <span class="hint">Optional. A link to an image hosted elsewhere. To upload images, use Banner &amp; Posters below.</span>
         </div>
+      </div>
 
-        <button class="btn btn-primary" type="submit"><?= $event ? 'Save Changes' : 'Create Event →' ?></button>
-        <?php if ($event && $event['status'] !== 'cancelled'): ?>
-          <a href="dashboard.php" class="btn btn-outline">Cancel</a>
-        <?php endif; ?>
-      </form>
-    </div>
+      <div style="display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap">
+        <button class="btn btn-primary" type="submit">💾 <?= $event ? 'Save Changes' : 'Create Event' ?></button>
+        <a href="dashboard.php" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
 
     <?php if ($event): ?>
     <?= media_render_manager($event, '<input type="hidden" name="_csrf" value="' . h(portal_csrf_token()) . '">', 'event-edit.php?id=' . rawurlencode($event['id'])) ?>
@@ -330,10 +364,10 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
       <?php if ($orders): ?>
         <p><a class="btn btn-sm btn-outline" href="event-edit.php?id=<?= h($event['id']) ?>&export=csv">Download CSV</a></p>
         <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:.9rem">
-          <tr style="text-align:left;border-bottom:1px solid var(--gray-300)"><th>Order</th><th>Buyer</th><th>Tickets</th><th>Total</th><th>Status</th></tr>
+        <table class="data-table">
+          <tr><th>Order</th><th>Buyer</th><th>Tickets</th><th>Total</th><th>Status</th></tr>
           <?php foreach ($orders as $o): ?>
-          <tr style="border-bottom:1px solid var(--gray-300)">
+          <tr>
             <td><?= h(strtoupper(substr(str_replace('-', '', $o['id']), 0, 8))) ?></td>
             <td><?= h($o['buyer_name'] ?: '') ?><br><span style="color:var(--text-light)"><?= h($o['buyer_email']) ?></span></td>
             <td><?= h(implode(', ', array_map(fn($i) => $i['name'] . ' × ' . $i['quantity'], $o['ticket_order_items'] ?? []))) ?></td>
@@ -362,6 +396,6 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
     <?php endif; ?>
     <?php endif; ?>
 
-  </div>
+</main>
 </body>
 </html>
