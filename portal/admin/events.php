@@ -128,6 +128,7 @@ function fmt_short($iso) {
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:.5rem">
+              <a href="event-media.php?id=<?= h($ev['id']) ?>" class="btn btn-sm btn-outline">Banner &amp; Posters</a>
               <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">Preview</a>
               <form method="post" style="display:inline">
                 <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
@@ -168,6 +169,7 @@ function fmt_short($iso) {
             <div style="display:flex;align-items:center;gap:.75rem">
               <?php if (!empty($sales[$ev['id']])): ?><span style="font-size:.85rem;color:var(--text-light)"><?= (int)$sales[$ev['id']]['tickets'] ?> sold · <?= tickets_money($sales[$ev['id']]['gross_cents']) ?></span><?php endif; ?>
               <span class="status-pill status-<?= h($ev['status']) ?>"><?= h($ev['status']) ?></span>
+              <a href="event-media.php?id=<?= h($ev['id']) ?>" class="btn btn-sm btn-outline">Banner &amp; Posters</a>
               <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">View</a>
             </div>
           </div>

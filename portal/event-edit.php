@@ -2,6 +2,7 @@
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/resend.php';
 require_once __DIR__ . '/tickets.php';
+require_once __DIR__ . '/event_media.php';
 portal_require_auth();
 
 $token = portal_access_token();
@@ -52,6 +53,17 @@ function to_utc_iso($localDatetime) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     portal_check_csrf();
     $action = $_POST['action'] ?? '';
+
+    // Banner / poster actions (see event_media.php). Organizer RLS only
+    // allows updates that send the event back to 'pending' for review.
+    if (in_array($action, ['upload_banner', 'remove_banner', 'add_posters', 'remove_poster', 'move_poster'], true)) {
+        $eventId = $_POST['event_id'] ?? '';
+        $mediaEvent = load_event($eventId, $token);
+        $wasPublished = $mediaEvent && $mediaEvent['status'] === 'published';
+        $mr = media_handle_action($action, $mediaEvent, $token, false, ['status' => 'pending']);
+        if (isset($mr['error'])) $error = $mr['error'];
+        elseif (!empty($mr['ok'])) $msg = $mr['ok'] . ($wasPublished ? ' The event goes back to admin review before it\'s public again.' : '');
+    }
 
     if ($action === 'save_event') {
         $title       = trim($_POST['title'] ?? '');
@@ -250,6 +262,10 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
         <?php endif; ?>
       </form>
     </div>
+
+    <?php if ($event): ?>
+    <?= media_render_manager($event, '<input type="hidden" name="_csrf" value="' . h(portal_csrf_token()) . '">', 'event-edit.php?id=' . rawurlencode($event['id'])) ?>
+    <?php endif; ?>
 
     <?php if ($event): ?>
     <div class="portal-card" style="margin-bottom:1.25rem">
