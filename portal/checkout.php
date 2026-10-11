@@ -75,9 +75,12 @@ foreach ($order['items'] as $it) {
     ];
 }
 
+// Not "session_id": Network Solutions' ModSecurity returns 406 for a
+// session_id/PHPSESSID-style param when the Referer is another site
+// (checkout.stripe.com), i.e. its session-fixation rule.
 $session = stripe_create_checkout_session(
     $lineItems,
-    portal_url('order-success.php?session_id={CHECKOUT_SESSION_ID}'),
+    portal_url('order-success.php?checkout={CHECKOUT_SESSION_ID}'),
     portal_url('e.php?slug=' . urlencode($event['slug']) . '&cancelled=1#tickets'),
     ['kind' => 'tickets', 'ticket_order_id' => $orderId, 'event_id' => $event['id']],
     [

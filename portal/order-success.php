@@ -2,14 +2,15 @@
 /**
  * portal/order-success.php
  *
- * Where Stripe sends the buyer after paying (?session_id=...), or where
+ * Where Stripe sends the buyer after paying (?checkout=<Stripe session id>), or where
  * checkout.php sends free orders (?order=...). Read-only: the order is
  * marked paid by the webhook, so this may briefly show "processing".
  */
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/tickets.php';
 
-$sessionId = $_GET['session_id'] ?? '';
+// ?checkout= is current; ?session_id= kept for sessions created before the 406 fix.
+$sessionId = $_GET['checkout'] ?? ($_GET['session_id'] ?? '');
 $orderParam = $_GET['order'] ?? '';
 $order = null;
 
