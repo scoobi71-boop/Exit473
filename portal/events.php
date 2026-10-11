@@ -7,6 +7,7 @@
  * way e.php does. Each event links to e.php?slug=...
  */
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/site_chrome.php';
 require_once __DIR__ . '/tickets.php';
 
 $nowIso = gmdate('Y-m-d\TH:i:s\Z');
@@ -50,7 +51,9 @@ function fmt_list_time($iso) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Upcoming Events — Exit 473</title>
 <?php include 'head_styles.php'; ?>
+<?php site_head_extra(); ?>
 <style>
+.ev-grid { margin-bottom:.5rem; }
 .ev-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.25rem; }
 .ev-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--gray-300); border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; transition:box-shadow .15s; }
 .ev-card:hover { box-shadow:0 6px 18px rgba(0,0,0,.08); }
@@ -64,15 +67,15 @@ function fmt_list_time($iso) {
 </style>
 </head>
 <body data-portal>
-  <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal</span></div>
-    <div class="portal-nav-links"><a href="events.php">Upcoming Events</a></div>
-    <div class="portal-nav-right"><a href="../index.html">Exit 473 ↗</a></div>
-  </nav>
-  <div class="portal-wrap wide">
-    <div class="portal-card">
-      <h1>Upcoming Events</h1>
-      <p class="portal-sub">Live music, cultural showcases, workshops and pop-up dining at Exit 473.</p>
+<?php site_nav('events'); ?>
+  <main>
+<?php site_page_hero("What's On", 'Upcoming Events', 'Live music, cultural showcases, workshops and pop-up dining at Exit 473. Get your tickets online.'); ?>
+    <section class="section-sm" aria-labelledby="upcoming-heading">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:2rem">
+          <span class="section-label">Coming Up</span>
+          <h2 id="upcoming-heading">Tickets on Sale</h2>
+        </div>
 
       <?php if ($loadError): ?>
         <div class="portal-alert portal-alert-error">Events couldn't be loaded right now. Please try again shortly.</div>
@@ -107,7 +110,21 @@ function fmt_list_time($iso) {
           <?php endforeach; ?>
         </div>
       <?php endif; ?>
-    </div>
-  </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section" aria-labelledby="events-cta-heading">
+      <div class="container">
+        <h2 id="events-cta-heading">Hosting an Event at Exit 473?</h2>
+        <p>Create your event page and sell tickets online through the Exit 473 Event Portal.</p>
+        <div class="cta-actions">
+          <a href="/portal/register.php" class="btn btn-primary btn-lg">🎤 Become an Organizer</a>
+          <a href="/events.html" class="btn btn-outline-white btn-lg">📅 Full Events Calendar</a>
+        </div>
+      </div>
+    </section>
+  </main>
+<?php site_footer(); ?>
 </body>
 </html>

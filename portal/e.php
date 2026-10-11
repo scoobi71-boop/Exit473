@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/site_chrome.php';
 require_once __DIR__ . '/tickets.php';
 
 $ticketError = $_SESSION['ticket_error'] ?? '';
@@ -53,6 +54,7 @@ function fmt_event_time($iso) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= $event ? h($event['title']) . ' — Exit 473 Events' : 'Event Not Found — Exit 473 Events' ?></title>
 <?php include 'head_styles.php'; ?>
+<?php site_head_extra(); ?>
 <style>
 .ev-hero { position:relative; max-width:900px; margin:0 auto 1.25rem; min-height:340px; border-radius:14px; overflow:hidden; background:#222 center/cover no-repeat; display:flex; align-items:flex-end; box-shadow:0 10px 30px rgba(0,0,0,.12); }
 .ev-hero-overlay { width:100%; padding:2rem 2rem 1.75rem; color:#fff; background:linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.45) 60%, rgba(0,0,0,0)); }
@@ -79,11 +81,8 @@ function fmt_event_time($iso) {
 </style>
 </head>
 <body data-portal>
-  <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal</span></div>
-    <div class="portal-nav-links"><a href="events.php">Upcoming Events</a></div>
-    <div class="portal-nav-right"><a href="../index.html">Exit 473 ↗</a></div>
-  </nav>
+<?php site_nav('events'); ?>
+  <main class="portal-main">
   <div class="portal-wrap wide">
     <?php if (!$event): ?>
       <div class="portal-card" style="text-align:center">
@@ -198,6 +197,8 @@ function fmt_event_time($iso) {
       </div>
     <?php endif; ?>
   </div>
+  </main>
+<?php site_footer(); ?>
   <div class="ev-lightbox" id="evLightbox" hidden role="dialog" aria-modal="true" aria-label="Poster">
     <button type="button" class="ev-lb-close" aria-label="Close">×</button>
     <button type="button" class="ev-lb-nav ev-lb-prev" aria-label="Previous">‹</button>
