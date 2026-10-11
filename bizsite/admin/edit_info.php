@@ -103,7 +103,7 @@ $cats = ['bar','barbershop','cafe','cultural','entertainment','local-craft','oth
       <div class="form-grid">
         <div class="form-row">
           <label>Phone</label>
-          <input type="text" name="phone" value="<?= h($info['phone'] ?? '') ?>" placeholder="+1-473-403-7377">
+          <input type="text" name="phone" value="<?= h($info['phone'] ?? '') ?>" placeholder="+1-473-555-0100">
         </div>
         <div class="form-row">
           <label>Email</label>

@@ -1,6 +1,6 @@
 <?php
 require_once 'auth.php';
-require_auth();
+require_role(['site_owner', 'content_manager']);
 
 $JSON_FILE = DATA_PATH . 'calypso-artists.json';
 $JS_FILE   = realpath(__DIR__ . '/../data') . DIRECTORY_SEPARATOR . 'calypso-artists.js';

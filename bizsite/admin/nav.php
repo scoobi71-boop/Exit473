@@ -20,8 +20,13 @@ function nav_a($file, $label) {
       <?php nav_a('menu_items.php', 'Menu'); ?>
     <?php endif; ?>
     <?php nav_a('gallery.php', 'Gallery'); ?>
+    <?php nav_a('finance.php', '💰 Finance'); ?>
   </div>
   <div class="nav-right">
+    <?php if (!empty($_SESSION['biz_user_email'])): ?>
+      <span style="color:#8EAAB8"><?= h($_SESSION['biz_user_email']) ?></span>
+    <?php endif; ?>
+    <a href="account.php" class="<?= $current === 'account.php' ? ' active' : '' ?>">My Account</a>
     <a href="../index.php?biz=<?= h($slug) ?>" target="_blank">View Site ↗</a>
     <a href="logout.php">Log Out</a>
   </div>

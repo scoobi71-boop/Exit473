@@ -4,17 +4,27 @@ require_once __DIR__ . '/auth.php';
 if (portal_access_token()) { header('Location: dashboard.php'); exit; }
 
 $error = '';
-$values = ['email' => '', 'username' => ''];
+$values = ['email' => '', 'username' => '', 'first_name' => '', 'last_name' => '', 'phone' => '', 'address' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     portal_check_csrf();
-    $email    = trim($_POST['email'] ?? '');
-    $username = trim($_POST['username'] ?? '');
-    $password = (string)($_POST['password'] ?? '');
-    $values   = ['email' => $email, 'username' => $username];
+    $email      = trim($_POST['email'] ?? '');
+    $username   = trim($_POST['username'] ?? '');
+    $password   = (string)($_POST['password'] ?? '');
+    $first_name = trim($_POST['first_name'] ?? '');
+    $last_name  = trim($_POST['last_name'] ?? '');
+    $phone      = trim($_POST['phone'] ?? '');
+    $address    = trim($_POST['address'] ?? '');
+    $values     = ['email' => $email, 'username' => $username, 'first_name' => $first_name, 'last_name' => $last_name, 'phone' => $phone, 'address' => $address];
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
+    } elseif ($first_name === '' || $last_name === '') {
+        $error = 'Please enter your first and last name.';
+    } elseif (!preg_match('/^[0-9+\-\s()]{7,20}$/', $phone)) {
+        $error = 'Please enter a valid phone number.';
+    } elseif ($address === '') {
+        $error = 'Please enter your address.';
     } elseif (!preg_match('/^[a-zA-Z0-9_.-]{3,32}$/', $username)) {
         $error = 'Username must be 3–32 characters (letters, numbers, "_", "-", ".").';
     } elseif (strlen($password) < 8) {
@@ -25,7 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($taken['status'] === 200 && !empty($taken['data'])) {
             $error = 'That username is already taken.';
         } else {
-            $resp = supabase_auth_signup($email, $password, ['username' => $username], portal_url('verify.php'));
+            $resp = supabase_auth_signup($email, $password, [
+                'username'   => $username,
+                'first_name' => $first_name,
+                'last_name'  => $last_name,
+                'phone'      => $phone,
+                'address'    => $address,
+            ], portal_url('verify.php'));
             if (in_array($resp['status'], [200, 201], true)) {
                 header('Location: register-pending.php?email=' . urlencode($email)); exit;
             }
@@ -63,6 +79,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php if ($error): ?><div class="portal-alert portal-alert-error"><?= h($error) ?></div><?php endif; ?>
       <form method="post">
         <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
+        <div class="portal-form-row">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" name="first_name" required autocomplete="given-name" value="<?= h($values['first_name']) ?>">
+        </div>
+        <div class="portal-form-row">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="last_name" name="last_name" required autocomplete="family-name" value="<?= h($values['last_name']) ?>">
+        </div>
+        <div class="portal-form-row">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" value="<?= h($values['phone']) ?>" placeholder="(473) 555-0100">
+        </div>
+        <div class="portal-form-row">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" required autocomplete="street-address" value="<?= h($values['address']) ?>" placeholder="Street, Parish, Grenada">
+        </div>
         <div class="portal-form-row">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" required autocomplete="email" value="<?= h($values['email']) ?>" placeholder="you@example.com">

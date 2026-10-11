@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Profile — Grenada Calypso · Exit 473</title>
+  <meta name="description" content="An in-depth profile and interview with a Grenadian calypso artist.">
+  <link rel="canonical" href="https://exit473.com/calypso-artist-detail.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Exit 473">
+  <meta property="og:image" content="https://exit473.com/images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-T6MG63FX84"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-T6MG63FX84');</script>
+</head>
+<body data-page="calypso-artist-detail">
+
+  <!-- NAVIGATION -->
+  <nav class="site-nav solid" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="Exit 473 home">
+        <img src="images/logo.png" alt="Exit 473 logo" class="logo-img" onerror="this.style.display='none'">
+        <span class="logo-text">
+          <span class="logo-main">Exit 473</span>
+          <span class="logo-sub">Complex · Grenada</span>
+        </span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="directory.html">Directory</a></li>
+        <li><a href="exit473_aerial_map.php">Site Map</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="carnival.html" class="active">Carnival</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="directory.html" class="btn btn-primary" style="margin-left:.5rem">Explore Businesses</a></li>
+      </ul>
+      <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main id="artist-main">
+    <!-- Content injected by JS -->
+    <div class="loading-spinner" style="padding:8rem 1rem;text-align:center">Loading artist profile…</div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" aria-label="Site footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="Home">
+            <img src="images/logo.png" alt="Exit 473 logo" class="logo-img" onerror="this.style.display='none'">
+            <span class="logo-text">
+              <span class="logo-main">Exit 473</span>
+              <span class="logo-sub">Complex · Grenada</span>
+            </span>
+          </a>
+          <p>St. George's most vibrant destination — celebrating the food, culture, and spirit of Grenada, West Indies.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">f</a>
+            <a href="#" class="social-link" aria-label="Instagram">📸</a>
+            <a href="#" class="social-link" aria-label="WhatsApp">💬</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="directory.html">Business Directory</a></li>
+            <li><a href="events.html">Events Calendar</a></li>
+            <li><a href="carnival.html">Spicemas Carnival</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Carnival</h4>
+          <ul>
+            <li><a href="carnival.html#panel-calypso">Calypso</a></li>
+            <li><a href="carnival.html#panel-steelpan">Steel Pan</a></li>
+            <li><a href="carnival.html#panel-masquerade">Masquerade</a></li>
+            <li><a href="carnival.html#panel-traditions">Traditions</a></li>
+            <li><a href="calypso-artists.html">Artist Profiles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-contact-item"><span>📍</span><span>Maurice Bishop Highway, Grand Anse, St George's, Grenada</span></div>
+          <div class="footer-contact-item"><span>📞</span><span><a href="tel:+14735550100">+1 (473) 555-0100</a></span></div>
+          <div class="footer-contact-item"><span>✉️</span><span><a href="mailto:info@exit473.com">info@exit473.com</a></span></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="footer-year">2024</span> Exit 473 · Grenada, West Indies. All rights reserved.</p>
+        <p>Built with 🌿 and island pride.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="data/calypso-artists.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
+  <script>
+    const QUESTIONS = [
+      "Tell us who you are and where you're from. How did growing up in Grenada shape the artist you're becoming?",
+      "When did you first fall in love with calypso, and who were the artists or sounds that made you say, \"That's what I want to do\"?",
+      "Calypso has always been the voice of the people. What topics, stories, or social issues do you feel called to sing about?",
+      "Describe your sound. How would you introduce your music to someone who has never heard Grenadian calypso before?",
+      "What has been your most memorable performance or career moment so far, and what did it teach you about yourself as an artist?",
+      "How do you see Grenadian calypso evolving, and what role do you want to play in keeping the tradition alive for the next generation?",
+      "What's next for you? Tell us about what you're working on and what fans can look forward to."
+    ];
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function formatDate(d) {
+      if (!d) return '';
+      const dt = new Date(d + 'T12:00:00');
+      return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function getNeighborArtists(artists, currentId) {
+      const idx = artists.findIndex(a => a.id === currentId);
+      const prev = idx > 0 ? artists[idx - 1] : null;
+      const next = idx < artists.length - 1 ? artists[idx + 1] : null;
+      return { prev, next };
+    }
+
+    function renderArtist(a, artists) {
+      const { prev, next } = getNeighborArtists(artists, a.id);
+
+      const photoBlock = a.photo
+        ? `<img src="${esc(a.photo)}" alt="${esc(a.stageName)}">`
+        : `<div class="placeholder-icon">🎤</div>`;
+
+      const qaItems = QUESTIONS.map((q, i) => {
+        const answer = a['q' + (i + 1)];
+        if (!answer) return '';
+        return `
+          <div class="interview-qa">
+            <div class="interview-q-num">${i + 1}</div>
+            <div class="interview-qa-body">
+              <div class="interview-question">${esc(q)}</div>
+              <div class="interview-answer">${esc(answer)}</div>
+            </div>
+          </div>`;
+      }).join('');
+
+      const prevLink = prev
+        ? `<a href="calypso-artist-detail.html?id=${esc(prev.id)}" class="btn btn-outline btn-sm">← ${esc(prev.stageName)}</a>`
+        : '<span></span>';
+      const nextLink = next
+        ? `<a href="calypso-artist-detail.html?id=${esc(next.id)}" class="btn btn-outline btn-sm">${esc(next.stageName)} →</a>`
+        : '<span></span>';
+
+      return `
+        <!-- ARTIST HERO -->
+        <div class="artist-detail-hero">
+          <div class="container">
+            <a href="calypso-artists.html" class="artist-detail-back">← All Calypso Artists</a>
+            <div class="artist-detail-layout">
+              <div class="artist-detail-photo" aria-hidden="true">${photoBlock}</div>
+              <div>
+                <div class="artist-detail-tag">🎵 Grenada Calypso · Spicemas</div>
+                <h1>${esc(a.stageName)}</h1>
+                <div class="artist-detail-real-name">${esc(a.realName)}</div>
+                <div class="artist-detail-chips">
+                  <span class="artist-detail-chip">📍 ${esc(a.parish)}</span>
+                  ${a.dateOfInterview ? `<span class="artist-detail-chip">🗓 Interview: ${esc(formatDate(a.dateOfInterview))}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIO -->
+        ${a.shortBio ? `
+        <section class="artist-bio-section">
+          <div class="container">
+            <span class="section-label">About the Artist</span>
+            <p class="artist-bio-text">${esc(a.shortBio)}</p>
+          </div>
+        </section>` : ''}
+
+        <!-- INTERVIEW -->
+        <section class="interview-section">
+          <div class="container">
+            <div class="interview-section-header">
+              <span class="interview-section-label">In Their Own Words</span>
+              <h2 class="interview-section-title">The Interview</h2>
+            </div>
+            <div class="interview-qa-list">
+              ${qaItems}
+            </div>
+          </div>
+        </section>
+
+        <!-- ARTIST NAV FOOTER -->
+        <div class="artist-nav-footer">
+          <div class="container">
+            <div class="artist-nav-inner">
+              ${prevLink}
+              <a href="calypso-artists.html" class="btn btn-primary">All Artists</a>
+              ${nextLink}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const artists = window.CALYPSO_ARTISTS_DATA || [];
+      const main = document.getElementById('artist-main');
+      const id = new URLSearchParams(window.location.search).get('id');
+      const artist = artists.find(a => a.id === id);
+
+      if (!artist) {
+        if (main) main.innerHTML = `
+          <div class="container" style="padding:6rem 1.5rem;text-align:center">
+            <div style="font-size:3rem;margin-bottom:1rem">🎤</div>
+            <h2>Artist Not Found</h2>
+            <p style="color:var(--text-light);margin:1rem 0 2rem">We couldn't find that artist profile.</p>
+            <a href="calypso-artists.html" class="btn btn-primary">← All Artists</a>
+          </div>`;
+        return;
+      }
+
+      // Update page meta
+      document.title = `${artist.stageName} — Grenada Calypso · Exit 473`;
+      document.querySelector('meta[name="description"]')?.setAttribute('content',
+        artist.shortBio || `Profile and interview with ${artist.stageName}, Grenadian calypso artist.`);
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content',
+        `${artist.stageName} — Grenada Calypso · Exit 473`);
+
+      if (main) main.innerHTML = renderArtist(artist, artists);
+
+      // Re-parse emoji after DOM injection
+      if (window.twemoji) twemoji.parse(main, { folder: 'svg', ext: '.svg' });
+    });
+  </script>
+  <script>twemoji.parse(document.querySelector('footer'),{folder:'svg',ext:'.svg'});</script>
+</body>
+</html>

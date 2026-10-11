@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/resend.php';
 portal_require_auth();
 
 $token = portal_access_token();
@@ -84,6 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $payload['slug'] = unique_slug(portal_slugify($title));
                 $resp = supabase_table_insert('events', $payload, $token);
                 if ($resp['status'] === 201 && !empty($resp['data'][0])) {
+                    $organizer = portal_current_profile();
+                    $organizerLabel = $organizer ? ($organizer['display_name'] ?: $organizer['username']) : ($_SESSION['portal_user_email'] ?? 'an organizer');
+                    notify_admin_new_event($title, $organizerLabel);
                     header('Location: event-edit.php?id=' . urlencode($resp['data'][0]['id']) . '&created=1'); exit;
                 }
                 $error = 'Could not create the event.';

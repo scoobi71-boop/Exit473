@@ -4,14 +4,26 @@ require_once __DIR__ . '/auth.php';
 if (portal_access_token()) { header('Location: dashboard.php'); exit; }
 
 $error = '';
-$email = '';
+$identifier = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     portal_check_csrf();
-    $email    = trim($_POST['email'] ?? '');
-    $password = (string)($_POST['password'] ?? '');
+    $identifier = trim($_POST['identifier'] ?? '');
+    $password   = (string)($_POST['password'] ?? '');
 
-    $resp = supabase_auth_login($email, $password);
+    // Supabase Auth only logs in by email, so a non-email identifier is
+    // resolved to its account's email via the profiles table first.
+    $email = $identifier;
+    if ($identifier !== '' && !filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+        $email = null;
+        $profileResp = supabase_table_select('profiles', 'username=eq.' . urlencode($identifier) . '&select=id', null, true);
+        if ($profileResp['status'] === 200 && !empty($profileResp['data'][0]['id'])) {
+            $user = supabase_auth_admin_get_user_by_id($profileResp['data'][0]['id']);
+            if (!empty($user['email'])) $email = $user['email'];
+        }
+    }
+
+    $resp = $email ? supabase_auth_login($email, $password) : ['status' => 400, 'data' => []];
     if ($resp['status'] === 200 && !empty($resp['data']['access_token'])) {
         portal_store_session($resp['data']);
         $next = $_GET['next'] ?? '';
@@ -53,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form method="post">
         <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
         <div class="portal-form-row">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required autocomplete="email" value="<?= h($email) ?>" placeholder="you@example.com">
+          <label for="identifier">Email or Username</label>
+          <input type="text" id="identifier" name="identifier" required autocomplete="username" value="<?= h($identifier) ?>" placeholder="you@example.com or your username">
         </div>
         <div class="portal-form-row">
           <label for="password">Password</label>

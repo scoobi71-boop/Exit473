@@ -52,7 +52,7 @@ function fmt_event_time($iso) {
 <body data-portal>
   <nav class="portal-nav">
     <div class="brand">Exit 473 <span>Event Portal</span></div>
-    <div class="portal-nav-links"></div>
+    <div class="portal-nav-links"><a href="events.php">Upcoming Events</a></div>
     <div class="portal-nav-right"><a href="../index.html">Exit 473 ↗</a></div>
   </nav>
   <div class="portal-wrap wide">

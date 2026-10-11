@@ -124,6 +124,53 @@ function supabase_auth_resend($email) {
     ]);
 }
 
+/** Sends a "reset your password" email; the link lands the visitor on $redirectTo. */
+function supabase_auth_recover($email, $redirectTo = null) {
+    $path = '/auth/v1/recover';
+    if ($redirectTo) $path .= '?redirect_to=' . urlencode($redirectTo);
+    return supabase_request('POST', $path, ['body' => ['email' => $email]]);
+}
+
+/**
+ * Admin API (service_role only) — creates a user directly, bypassing the
+ * public signup flow. Used to invite admin/portal-admin accounts.
+ */
+function supabase_auth_admin_create_user($email, $metadata = [], $emailConfirm = true) {
+    $body = ['email' => $email, 'email_confirm' => $emailConfirm, 'password' => bin2hex(random_bytes(16))];
+    if ($metadata) $body['user_metadata'] = $metadata;
+    return supabase_request('POST', '/auth/v1/admin/users', ['body' => $body, 'service_role' => true]);
+}
+
+function supabase_auth_admin_delete_user($id) {
+    return supabase_request('DELETE', '/auth/v1/admin/users/' . urlencode($id), ['service_role' => true]);
+}
+
+/** Looks up an existing auth user by email (service_role only), or null. */
+function supabase_auth_admin_get_user_by_email($email) {
+    $resp = supabase_request('GET', '/auth/v1/admin/users?email=' . urlencode($email), ['service_role' => true]);
+    if ($resp['status'] !== 200) return null;
+    $users = $resp['data']['users'] ?? $resp['data'] ?? [];
+    foreach ($users as $u) {
+        if (isset($u['email']) && strcasecmp($u['email'], $email) === 0) return $u;
+    }
+    return null;
+}
+
+/** Looks up an existing auth user by id (service_role only), or null. */
+function supabase_auth_admin_get_user_by_id($id) {
+    $resp = supabase_request('GET', '/auth/v1/admin/users/' . urlencode($id), ['service_role' => true]);
+    return $resp['status'] === 200 ? $resp['data'] : null;
+}
+
+/** Calls a Postgres function exposed via PostgREST (POST /rest/v1/rpc/<fn>). */
+function supabase_rpc($fn, $args = [], $accessToken = null, $serviceRole = false) {
+    return supabase_request('POST', '/rest/v1/rpc/' . $fn, [
+        'body'         => $args,
+        'access_token' => $accessToken,
+        'service_role' => $serviceRole,
+    ]);
+}
+
 /* ---- PostgREST (table) API ---- */
 
 function supabase_table_select($table, $query = '', $accessToken = null, $serviceRole = false) {

@@ -10,17 +10,6 @@ $artists     = file_exists($artists_raw) ? (json_decode(file_get_contents($artis
 $tents_raw   = DATA_PATH . 'calypso-tents.json';
 $tents       = file_exists($tents_raw) ? (json_decode(file_get_contents($tents_raw), true) ?: []) : [];
 
-$pw_msg = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_password'])) {
-    check_csrf();
-    $np = trim($_POST['new_password'] ?? '');
-    $cp = trim($_POST['confirm_password'] ?? '');
-    if (strlen($np) < 6)          $pw_msg = 'error:Password must be at least 6 characters.';
-    elseif ($np !== $cp)          $pw_msg = 'error:Passwords do not match.';
-    elseif (change_pw($np))       $pw_msg = 'ok:Password updated successfully.';
-    else                          $pw_msg = 'error:Could not save password. Check file permissions.';
-}
-[$pw_type, $pw_text] = $pw_msg ? explode(':', $pw_msg, 2) : ['', ''];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,22 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_password'])) {
   </div>
 
   <div class="panel" style="max-width:480px">
-    <h2 class="panel-title">Change Password</h2>
-    <?php if ($pw_text): ?>
-      <div class="alert alert-<?= $pw_type ?>"><?= h($pw_text) ?></div>
-    <?php endif; ?>
-    <form method="post">
-      <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
-      <div class="form-row">
-        <label>New Password</label>
-        <input type="password" name="new_password" required minlength="6" placeholder="Minimum 6 characters">
-      </div>
-      <div class="form-row">
-        <label>Confirm Password</label>
-        <input type="password" name="confirm_password" required minlength="6" placeholder="Repeat new password">
-      </div>
-      <button class="btn btn-primary" type="submit">Update Password</button>
-    </form>
+    <h2 class="panel-title">Account</h2>
+    <p style="color:#7A6565;font-size:.9rem">Manage your password from <a href="account.php">My Account</a>.</p>
   </div>
 </main>
 </body>

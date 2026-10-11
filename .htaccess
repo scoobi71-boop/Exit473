@@ -1,0 +1,9 @@
+# Force HTTPS for every page on exit473.com / www.exit473.com.
+# The X-Forwarded-Proto check stops a redirect loop if the host terminates
+# SSL at a proxy in front of Apache.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
