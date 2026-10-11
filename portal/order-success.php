@@ -7,6 +7,7 @@
  * marked paid by the webhook, so this may briefly show "processing".
  */
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/site_chrome.php';
 require_once __DIR__ . '/tickets.php';
 
 // ?checkout= is current; ?session_id= kept for sessions created before the 406 fix.
@@ -33,13 +34,11 @@ $ref = $order ? strtoupper(substr(str_replace('-', '', $order['id']), 0, 8)) : '
 <title>Your Tickets — Exit 473 Events</title>
 <?php if ($order && $order['status'] === 'pending'): ?><meta http-equiv="refresh" content="5"><?php endif; ?>
 <?php include 'head_styles.php'; ?>
+<?php site_head_extra(); ?>
 </head>
 <body data-portal>
-  <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal</span></div>
-    <div class="portal-nav-links"><a href="events.php">Upcoming Events</a></div>
-    <div class="portal-nav-right"><a href="../index.html">Exit 473 ↗</a></div>
-  </nav>
+<?php site_nav('events'); ?>
+  <main class="portal-main">
   <div class="portal-wrap">
     <div class="portal-card" style="text-align:center">
       <?php if (!$order): ?>
@@ -60,5 +59,7 @@ $ref = $order ? strtoupper(substr(str_replace('-', '', $order['id']), 0, 8)) : '
       <?php if ($ev): ?><p style="margin-top:1.5rem"><a class="btn btn-outline" href="e.php?slug=<?= h($ev['slug']) ?>">Back to event</a></p><?php endif; ?>
     </div>
   </div>
+  </main>
+<?php site_footer(); ?>
 </body>
 </html>
