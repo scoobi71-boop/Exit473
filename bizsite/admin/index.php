@@ -1,22 +1,26 @@
 <?php
 require_once 'auth.php';
-if (!empty($_SESSION['admin_ok'])) { header('Location: dashboard.php'); exit; }
+if (biz_access_token() && biz_current_profile()) { header('Location: dashboard.php'); exit; }
 
 $error = '';
+$email = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
-    $slug = clean_slug($_POST['slug'] ?? '');
-    $pw   = $_POST['password'] ?? '';
-    if (!$slug || !biz_exists($slug)) {
-        $error = 'Business not found.';
-    } elseif (!verify_pw($slug, $pw)) {
-        $error = 'Incorrect password.';
+    $email    = trim($_POST['email'] ?? '');
+    $password = (string)($_POST['password'] ?? '');
+
+    $resp = supabase_auth_login($email, $password);
+    if ($resp['status'] === 200 && !empty($resp['data']['access_token'])) {
+        biz_store_session($resp['data']);
+        if (!biz_current_profile()) {
+            biz_logout();
+            $error = 'This account is not set up as a business admin.';
+        } else {
+            biz_record_login($resp['data']['user']['id']);
+            header('Location: dashboard.php'); exit;
+        }
     } else {
-        $info = read_info($slug);
-        $_SESSION['admin_ok']   = true;
-        $_SESSION['admin_slug'] = $slug;
-        $_SESSION['admin_name'] = $info['name'] ?? $slug;
-        header('Location: dashboard.php'); exit;
+        $error = 'Incorrect email or password.';
     }
 }
 ?>
@@ -40,8 +44,8 @@ input:focus{border-color:#2D6A4F}
 .btn{width:100%;padding:.8rem;background:#2D6A4F;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
 .btn:hover{background:#1B4D35}
 .error{background:#FFF0F0;border:1px solid #FFAAAA;color:#990000;padding:.65rem .9rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem}
-.back{text-align:center;font-size:.78rem;color:#718096;margin-top:1rem}
-.back a{color:#2D6A4F}
+.hint{text-align:center;font-size:.78rem;color:#718096;margin-top:1rem}
+.hint a{color:#2D6A4F}
 </style>
 </head>
 <body>
@@ -57,8 +61,8 @@ input:focus{border-color:#2D6A4F}
   <form method="post">
     <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
     <div>
-      <label for="slug">Business ID</label>
-      <input type="text" id="slug" name="slug" required autofocus autocomplete="username" placeholder="e.g. spice-garden" value="<?= h($_POST['slug'] ?? '') ?>">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autofocus autocomplete="email" placeholder="you@example.com" value="<?= h($email) ?>">
     </div>
     <div>
       <label for="pw">Password</label>
@@ -66,7 +70,7 @@ input:focus{border-color:#2D6A4F}
     </div>
     <button class="btn" type="submit">Log In →</button>
   </form>
-  <p class="back"><a href="../index.php">← Back to site</a></p>
+  <p class="hint"><a href="forgot-password.php">Forgot password?</a> · <a href="../index.php">← Back to site</a></p>
 </div>
 </body>
 </html>

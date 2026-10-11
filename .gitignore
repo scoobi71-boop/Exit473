@@ -8,3 +8,16 @@
 node_modules/
 .DS_Store
 /.vscode/
+
+# Secrets and server-only/junk content (never commit)
+.adminpass
+**/.adminpass
+.claude/
+/data/flight_config.php
+/portal/config.php
+.env
+*.env
+/BACK_UP_ALL/
+_vti_*
+/postinfo.html
+/phpsessions/

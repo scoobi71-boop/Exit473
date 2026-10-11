@@ -1,16 +1,18 @@
 <?php
 /**
  * Event Portal Admin — gated by the SAME login as the core site admin
- * (admin/.adminpass), not a separate account. This intentionally reuses
- * admin/auth.php's session flag rather than portal/auth.php's Supabase-based
- * organizer login, so the site owner's one existing password unlocks both
- * areas. The interface itself still lives entirely under portal/admin/,
- * separate from /admin/'s own pages.
+ * (admin/auth.php's Supabase-backed session), not a separate account. This
+ * intentionally reuses admin/auth.php rather than portal/auth.php's
+ * organizer login, so any core site admin (either role) can moderate
+ * events here. The interface itself still lives entirely under
+ * portal/admin/, separate from /admin/'s own pages.
  */
 require_once __DIR__ . '/../../admin/auth.php';
 require_once __DIR__ . '/../supabase.php';
 
-if (empty($_SESSION['admin_ok'])) {
+// Not admin/auth.php's require_auth(): its relative "index.php" redirect
+// would resolve to this directory's own index.php, not /admin/index.php.
+if (!admin_access_token()) {
     header('Location: /admin/index.php');
     exit;
 }

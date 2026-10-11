@@ -1,6 +1,6 @@
 <?php
 require_once 'auth.php';
-require_auth();
+require_role(['site_owner', 'content_manager']);
 
 $HEADS   = ['id','title','date','time','end_time','venue','description','category','website','free','recurring','recur_count','images'];
 $CSV     = DATA_PATH . 'events.csv';

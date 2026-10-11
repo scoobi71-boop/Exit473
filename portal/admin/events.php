@@ -2,7 +2,9 @@
 require_once __DIR__ . '/../../admin/auth.php';
 require_once __DIR__ . '/../supabase.php';
 
-if (empty($_SESSION['admin_ok'])) {
+// Not admin/auth.php's require_auth(): its relative "index.php" redirect
+// would resolve to this directory's own index.php, not /admin/index.php.
+if (!admin_access_token()) {
     header('Location: /admin/index.php');
     exit;
 }
@@ -23,10 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$resp = supabase_table_select('events', 'select=*&order=created_at.desc', null, true);
+$organizerFilter = trim($_GET['organizer'] ?? '');
+
+$eventsQuery = 'select=*&order=created_at.desc';
+if ($organizerFilter) $eventsQuery .= '&organizer_id=eq.' . urlencode($organizerFilter);
+$resp = supabase_table_select('events', $eventsQuery, null, true);
 $events = ($resp['status'] === 200) ? $resp['data'] : [];
 $pending = array_values(array_filter($events, fn($e) => $e['status'] === 'pending'));
 $others  = array_values(array_filter($events, fn($e) => $e['status'] !== 'pending'));
+
+$organizerFilterName = null;
+if ($organizerFilter) {
+    $r = supabase_table_select('profiles', 'id=eq.' . urlencode($organizerFilter) . '&select=username,display_name,first_name,last_name', null, true);
+    if ($r['status'] === 200 && !empty($r['data'][0])) {
+        $p = $r['data'][0];
+        $fn = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? ''));
+        $organizerFilterName = $fn !== '' ? $fn : ($p['display_name'] ?: $p['username']);
+    }
+}
 
 // Look up organizer usernames in one pass rather than one query per event.
 $organizerIds = array_unique(array_column($events, 'organizer_id'));
@@ -85,6 +101,13 @@ function fmt_short($iso) {
   <div class="portal-wrap wide">
 
     <?php if ($msgText): ?><div class="portal-alert portal-alert-<?= $msgType ?>"><?= h($msgText) ?></div><?php endif; ?>
+
+    <?php if ($organizerFilter): ?>
+      <p style="margin-bottom:1rem"><a href="/admin/users.php?tab=portal">← Back to Portal Users</a></p>
+      <div class="portal-alert portal-alert-ok" style="margin-bottom:1.25rem">
+        Showing events by <strong><?= h($organizerFilterName ?: 'this organizer') ?></strong> — <a href="events.php">show all events</a>
+      </div>
+    <?php endif; ?>
 
     <div class="portal-card" style="margin-bottom:1.25rem">
       <h1>Pending Approval <small style="font-weight:400;font-size:1rem;color:var(--text-light)">(<?= count($pending) ?>)</small></h1>

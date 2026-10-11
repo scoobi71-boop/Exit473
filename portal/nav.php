@@ -9,6 +9,7 @@ function portal_nav_active($file) {
   <div class="brand">Exit 473 <span>Event Portal</span></div>
   <div class="portal-nav-links">
     <a href="dashboard.php" class="<?= portal_nav_active('dashboard.php') ?>">My Events</a>
+    <a href="events.php" class="<?= portal_nav_active('events.php') ?>">Upcoming Events</a>
   </div>
   <div class="portal-nav-right">
     <a href="../index.html">Exit 473 ↗</a>

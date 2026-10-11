@@ -1,6 +1,6 @@
 <?php
 require_once 'auth.php';
-require_auth();
+require_role(['site_owner', 'content_manager']);
 
 $upload_dir = realpath(__DIR__ . '/../uploads/artist-media');
 $files      = [];

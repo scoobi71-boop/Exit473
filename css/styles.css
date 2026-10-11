@@ -252,6 +252,10 @@ p  { font-size: 1rem; }
 }
 .nav-links .btn { margin-left: .5rem; }
 
+/* Improve contrast for nav links when nav uses a red/dark background */
+.site-nav .nav-links a { color: rgba(255,255,255,0.95); }
+.site-nav .nav-links a:hover, .site-nav .nav-links a.active { color: var(--white); background: rgba(255,255,255,.12); }
+
 .nav-hamburger {
   display: none;
   flex-direction: column;

@@ -1,6 +1,6 @@
 <?php
 require_once 'auth.php';
-require_auth();
+require_role(['site_owner', 'content_manager']);
 
 $CSV     = DATA_PATH . 'events.csv';
 $JS_FILE  = realpath(__DIR__ . '/../data') . DIRECTORY_SEPARATOR . 'events.js';

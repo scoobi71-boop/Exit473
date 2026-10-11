@@ -1,5 +1,25 @@
 <?php
+/**
+ * bizsite/admin/auth.php
+ *
+ * Session + auth helpers for the bizsite/ business admin. Real per-user
+ * accounts via Supabase Auth (same project as portal/ and admin/, see
+ * portal/config.php), replacing the old shared-per-business password file
+ * (data/<slug>/.adminpass). Each Supabase user is linked to exactly one
+ * business slug via the biz_profiles table — see
+ * bizsite/admin/schema_01_biz_profiles.sql.
+ *
+ * Session keys are deliberately different from admin/auth.php's admin_*
+ * keys and portal/auth.php's portal_* keys so a visitor could in principle
+ * hold more than one of those sessions at once.
+ *
+ * bizsite/index.php and bizsite/menu.php (the public-facing site) also
+ * require this file, but only for the plain utility functions below
+ * (clean_slug, read_info, has_menu, h, ...) — they never call require_auth().
+ */
 if (session_status() === PHP_SESSION_NONE) session_start();
+
+require_once __DIR__ . '/../../portal/supabase.php';
 
 define('BIZ_DATA_ROOT', realpath(__DIR__ . '/../data') . DIRECTORY_SEPARATOR);
 define('BIZ_IMG_ROOT',  dirname(__DIR__) . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR);
@@ -7,29 +27,6 @@ define('BIZ_IMG_ROOT',  dirname(__DIR__) . DIRECTORY_SEPARATOR . 'images' . DIRE
 /* ---- Business helpers ---- */
 function biz_exists($slug) {
     return $slug !== '' && is_dir(BIZ_DATA_ROOT . $slug);
-}
-
-function current_slug() { return $_SESSION['admin_slug'] ?? ''; }
-
-function get_hash_file($slug) {
-    return BIZ_DATA_ROOT . $slug . DIRECTORY_SEPARATOR . '.adminpass';
-}
-
-function verify_pw($slug, $pw) {
-    $f = get_hash_file($slug);
-    if (!file_exists($f)) return false;
-    return password_verify($pw, trim(file_get_contents($f)));
-}
-
-function change_pw($slug, $new) {
-    return file_put_contents(get_hash_file($slug), password_hash($new, PASSWORD_DEFAULT)) !== false;
-}
-
-/* ---- Auth ---- */
-function require_auth() {
-    if (empty($_SESSION['admin_ok']) || empty($_SESSION['admin_slug'])) {
-        header('Location: index.php'); exit;
-    }
 }
 
 function csrf_token() {
@@ -40,6 +37,102 @@ function csrf_token() {
 function check_csrf() {
     if (empty($_POST['_csrf']) || !hash_equals($_SESSION['csrf'] ?? '', $_POST['_csrf'])) {
         http_response_code(403); die('Invalid request.');
+    }
+}
+
+/* ---- Supabase-backed session ---- */
+
+/** Store a Supabase auth session (access/refresh tokens + user) after login/reset. */
+function biz_store_session($authData) {
+    $_SESSION['biz_access_token']  = $authData['access_token']  ?? null;
+    $_SESSION['biz_refresh_token'] = $authData['refresh_token'] ?? null;
+    $_SESSION['biz_user_id']       = $authData['user']['id']    ?? null;
+    $_SESSION['biz_user_email']    = $authData['user']['email'] ?? null;
+}
+
+function biz_logout() {
+    unset(
+        $_SESSION['biz_access_token'],
+        $_SESSION['biz_refresh_token'],
+        $_SESSION['biz_user_id'],
+        $_SESSION['biz_user_email']
+    );
+}
+
+function biz_base64url_decode($data) {
+    $pad = strlen($data) % 4;
+    if ($pad) $data .= str_repeat('=', 4 - $pad);
+    return base64_decode(strtr($data, '-_', '+/'));
+}
+
+/** Reads the `exp` claim out of a JWT without needing a signing-key/library. */
+function biz_jwt_expiry($jwt) {
+    $parts = explode('.', $jwt);
+    if (count($parts) < 2) return 0;
+    $payload = json_decode(biz_base64url_decode($parts[1]), true);
+    return (int)($payload['exp'] ?? 0);
+}
+
+/**
+ * Returns a valid access token for the current session, transparently
+ * refreshing it first if it's expired (or about to). Returns null if the
+ * visitor isn't logged in or the refresh token is no longer valid.
+ */
+function biz_access_token() {
+    if (empty($_SESSION['biz_access_token'])) return null;
+
+    if (biz_jwt_expiry($_SESSION['biz_access_token']) > time() + 30) {
+        return $_SESSION['biz_access_token'];
+    }
+
+    if (!empty($_SESSION['biz_refresh_token'])) {
+        $refreshed = supabase_auth_refresh($_SESSION['biz_refresh_token']);
+        if ($refreshed['status'] === 200 && !empty($refreshed['data']['access_token'])) {
+            biz_store_session($refreshed['data']);
+            return $_SESSION['biz_access_token'];
+        }
+    }
+
+    biz_logout();
+    return null;
+}
+
+/**
+ * The logged-in business user's own biz_profiles row (id, email, slug,
+ * first/last name, phone), or null. Reads via the service_role key rather
+ * than the user's own token — every caller here is already-trusted
+ * server-side PHP, and it sidesteps needing the row's RLS policy to cover
+ * every access shape.
+ */
+function biz_current_profile() {
+    if (!biz_access_token() || empty($_SESSION['biz_user_id'])) return null;
+    static $profile = null;
+    if ($profile !== null) return $profile;
+    $resp = supabase_table_select(
+        'biz_profiles',
+        'id=eq.' . urlencode($_SESSION['biz_user_id']) . '&select=*',
+        null,
+        true
+    );
+    $profile = ($resp['status'] === 200 && !empty($resp['data'][0])) ? $resp['data'][0] : false;
+    return $profile ?: null;
+}
+
+/** Records a login for the Users page's last-login/count columns. Best-effort. */
+function biz_record_login($uid) {
+    supabase_rpc('record_biz_login', ['uid' => $uid], null, true);
+}
+
+/** The current business user's slug, or '' if not logged in / no profile. */
+function current_slug() {
+    $profile = biz_current_profile();
+    return $profile['slug'] ?? '';
+}
+
+function require_auth() {
+    if (!biz_access_token() || !biz_current_profile()) {
+        biz_logout();
+        header('Location: index.php'); exit;
     }
 }
 

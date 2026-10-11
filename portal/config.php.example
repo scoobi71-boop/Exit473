@@ -14,10 +14,19 @@ return [
     // you're ready to go live.
     'stripe_secret_key'         => '',
     // Set after registering the webhook endpoint (Developers → Webhooks).
+    // Reserved for the future event-ticket-sales webhook (see
+    // portal/schema_02_events.sql) — not used yet.
     'stripe_webhook_secret'     => '',
+    // Separate webhook endpoint/secret for the business finance/fee-payment
+    // feature (portal/stripe_webhook_finance.php), so the two don't share
+    // one secret. Set after registering that webhook endpoint in Stripe.
+    'stripe_webhook_secret_finance' => '',
 
     // Resend (resend.com) — used for ticket confirmation / event-status emails.
     'resend_api_key'            => '',
     // Must be an address on a domain you've verified in Resend.
     'resend_from_address'       => 'tickets@exit473.com',
+
+    // Where new-event notifications (and other portal-admin alerts) get sent.
+    'admin_notify_email'        => '',
 ];
