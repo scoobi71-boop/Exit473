@@ -13,7 +13,7 @@ $nowIso = gmdate('Y-m-d\TH:i:s\Z');
 // Upcoming = not yet ended (end_at in future, or no end_at and start_at in future).
 $query = 'status=eq.published'
        . '&or=' . rawurlencode('(end_at.gte.' . $nowIso . ',and(end_at.is.null,start_at.gte.' . $nowIso . '))')
-       . '&select=id,title,slug,venue,start_at,end_at,cover_image_url'
+       . '&select=*' // * so this keeps working before/after schema_04 (banner_url)
        . '&order=start_at.asc&limit=100';
 $resp = supabase_table_select('events', $query);
 $loadError = $resp['status'] !== 200;
@@ -84,8 +84,9 @@ function fmt_list_time($iso) {
             $info = event_price_info($ticketsByEvent[$ev['id']] ?? []);
           ?>
             <a class="ev-card" href="e.php?slug=<?= h(rawurlencode($ev['slug'])) ?>">
-              <?php if (!empty($ev['cover_image_url'])): ?>
-                <img class="ev-img" src="<?= h($ev['cover_image_url']) ?>" alt="" loading="lazy">
+              <?php $cardImg = ($ev['cover_image_url'] ?? '') ?: ($ev['banner_url'] ?? ''); ?>
+              <?php if ($cardImg): ?>
+                <img class="ev-img" src="<?= h($cardImg) ?>" alt="" loading="lazy">
               <?php else: ?>
                 <div class="ev-img ev-img-ph" aria-hidden="true">🎶</div>
               <?php endif; ?>
