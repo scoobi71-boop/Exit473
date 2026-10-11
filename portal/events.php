@@ -1,169 +1,112 @@
 <?php
-require_once __DIR__ . '/../../admin/auth.php';
-require_once __DIR__ . '/../supabase.php';
+/**
+ * portal/events.php
+ *
+ * Public list of published, upcoming portal events. Uses only anon-key
+ * reads (RLS shows published events and their ticket types), the same
+ * way e.php does. Each event links to e.php?slug=...
+ */
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/tickets.php';
 
-// Not admin/auth.php's require_auth(): its relative "index.php" redirect
-// would resolve to this directory's own index.php, not /admin/index.php.
-if (!admin_access_token()) {
-    header('Location: /admin/index.php');
-    exit;
-}
+$nowIso = gmdate('Y-m-d\TH:i:s\Z');
+// Upcoming = not yet ended (end_at in future, or no end_at and start_at in future).
+$query = 'status=eq.published'
+       . '&or=' . rawurlencode('(end_at.gte.' . $nowIso . ',and(end_at.is.null,start_at.gte.' . $nowIso . '))')
+       . '&select=id,title,slug,venue,start_at,end_at,cover_image_url'
+       . '&order=start_at.asc&limit=100';
+$resp = supabase_table_select('events', $query);
+$loadError = $resp['status'] !== 200;
+$events = $loadError ? [] : (array)$resp['data'];
 
-$msg = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    check_csrf(); // admin/auth.php's CSRF helper — this page uses the core admin session
-    $action = $_POST['action'] ?? '';
-    $id = $_POST['id'] ?? '';
-
-    if ($action === 'approve') {
-        supabase_table_update('events', 'id=eq.' . urlencode($id), ['status' => 'published'], null, true);
-        $msg = 'ok:Event approved and published.';
-    } elseif ($action === 'reject') {
-        supabase_table_update('events', 'id=eq.' . urlencode($id), ['status' => 'rejected'], null, true);
-        $msg = 'ok:Event rejected.';
+$ticketsByEvent = [];
+if ($events) {
+    $ids = implode(',', array_map('rawurlencode', array_column($events, 'id')));
+    $tt = supabase_table_select('ticket_types', 'event_id=in.(' . $ids . ')&select=event_id,price_cents,quantity_total,quantity_sold');
+    if ($tt['status'] === 200) {
+        foreach ($tt['data'] as $t) $ticketsByEvent[$t['event_id']][] = $t;
     }
 }
 
-$organizerFilter = trim($_GET['organizer'] ?? '');
-
-$eventsQuery = 'select=*&order=created_at.desc';
-if ($organizerFilter) $eventsQuery .= '&organizer_id=eq.' . urlencode($organizerFilter);
-$resp = supabase_table_select('events', $eventsQuery, null, true);
-$events = ($resp['status'] === 200) ? $resp['data'] : [];
-$pending = array_values(array_filter($events, fn($e) => $e['status'] === 'pending'));
-$others  = array_values(array_filter($events, fn($e) => $e['status'] !== 'pending'));
-
-$organizerFilterName = null;
-if ($organizerFilter) {
-    $r = supabase_table_select('profiles', 'id=eq.' . urlencode($organizerFilter) . '&select=username,display_name,first_name,last_name', null, true);
-    if ($r['status'] === 200 && !empty($r['data'][0])) {
-        $p = $r['data'][0];
-        $fn = trim(($p['first_name'] ?? '') . ' ' . ($p['last_name'] ?? ''));
-        $organizerFilterName = $fn !== '' ? $fn : ($p['display_name'] ?: $p['username']);
-    }
+function event_price_info($types) {
+    if (!$types) return ['label' => '', 'soldOut' => false];
+    $avail = array_filter($types, fn($t) => (int)$t['quantity_sold'] < (int)$t['quantity_total']);
+    if (!$avail) return ['label' => '', 'soldOut' => true];
+    $min = min(array_map(fn($t) => (int)$t['price_cents'], $avail));
+    return ['label' => $min === 0 ? 'Free' : 'From ' . tickets_money($min), 'soldOut' => false];
 }
 
-// Look up organizer usernames in one pass rather than one query per event.
-$organizerIds = array_unique(array_column($events, 'organizer_id'));
-$organizers = [];
-if ($organizerIds) {
-    $filter = 'id=in.(' . implode(',', array_map('urlencode', $organizerIds)) . ')&select=id,username,display_name';
-    $orgResp = supabase_table_select('profiles', $filter, null, true);
-    if ($orgResp['status'] === 200) {
-        foreach ($orgResp['data'] as $o) $organizers[$o['id']] = $o;
-    }
-}
-function organizer_label($id, $organizers) {
-    $o = $organizers[$id] ?? null;
-    return $o ? ($o['display_name'] ?: $o['username']) : 'Unknown';
-}
-
-function fmt_short($iso) {
+function fmt_list_time($iso) {
     if (!$iso) return '';
-    try { return (new DateTime($iso))->setTimezone(new DateTimeZone('America/Grenada'))->format('M j, Y g:i A'); }
-    catch (Exception $e) { return ''; }
+    try {
+        return (new DateTime($iso))->setTimezone(new DateTimeZone('America/Grenada'))->format('D, M j, Y · g:i A');
+    } catch (Exception $e) { return ''; }
 }
-
-[$msgType, $msgText] = $msg ? explode(':', $msg, 2) : ['', ''];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Events — Event Portal Admin</title>
-<meta name="robots" content="noindex">
-<?php include '../head_styles.php'; ?>
+<title>Upcoming Events — Exit 473</title>
+<?php include 'head_styles.php'; ?>
 <style>
-.status-pill { display:inline-block; padding:.2rem .6rem; border-radius:99px; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
-.status-pending { background:#FFF8E1; color:#8D6E00; border:1px solid #FFE082; }
-.status-published { background:#E8F5E9; color:#1B5E20; border:1px solid #A5D6A7; }
-.status-rejected { background:#FFEBEE; color:#B71C1C; border:1px solid #FFCDD2; }
-.status-cancelled { background:#ECEFF1; color:#455A64; border:1px solid #CFD8DC; }
-.event-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--gray-300); flex-wrap:wrap; }
-.event-row:last-child { border-bottom:none; }
+.ev-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.25rem; }
+.ev-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--gray-300); border-radius:12px; overflow:hidden; text-decoration:none; color:inherit; transition:box-shadow .15s; }
+.ev-card:hover { box-shadow:0 6px 18px rgba(0,0,0,.08); }
+.ev-img { width:100%; height:160px; object-fit:cover; background:var(--gray-300); }
+.ev-img-ph { display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+.ev-body { padding:1rem 1.1rem 1.2rem; display:flex; flex-direction:column; gap:.3rem; flex:1; }
+.ev-title { font-weight:700; font-size:1.05rem; }
+.ev-meta { color:var(--text-light); font-size:.88rem; }
+.ev-soldout { background:#FFF0F0; color:#990000; border:1px solid #FFAAAA; border-radius:999px; padding:.15rem .6rem; font-size:.8rem; font-weight:700; }
+.ev-foot { margin-top:auto; padding-top:.6rem; display:flex; justify-content:space-between; align-items:center; }
 </style>
 </head>
 <body data-portal>
   <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal Admin</span></div>
-    <div class="portal-nav-links">
-      <a href="index.php">Overview</a>
-      <a href="events.php" class="active">Events</a>
-    </div>
-    <div class="portal-nav-right">
-      <a href="/admin/dashboard.php">Core Admin</a>
-      &nbsp;·&nbsp;
-      <a href="/admin/logout.php">Log Out</a>
-    </div>
+    <div class="brand">Exit 473 <span>Event Portal</span></div>
+    <div class="portal-nav-links"><a href="events.php">Upcoming Events</a></div>
+    <div class="portal-nav-right"><a href="../index.html">Exit 473 ↗</a></div>
   </nav>
   <div class="portal-wrap wide">
-
-    <?php if ($msgText): ?><div class="portal-alert portal-alert-<?= $msgType ?>"><?= h($msgText) ?></div><?php endif; ?>
-
-    <?php if ($organizerFilter): ?>
-      <p style="margin-bottom:1rem"><a href="/admin/users.php?tab=portal">← Back to Portal Users</a></p>
-      <div class="portal-alert portal-alert-ok" style="margin-bottom:1.25rem">
-        Showing events by <strong><?= h($organizerFilterName ?: 'this organizer') ?></strong> — <a href="events.php">show all events</a>
-      </div>
-    <?php endif; ?>
-
-    <div class="portal-card" style="margin-bottom:1.25rem">
-      <h1>Pending Approval <small style="font-weight:400;font-size:1rem;color:var(--text-light)">(<?= count($pending) ?>)</small></h1>
-      <?php if (!$pending): ?>
-        <p style="color:var(--text-light)">Nothing waiting for review.</p>
-      <?php else: ?>
-        <?php foreach ($pending as $ev): ?>
-          <div class="event-row">
-            <div>
-              <div style="font-weight:700"><?= h($ev['title']) ?></div>
-              <div style="color:var(--text-light);font-size:.85rem">
-                <?= h(fmt_short($ev['start_at'])) ?> · by <?= h(organizer_label($ev['organizer_id'], $organizers)) ?>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:.5rem">
-              <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">Preview</a>
-              <form method="post" style="display:inline">
-                <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
-                <input type="hidden" name="action" value="approve">
-                <input type="hidden" name="id" value="<?= h($ev['id']) ?>">
-                <button type="submit" class="btn btn-sm btn-primary">Approve</button>
-              </form>
-              <form method="post" style="display:inline" onsubmit="return confirm('Reject this event?')">
-                <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
-                <input type="hidden" name="action" value="reject">
-                <input type="hidden" name="id" value="<?= h($ev['id']) ?>">
-                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
-              </form>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      <?php endif; ?>
-    </div>
-
     <div class="portal-card">
-      <h2>All Other Events <small style="font-weight:400;font-size:.85rem;color:var(--text-light)">(<?= count($others) ?>)</small></h2>
-      <?php if (!$others): ?>
-        <p style="color:var(--text-light)">Nothing here yet.</p>
+      <h1>Upcoming Events</h1>
+      <p class="portal-sub">Live music, cultural showcases, workshops and pop-up dining at Exit 473.</p>
+
+      <?php if ($loadError): ?>
+        <div class="portal-alert portal-alert-error">Events couldn't be loaded right now. Please try again shortly.</div>
+      <?php elseif (!$events): ?>
+        <p style="color:var(--text-light);padding:1.5rem 0">No upcoming events right now. Check back soon!</p>
       <?php else: ?>
-        <?php foreach ($others as $ev): ?>
-          <div class="event-row">
-            <div>
-              <div style="font-weight:700"><?= h($ev['title']) ?></div>
-              <div style="color:var(--text-light);font-size:.85rem">
-                <?= h(fmt_short($ev['start_at'])) ?> · by <?= h(organizer_label($ev['organizer_id'], $organizers)) ?>
+        <div class="ev-grid">
+          <?php foreach ($events as $ev):
+            $info = event_price_info($ticketsByEvent[$ev['id']] ?? []);
+          ?>
+            <a class="ev-card" href="e.php?slug=<?= h(rawurlencode($ev['slug'])) ?>">
+              <?php if (!empty($ev['cover_image_url'])): ?>
+                <img class="ev-img" src="<?= h($ev['cover_image_url']) ?>" alt="" loading="lazy">
+              <?php else: ?>
+                <div class="ev-img ev-img-ph" aria-hidden="true">🎶</div>
+              <?php endif; ?>
+              <div class="ev-body">
+                <div class="ev-title"><?= h($ev['title']) ?></div>
+                <div class="ev-meta"><?= h(fmt_list_time($ev['start_at'])) ?></div>
+                <?php if (!empty($ev['venue'])): ?><div class="ev-meta">📍 <?= h($ev['venue']) ?></div><?php endif; ?>
+                <div class="ev-foot">
+                  <?php if ($info['soldOut']): ?>
+                    <span class="ev-soldout">Sold out</span>
+                  <?php else: ?>
+                    <span style="font-weight:700"><?= h($info['label']) ?></span>
+                  <?php endif; ?>
+                  <span class="btn btn-sm btn-outline"><?= $info['soldOut'] ? 'Details' : 'Get Tickets' ?></span>
+                </div>
               </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:.75rem">
-              <span class="status-pill status-<?= h($ev['status']) ?>"><?= h($ev['status']) ?></span>
-              <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">View</a>
-            </div>
-          </div>
-        <?php endforeach; ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
       <?php endif; ?>
     </div>
-
   </div>
 </body>
 </html>
