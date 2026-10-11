@@ -2,13 +2,33 @@
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('DATA_PATH', realpath(__DIR__ . '/../data') . DIRECTORY_SEPARATOR);
-define('PASS_FILE', __DIR__ . DIRECTORY_SEPARATOR . '.adminpass');
-define('DEFAULT_PASS', 'admin473');
+/*
+ * The admin password hash lives OUTSIDE the web root so it can never be
+ * downloaded. Default location: <parent of DOCUMENT_ROOT>/exit473-private/.adminpass
+ * Override by defining EXIT473_PASS_FILE as an environment variable (SetEnv).
+ * Generate a hash with:  php -r "echo password_hash('NEWPASS', PASSWORD_DEFAULT);"
+ */
+function pass_file_path() {
+    $env = getenv('EXIT473_PASS_FILE');
+    if ($env) return $env;
+    $docroot = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\');
+    $base = $docroot !== '' ? dirname($docroot) : dirname(__DIR__, 2);
+    return $base . DIRECTORY_SEPARATOR . 'exit473-private' . DIRECTORY_SEPARATOR . '.adminpass';
+}
+define('PASS_FILE', pass_file_path());
 
 function get_stored_hash() {
-    if (file_exists(PASS_FILE)) return trim(file_get_contents(PASS_FILE));
-    $hash = password_hash(DEFAULT_PASS, PASSWORD_DEFAULT);
-    file_put_contents(PASS_FILE, $hash);
+    if (!is_readable(PASS_FILE)) {
+        http_response_code(500);
+        error_log('Exit473 admin: password hash file missing or unreadable: ' . PASS_FILE);
+        die('Admin login is not configured. Create the password hash file outside the web root '
+          . '(exit473-private/.adminpass next to your public web folder). See README "Admin password".');
+    }
+    $hash = trim(file_get_contents(PASS_FILE));
+    if ($hash === '') {
+        http_response_code(500);
+        die('Admin password hash file is empty. See README "Admin password".');
+    }
     return $hash;
 }
 

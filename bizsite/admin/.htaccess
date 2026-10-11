@@ -1,5 +1,12 @@
 Options -Indexes
-<Files "auth.php">
-    Order allow,deny
-    Deny from all
-</Files>
+
+# Deny dotfiles (.adminpass, .htpasswd, .git, etc.) and the auth include
+<FilesMatch "(^\.|^auth\.php$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

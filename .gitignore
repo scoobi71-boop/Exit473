@@ -8,3 +8,9 @@
 node_modules/
 .DS_Store
 /.vscode/
+
+# Secrets / local tool settings (never commit)
+.adminpass
+**/.adminpass
+.claude/
+/exit473-private/

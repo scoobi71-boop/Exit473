@@ -1,13 +1,12 @@
 Options -Indexes
 
-# Block direct access to the secrets file
-<Files "config.php">
-    Order allow,deny
-    Deny from all
-</Files>
-
-# Schema files are for the Supabase SQL Editor, not public serving
-<FilesMatch "\.sql$">
-    Order allow,deny
-    Deny from all
+# Deny dotfiles, the secrets file, SQL schemas, and example configs
+<FilesMatch "(^\.|^config\.php$|\.sql$|\.example$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
 </FilesMatch>

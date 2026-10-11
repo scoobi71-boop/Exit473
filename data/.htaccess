@@ -1,3 +1,14 @@
+# Deny dotfiles, PHP config with API keys, and examples
+<FilesMatch "(^\.|^flight_config\.php$|\.example$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
 <FilesMatch "\.(js|csv)$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"
