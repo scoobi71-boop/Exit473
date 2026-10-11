@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/tickets.php';
+
+$ticketError = $_SESSION['ticket_error'] ?? '';
+$ticketForm  = $_SESSION['ticket_form'] ?? [];
+unset($_SESSION['ticket_error']);
 
 $slug = trim($_GET['slug'] ?? '');
 $event = null;
@@ -82,24 +87,65 @@ function fmt_event_time($iso) {
           <p style="white-space:pre-line;color:var(--text);margin:1.5rem 0"><?= h($event['description']) ?></p>
         <?php endif; ?>
 
-        <h2 style="font-size:1.1rem;margin:2rem 0 1rem">Tickets</h2>
+        <h2 id="tickets" style="font-size:1.1rem;margin:2rem 0 1rem">Tickets</h2>
+        <?php
+          $eventOver = strtotime($event['end_at'] ?: $event['start_at']) < time();
+          $onSale = !$isPreview && $event['status'] === 'published' && !$eventOver;
+          $anyLeft = false;
+          foreach ($ticketTypes as $tt) if ((int)$tt['quantity_sold'] < (int)$tt['quantity_total']) $anyLeft = true;
+        ?>
+        <?php if ($ticketError): ?><div class="portal-alert portal-alert-error"><?= h($ticketError) ?></div><?php endif; ?>
+        <?php if (isset($_GET['cancelled'])): ?><div class="portal-alert portal-alert-ok">Checkout cancelled, so you haven't been charged. Your seats are released.</div><?php endif; ?>
         <?php if (!$ticketTypes): ?>
           <p style="color:var(--text-light)">No ticket types have been added yet.</p>
         <?php else: ?>
+          <form method="post" action="checkout.php">
+            <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
+            <input type="hidden" name="slug" value="<?= h($event['slug']) ?>">
           <?php foreach ($ticketTypes as $tt):
-            $soldOut = (int)$tt['quantity_sold'] >= (int)$tt['quantity_total'];
+            $left = max(0, (int)$tt['quantity_total'] - (int)$tt['quantity_sold']);
+            $soldOut = $left === 0;
+            $maxPick = min($left, TICKETS_MAX_PER_ORDER);
+            $picked = (int)($ticketForm['qty'][$tt['id']] ?? 0);
           ?>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--gray-300)">
               <div>
                 <div style="font-weight:700"><?= h($tt['name']) ?></div>
-                <div style="color:var(--text-light);font-size:.85rem"><?= $soldOut ? 'Sold out' : ((int)$tt['quantity_total'] - (int)$tt['quantity_sold']) . ' left' ?></div>
+                <div style="color:var(--text-light);font-size:.85rem"><?= $soldOut ? 'Sold out' : ($left <= 20 ? $left . ' left' : 'Available') ?></div>
               </div>
               <div style="display:flex;align-items:center;gap:1rem">
-                <div style="font-weight:700">$<?= number_format($tt['price_cents'] / 100, 2) ?></div>
-                <button class="btn btn-outline btn-sm" disabled title="Ticket sales are coming soon">Buy — Coming Soon</button>
+                <div style="font-weight:700"><?= (int)$tt['price_cents'] === 0 ? 'Free' : tickets_money($tt['price_cents']) ?></div>
+                <?php if ($soldOut): ?>
+                  <span class="status-pill status-cancelled">Sold out</span>
+                <?php elseif ($onSale): ?>
+                  <select id="qty_<?= h($tt['id']) ?>" name="qty[<?= h($tt['id']) ?>]" aria-label="Quantity of <?= h($tt['name']) ?>" style="padding:.35rem .5rem">
+                    <?php for ($i = 0; $i <= $maxPick; $i++): ?><option value="<?= $i ?>"<?= $i === $picked ? ' selected' : '' ?>><?= $i ?></option><?php endfor; ?>
+                  </select>
+                <?php endif; ?>
               </div>
             </div>
           <?php endforeach; ?>
+          <?php if ($onSale && $anyLeft): ?>
+            <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem;align-items:flex-end">
+              <div class="portal-form-row" style="margin-bottom:0;flex:1;min-width:180px">
+                <label for="buyer_name">Your name</label>
+                <input type="text" id="buyer_name" name="name" maxlength="100" value="<?= h($ticketForm['name'] ?? '') ?>">
+              </div>
+              <div class="portal-form-row" style="margin-bottom:0;flex:1;min-width:200px">
+                <label for="buyer_email">Email (tickets are sent here)</label>
+                <input type="email" id="buyer_email" name="email" required maxlength="200" value="<?= h($ticketForm['email'] ?? '') ?>">
+              </div>
+              <button class="btn btn-primary" type="submit" style="height:42px">Buy Tickets →</button>
+            </div>
+            <p style="color:var(--text-light);font-size:.8rem;margin-top:.5rem">Up to <?= TICKETS_MAX_PER_ORDER ?> tickets per order. Secure payment by Stripe, in US dollars.</p>
+          <?php elseif (!$anyLeft): ?>
+            <p style="font-weight:700;margin-top:1rem">This event is sold out.</p>
+          <?php elseif ($isPreview): ?>
+            <p style="color:var(--text-light);margin-top:1rem">Ticket sales open once this event is approved.</p>
+          <?php elseif ($eventOver): ?>
+            <p style="color:var(--text-light);margin-top:1rem">This event has ended.</p>
+          <?php endif; ?>
+          </form>
         <?php endif; ?>
       </div>
     <?php endif; ?>

@@ -63,7 +63,7 @@ function stripe_request($method, $path, array $formFields = []) {
  * cents here, since finance charges are always converted to USD before
  * this is called).
  */
-function stripe_create_checkout_session(array $lineItems, $successUrl, $cancelUrl, array $metadata = []) {
+function stripe_create_checkout_session(array $lineItems, $successUrl, $cancelUrl, array $metadata = [], array $extra = []) {
     $fields = [
         'mode'        => 'payment',
         'success_url' => $successUrl,
@@ -77,6 +77,11 @@ function stripe_create_checkout_session(array $lineItems, $successUrl, $cancelUr
     }
     foreach ($metadata as $k => $v) {
         $fields['metadata'][$k] = $v;
+    }
+    // Optional extra top-level Checkout params, e.g. customer_email,
+    // expires_at, payment_intent_data[metadata]. Existing callers pass none.
+    foreach ($extra as $k => $v) {
+        $fields[$k] = $v;
     }
     return stripe_request('POST', '/v1/checkout/sessions', $fields);
 }
