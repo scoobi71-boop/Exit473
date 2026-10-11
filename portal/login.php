@@ -74,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <button class="btn btn-primary btn-lg" type="submit" style="width:100%">Log In →</button>
       </form>
+      <p class="portal-links"><a href="forgot-password.php">Forgot your password?</a></p>
       <p class="portal-links">New here? <a href="register.php">Create an organizer account</a></p>
     </div>
   </div>

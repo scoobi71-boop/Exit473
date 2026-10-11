@@ -891,7 +891,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errMsg = document.createElement('div');
     errMsg.className = 'error-message container';
     errMsg.style.margin = '2rem auto';
-    errMsg.innerHTML = '<strong>⚠️ Note:</strong> Business data could not be loaded. Please open this site from a web server rather than directly as a file. See the <a href="update-guide.html">Update Guide</a> for hosting tips.';
+    errMsg.innerHTML = '<strong>⚠️ Note:</strong> Business data could not be loaded. Please open this site from a web server rather than directly as a file.';
     document.querySelector('main')?.prepend(errMsg);
   }
 

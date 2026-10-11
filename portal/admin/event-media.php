@@ -9,6 +9,7 @@
 require_once __DIR__ . '/../../admin/auth.php';
 require_once __DIR__ . '/../supabase.php';
 require_once __DIR__ . '/../event_media.php';
+require_once __DIR__ . '/_chrome.php';
 
 if (!admin_access_token()) { header('Location: /admin/index.php'); exit; }
 
@@ -35,30 +36,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Banner &amp; Posters — Event Portal Admin</title>
 <meta name="robots" content="noindex">
-<?php include '../head_styles.php'; ?>
+<?php admin_look_head(); ?>
 </head>
-<body data-portal>
-  <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal Admin</span></div>
-    <div class="portal-nav-links">
-      <a href="index.php">Overview</a>
-      <a href="events.php" class="active">Events</a>
+<body>
+<?php padmin_nav(); ?>
+<main class="wrap">
+  <p style="margin-bottom:1rem"><a href="events.php">← All ticketed events</a></p>
+  <?php if (!$event): ?>
+    <div class="panel"><h1 class="page-title" style="margin:0">Event not found</h1></div>
+  <?php else: ?>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+      <h1 class="page-title" style="margin:0">🖼️ <?= h($event['title']) ?></h1>
+      <div style="display:flex;gap:.5rem;align-items:center"><span class="status-pill status-<?= h($event['status']) ?>"><?= h($event['status']) ?></span>
+      <a class="btn btn-outline" href="../e.php?slug=<?= h($event['slug']) ?>" target="_blank">View event page ↗</a></div>
     </div>
-    <div class="portal-nav-right"><a href="/admin/dashboard.php">Core Admin</a> &nbsp;·&nbsp; <a href="/admin/logout.php">Log Out</a></div>
-  </nav>
-  <div class="portal-wrap wide">
-    <p><a href="events.php">← All events</a></p>
-    <?php if (!$event): ?>
-      <div class="portal-card"><h1>Event not found</h1></div>
-    <?php else: ?>
-      <?php if ($msg): ?><div class="portal-alert portal-alert-ok"><?= h($msg) ?></div><?php endif; ?>
-      <?php if ($err): ?><div class="portal-alert portal-alert-error"><?= h($err) ?></div><?php endif; ?>
-      <div class="portal-card" style="margin-bottom:1.25rem">
-        <h1 style="margin-bottom:.25rem"><?= h($event['title']) ?></h1>
-        <p class="portal-sub" style="margin-bottom:0">Status: <?= h($event['status']) ?> · <a href="../e.php?slug=<?= h($event['slug']) ?>" target="_blank">View event page ↗</a></p>
-      </div>
-      <?= media_render_manager($event, '<input type="hidden" name="_csrf" value="' . h(csrf_token()) . '">', 'event-media.php?id=' . rawurlencode($event['id'])) ?>
-    <?php endif; ?>
-  </div>
+    <?php if ($msg): ?><div class="alert alert-ok"><?= h($msg) ?></div><?php endif; ?>
+    <?php if ($err): ?><div class="alert alert-error"><?= h($err) ?></div><?php endif; ?>
+    <?= media_render_manager($event, '<input type="hidden" name="_csrf" value="' . h(csrf_token()) . '">', 'event-media.php?id=' . rawurlencode($event['id'])) ?>
+  <?php endif; ?>
+</main>
 </body>
 </html>

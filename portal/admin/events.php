@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../admin/auth.php';
 require_once __DIR__ . '/../supabase.php';
 require_once __DIR__ . '/../tickets.php';
+require_once __DIR__ . '/_chrome.php';
 
 // Not admin/auth.php's require_auth(): its relative "index.php" redirect
 // would resolve to this directory's own index.php, not /admin/index.php.
@@ -79,104 +80,83 @@ function fmt_short($iso) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Events — Event Portal Admin</title>
 <meta name="robots" content="noindex">
-<?php include '../head_styles.php'; ?>
+<?php admin_look_head(); ?>
 <style>
-.status-pill { display:inline-block; padding:.2rem .6rem; border-radius:99px; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
-.status-pending { background:#FFF8E1; color:#8D6E00; border:1px solid #FFE082; }
-.status-published { background:#E8F5E9; color:#1B5E20; border:1px solid #A5D6A7; }
-.status-rejected { background:#FFEBEE; color:#B71C1C; border:1px solid #FFCDD2; }
-.status-cancelled { background:#ECEFF1; color:#455A64; border:1px solid #CFD8DC; }
-.event-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--gray-300); flex-wrap:wrap; }
-.event-row:last-child { border-bottom:none; }
+.ev-actions { display:flex; gap:.4rem; flex-wrap:wrap; }
+.ev-actions form { display:inline; }
 </style>
 </head>
-<body data-portal>
-  <nav class="portal-nav">
-    <div class="brand">Exit 473 <span>Event Portal Admin</span></div>
-    <div class="portal-nav-links">
-      <a href="index.php">Overview</a>
-      <a href="events.php" class="active">Events</a>
-    </div>
-    <div class="portal-nav-right">
-      <a href="/admin/dashboard.php">Core Admin</a>
-      &nbsp;·&nbsp;
-      <a href="/admin/logout.php">Log Out</a>
-    </div>
-  </nav>
-  <div class="portal-wrap wide">
+<body>
+<?php padmin_nav(); ?>
+<main class="wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+    <h1 class="page-title" style="margin:0">🎟️ Ticketed Events</h1>
+    <a href="/portal/events.php" class="btn btn-outline" target="_blank">View public listing ↗</a>
+  </div>
 
-    <?php if ($msgText): ?><div class="portal-alert portal-alert-<?= $msgType ?>"><?= h($msgText) ?></div><?php endif; ?>
+  <?php if ($msgText): ?><div class="alert alert-<?= $msgType === 'ok' ? 'ok' : 'error' ?>"><?= h($msgText) ?></div><?php endif; ?>
 
-    <?php if ($organizerFilter): ?>
-      <p style="margin-bottom:1rem"><a href="/admin/users.php?tab=portal">← Back to Portal Users</a></p>
-      <div class="portal-alert portal-alert-ok" style="margin-bottom:1.25rem">
-        Showing events by <strong><?= h($organizerFilterName ?: 'this organizer') ?></strong> — <a href="events.php">show all events</a>
-      </div>
-    <?php endif; ?>
+  <?php if ($organizerFilter): ?>
+    <p style="margin-bottom:1rem"><a href="/admin/users.php?tab=portal">← Back to Portal Users</a></p>
+    <div class="alert alert-ok">Showing events by <strong><?= h($organizerFilterName ?: 'this organizer') ?></strong> · <a href="events.php">show all events</a></div>
+  <?php endif; ?>
 
-    <div class="portal-card" style="margin-bottom:1.25rem">
-      <h1>Pending Approval <small style="font-weight:400;font-size:1rem;color:var(--text-light)">(<?= count($pending) ?>)</small></h1>
-      <?php if (!$pending): ?>
-        <p style="color:var(--text-light)">Nothing waiting for review.</p>
-      <?php else: ?>
-        <?php foreach ($pending as $ev): ?>
-          <div class="event-row">
-            <div>
-              <div style="font-weight:700"><?= h($ev['title']) ?></div>
-              <div style="color:var(--text-light);font-size:.85rem">
-                <?= h(fmt_short($ev['start_at'])) ?> · by <?= h(organizer_label($ev['organizer_id'], $organizers)) ?>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:.5rem">
-              <a href="event-media.php?id=<?= h($ev['id']) ?>" class="btn btn-sm btn-outline">Banner &amp; Posters</a>
-              <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">Preview</a>
-              <form method="post" style="display:inline">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num"><?= count($pending) ?></div><div class="stat-label">Pending approval</div></div>
+    <div class="stat-card"><div class="stat-icon">🎟️</div><div class="stat-num"><?= (int)$salesTotal['tickets'] ?></div><div class="stat-label">Tickets sold</div></div>
+    <div class="stat-card"><div class="stat-icon">🧾</div><div class="stat-num"><?= (int)$salesTotal['orders'] ?></div><div class="stat-label">Paid orders</div></div>
+    <div class="stat-card"><div class="stat-icon">💵</div><div class="stat-num" style="font-size:1.5rem"><?= tickets_money($salesTotal['gross_cents']) ?></div><div class="stat-label">Gross (before Stripe fees)</div></div>
+  </div>
+
+  <?php
+  $renderTable = function ($list, $isPending) use ($sales, $organizers) { ?>
+    <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>Date</th><th>Event</th><th>Organizer</th><th>Status</th><th>Sales</th><th>Actions</th></tr></thead>
+      <tbody>
+      <?php foreach ($list as $ev): $sv = $sales[$ev['id']] ?? null; ?>
+        <tr>
+          <td style="white-space:nowrap"><?= h(fmt_short($ev['start_at'])) ?></td>
+          <td><strong><?= h($ev['title']) ?></strong><?= !empty($ev['venue']) ? '<br><small style="color:#7A6565">📍 ' . h($ev['venue']) . '</small>' : '' ?></td>
+          <td><?= h(organizer_label($ev['organizer_id'], $organizers)) ?></td>
+          <td><span class="status-pill status-<?= h($ev['status']) ?>"><?= h($ev['status']) ?></span></td>
+          <td style="white-space:nowrap"><?= $sv ? (int)$sv['tickets'] . ' sold<br><small style="color:#7A6565">' . tickets_money($sv['gross_cents']) . '</small>' : '<span style="color:#7A6565">—</span>' ?></td>
+          <td>
+            <div class="ev-actions">
+              <a href="event-media.php?id=<?= h($ev['id']) ?>" class="btn btn-sm btn-outline">🖼️ Banner &amp; Posters</a>
+              <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank"><?= $isPending ? 'Preview' : 'View' ?></a>
+              <?php if ($isPending): ?>
+              <form method="post">
                 <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
                 <input type="hidden" name="action" value="approve">
                 <input type="hidden" name="id" value="<?= h($ev['id']) ?>">
                 <button type="submit" class="btn btn-sm btn-primary">Approve</button>
               </form>
-              <form method="post" style="display:inline" onsubmit="return confirm('Reject this event?')">
+              <form method="post" onsubmit="return confirm('Reject this event?')">
                 <input type="hidden" name="_csrf" value="<?= h(csrf_token()) ?>">
                 <input type="hidden" name="action" value="reject">
                 <input type="hidden" name="id" value="<?= h($ev['id']) ?>">
                 <button type="submit" class="btn btn-sm btn-danger">Reject</button>
               </form>
+              <?php endif; ?>
             </div>
-          </div>
-        <?php endforeach; ?>
-      <?php endif; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
     </div>
+  <?php }; ?>
 
-    <div class="portal-card" style="margin-bottom:1.25rem">
-      <h2>Ticket Sales</h2>
-      <p class="portal-sub" style="margin-bottom:0"><?= (int)$salesTotal['tickets'] ?> tickets · <?= (int)$salesTotal['orders'] ?> paid orders · <?= tickets_money($salesTotal['gross_cents']) ?> gross (before Stripe fees; all funds go to the Exit 473 Stripe account)</p>
-    </div>
-
-    <div class="portal-card">
-      <h2>All Other Events <small style="font-weight:400;font-size:.85rem;color:var(--text-light)">(<?= count($others) ?>)</small></h2>
-      <?php if (!$others): ?>
-        <p style="color:var(--text-light)">Nothing here yet.</p>
-      <?php else: ?>
-        <?php foreach ($others as $ev): ?>
-          <div class="event-row">
-            <div>
-              <div style="font-weight:700"><?= h($ev['title']) ?></div>
-              <div style="color:var(--text-light);font-size:.85rem">
-                <?= h(fmt_short($ev['start_at'])) ?> · by <?= h(organizer_label($ev['organizer_id'], $organizers)) ?>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:.75rem">
-              <?php if (!empty($sales[$ev['id']])): ?><span style="font-size:.85rem;color:var(--text-light)"><?= (int)$sales[$ev['id']]['tickets'] ?> sold · <?= tickets_money($sales[$ev['id']]['gross_cents']) ?></span><?php endif; ?>
-              <span class="status-pill status-<?= h($ev['status']) ?>"><?= h($ev['status']) ?></span>
-              <a href="event-media.php?id=<?= h($ev['id']) ?>" class="btn btn-sm btn-outline">Banner &amp; Posters</a>
-              <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">View</a>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      <?php endif; ?>
-    </div>
-
+  <div class="panel">
+    <h2 class="panel-title">Pending Approval (<?= count($pending) ?>)</h2>
+    <?php if (!$pending): ?><p style="color:#7A6565;text-align:center;padding:1.5rem">Nothing waiting for review.</p><?php else: $renderTable($pending, true); endif; ?>
   </div>
+
+  <div class="panel">
+    <h2 class="panel-title">All Other Events (<?= count($others) ?>)</h2>
+    <?php if (!$others): ?><p style="color:#7A6565;text-align:center;padding:1.5rem">Nothing here yet.</p><?php else: $renderTable($others, false); endif; ?>
+  </div>
+</main>
 </body>
 </html>

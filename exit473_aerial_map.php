@@ -115,6 +115,7 @@ $buildings = [
         <li><a href="carnival.html">Carnival</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a href="members.php">Members</a></li>
         <li><a href="directory.html" class="btn btn-primary">Explore Businesses</a></li>
       </ul>
       <button class="nav-hamburger" aria-label="Toggle menu">
@@ -194,7 +195,6 @@ $buildings = [
             <li><a href="events.html">Events Calendar</a></li>
             <li><a href="about.html">About the Park</a></li>
             <li><a href="contact.html">Contact &amp; Location</a></li>
-            <li><a href="update-guide.html">Admin Guide</a></li>
           </ul>
         </div>
         <div class="footer-col">
