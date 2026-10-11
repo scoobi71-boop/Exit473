@@ -55,6 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     portal_check_csrf();
     $action = $_POST['action'] ?? '';
 
+    // Cancelled events are locked for organizers: reject every write
+    // (details, cancel, ticket types, banner/posters). Admins edit via
+    // portal/admin/*, which doesn't go through this file.
+    $targetId = $_POST['event_id'] ?? $_POST['id'] ?? '';
+    if ($targetId !== '') {
+        $target = load_event($targetId, $token);
+        if ($target && $target['status'] === 'cancelled') {
+            http_response_code(403);
+            $error = 'This event was cancelled and can no longer be edited.';
+            $action = '';
+            if (!$eventId) $eventId = $targetId;
+        }
+    }
+
     // Banner / poster actions (see event_media.php). Organizer RLS only
     // allows updates that send the event back to 'pending' for review.
     if (in_array($action, ['upload_banner', 'remove_banner', 'add_posters', 'remove_poster', 'move_poster'], true)) {
@@ -144,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // quantity_sold can't be changed here: the database only lets
             // organizers update name, price and total quantity, and rejects
             // a total below what's already sold.
-            $resp = supabase_table_update('ticket_types', 'id=eq.' . urlencode($ticketId), [
+            $resp = supabase_table_update('ticket_types', 'id=eq.' . urlencode($ticketId) . '&event_id=eq.' . urlencode($eventId), [
                 'price_cents'    => (int)round(((float)$price) * 100),
                 'quantity_total' => (int)$qty,
             ], $token);
@@ -158,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'delete_ticket') {
         $ticketId = $_POST['ticket_id'] ?? '';
         $eventId  = $_POST['event_id'] ?? '';
-        supabase_table_delete('ticket_types', 'id=eq.' . urlencode($ticketId), $token);
+        supabase_table_delete('ticket_types', 'id=eq.' . urlencode($ticketId) . '&event_id=eq.' . urlencode($eventId), $token);
     }
 }
 
@@ -248,10 +262,12 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
     <?php elseif ($event['status'] === 'rejected'): ?>
       ❌ <strong>Not approved.</strong> Edit and save to resubmit it for review.
     <?php else: ?>
-      This event was cancelled.
+      🚫 <strong>This event was cancelled.</strong> It's shown read-only and can't be edited. Contact Exit 473 if this was a mistake.
     <?php endif; ?>
   </div>
   <?php endif; ?>
+  <?php $locked = $event && $event['status'] === 'cancelled'; ?>
+  <?php if ($locked): ?><fieldset disabled style="border:0;padding:0;margin:0;min-width:0;opacity:.75"><?php endif; ?>
 
   <div class="panel" id="event-form">
     <h2 class="panel-title">Event Details</h2>
@@ -396,6 +412,7 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
     <?php endif; ?>
     <?php endif; ?>
 
+  <?php if ($locked): ?></fieldset><?php endif; ?>
 </main>
 </body>
 </html>
