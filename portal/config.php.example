@@ -21,6 +21,12 @@ return [
     // feature (portal/stripe_webhook_finance.php), so the two don't share
     // one secret. Set after registering that webhook endpoint in Stripe.
     'stripe_webhook_secret_finance' => '',
+    // Separate webhook endpoint/secret for event ticket sales
+    // (portal/stripe_webhook_tickets.php). Set after registering that
+    // endpoint in Stripe (events: checkout.session.completed,
+    // checkout.session.async_payment_succeeded, checkout.session.expired,
+    // charge.refunded).
+    'stripe_webhook_secret_tickets' => '',
 
     // Resend (resend.com) — used for ticket confirmation / event-status emails.
     'resend_api_key'            => '',

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/resend.php';
+require_once __DIR__ . '/tickets.php';
 portal_require_auth();
 
 $token = portal_access_token();
@@ -118,6 +119,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($resp['status'] !== 201) $error = 'Could not add that ticket type.';
         }
 
+    } elseif ($action === 'update_ticket') {
+        $eventId  = $_POST['event_id'] ?? '';
+        $ticketId = $_POST['ticket_id'] ?? '';
+        $price = $_POST['ticket_price'] ?? '';
+        $qty   = $_POST['ticket_qty'] ?? '';
+        if (!is_numeric($price) || $price < 0 || !ctype_digit((string)$qty) || (int)$qty < 1) {
+            $error = 'Enter a valid price and quantity (at least 1).';
+        } else {
+            // quantity_sold can't be changed here: the database only lets
+            // organizers update name, price and total quantity, and rejects
+            // a total below what's already sold.
+            $resp = supabase_table_update('ticket_types', 'id=eq.' . urlencode($ticketId), [
+                'price_cents'    => (int)round(((float)$price) * 100),
+                'quantity_total' => (int)$qty,
+            ], $token);
+            if ($resp['status'] !== 200 || empty($resp['data'][0])) {
+                $error = 'Could not update that ticket type. The quantity can\'t be lower than tickets already sold.';
+            } else {
+                $msg = 'Ticket type updated.';
+            }
+        }
+
     } elseif ($action === 'delete_ticket') {
         $ticketId = $_POST['ticket_id'] ?? '';
         $eventId  = $_POST['event_id'] ?? '';
@@ -128,6 +151,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($eventId) {
     $event = load_event($eventId, $token);
     if ($event) $ticketTypes = load_ticket_types($eventId, $token);
+}
+
+$orders = [];
+$salesSummary = ['orders' => 0, 'tickets' => 0, 'gross_cents' => 0];
+if ($event) {
+    $or = supabase_table_select('ticket_orders', 'event_id=eq.' . urlencode($event['id']) . '&status=in.(paid,refunded)&select=*,ticket_order_items(name,quantity)&order=paid_at.desc', $token);
+    if ($or['status'] === 200) $orders = $or['data'];
+    $salesSummary = tickets_sales_summary([$event['id']], $token)[$event['id']] ?? $salesSummary;
+}
+
+if ($event && isset($_GET['export']) && $_GET['export'] === 'csv') {
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="tickets-' . preg_replace('/[^a-z0-9-]/', '', $event['slug']) . '.csv"');
+    $out = fopen('php://output', 'w');
+    fputcsv($out, ['order', 'status', 'paid_at', 'name', 'email', 'tickets', 'items', 'total_usd']);
+    foreach ($orders as $o) {
+        $items = implode('; ', array_map(fn($i) => $i['name'] . ' x' . $i['quantity'], $o['ticket_order_items'] ?? []));
+        fputcsv($out, [strtoupper(substr(str_replace('-', '', $o['id']), 0, 8)), $o['status'], $o['paid_at'], $o['buyer_name'], $o['buyer_email'], $o['ticket_count'], $items, number_format($o['total_cents'] / 100, 2, '.', '')]);
+    }
+    fclose($out);
+    exit;
 }
 
 if (isset($_GET['saved'])) $msg = 'Changes saved. Since this event was already reviewed, editing it sends it back for admin approval before it\'s public again.';
@@ -218,7 +262,16 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
             <div class="tt-row">
               <div class="tt-name"><?= h($tt['name']) ?></div>
               <div class="tt-price">$<?= number_format($tt['price_cents'] / 100, 2) ?> <?= h($tt['currency']) ?></div>
-              <div class="tt-qty"><?= (int)$tt['quantity_sold'] ?> / <?= (int)$tt['quantity_total'] ?> sold</div>
+              <div class="tt-qty"><?= (int)$tt['quantity_sold'] ?> / <?= (int)$tt['quantity_total'] ?> sold<?= (int)$tt['quantity_sold'] >= (int)$tt['quantity_total'] ? ' · <strong>Sold out</strong>' : '' ?></div>
+              <form method="post" style="display:flex;gap:.35rem;align-items:center">
+                <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
+                <input type="hidden" name="action" value="update_ticket">
+                <input type="hidden" name="event_id" value="<?= h($event['id']) ?>">
+                <input type="hidden" name="ticket_id" value="<?= h($tt['id']) ?>">
+                <input type="number" name="ticket_price" aria-label="Price (USD)" value="<?= h(number_format($tt['price_cents'] / 100, 2, '.', '')) ?>" min="0" step="0.01" style="width:90px">
+                <input type="number" name="ticket_qty" aria-label="Total quantity" value="<?= (int)$tt['quantity_total'] ?>" min="<?= max(1, (int)$tt['quantity_sold']) ?>" step="1" style="width:80px">
+                <button type="submit" class="btn btn-sm btn-outline">Update</button>
+              </form>
               <?php if ((int)$tt['quantity_sold'] === 0): ?>
               <form method="post" onsubmit="return confirm('Remove this ticket type?')">
                 <input type="hidden" name="_csrf" value="<?= h(portal_csrf_token()) ?>">
@@ -253,6 +306,30 @@ if (isset($_GET['created'])) $msg = 'Event created — add at least one ticket t
         </div>
         <button class="btn btn-outline" type="submit" style="height:42px">+ Add Ticket Type</button>
       </form>
+    </div>
+
+    <div class="portal-card" style="margin-bottom:1.25rem">
+      <h2 style="margin-bottom:.25rem">Ticket Sales</h2>
+      <p class="portal-sub"><?= (int)$salesSummary['tickets'] ?> tickets sold across <?= (int)$salesSummary['orders'] ?> paid orders · <?= tickets_money($salesSummary['gross_cents']) ?> gross (before Stripe fees)</p>
+      <?php if ($orders): ?>
+        <p><a class="btn btn-sm btn-outline" href="event-edit.php?id=<?= h($event['id']) ?>&export=csv">Download CSV</a></p>
+        <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.9rem">
+          <tr style="text-align:left;border-bottom:1px solid var(--gray-300)"><th>Order</th><th>Buyer</th><th>Tickets</th><th>Total</th><th>Status</th></tr>
+          <?php foreach ($orders as $o): ?>
+          <tr style="border-bottom:1px solid var(--gray-300)">
+            <td><?= h(strtoupper(substr(str_replace('-', '', $o['id']), 0, 8))) ?></td>
+            <td><?= h($o['buyer_name'] ?: '') ?><br><span style="color:var(--text-light)"><?= h($o['buyer_email']) ?></span></td>
+            <td><?= h(implode(', ', array_map(fn($i) => $i['name'] . ' × ' . $i['quantity'], $o['ticket_order_items'] ?? []))) ?></td>
+            <td><?= tickets_money($o['total_cents']) ?></td>
+            <td><?= h($o['status']) ?></td>
+          </tr>
+          <?php endforeach; ?>
+        </table>
+        </div>
+      <?php else: ?>
+        <p style="color:var(--text-light)">No sales yet.</p>
+      <?php endif; ?>
     </div>
 
     <?php if ($event['status'] !== 'cancelled'): ?>

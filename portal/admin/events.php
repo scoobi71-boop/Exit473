@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../admin/auth.php';
 require_once __DIR__ . '/../supabase.php';
+require_once __DIR__ . '/../tickets.php';
 
 // Not admin/auth.php's require_auth(): its relative "index.php" redirect
 // would resolve to this directory's own index.php, not /admin/index.php.
@@ -43,6 +44,10 @@ if ($organizerFilter) {
         $organizerFilterName = $fn !== '' ? $fn : ($p['display_name'] ?: $p['username']);
     }
 }
+
+$sales = tickets_sales_summary(array_column($events, 'id'), null, true);
+$salesTotal = ['orders' => 0, 'tickets' => 0, 'gross_cents' => 0];
+foreach ($sales as $sv) foreach ($salesTotal as $k => $_) $salesTotal[$k] += $sv[$k];
 
 // Look up organizer usernames in one pass rather than one query per event.
 $organizerIds = array_unique(array_column($events, 'organizer_id'));
@@ -142,6 +147,11 @@ function fmt_short($iso) {
       <?php endif; ?>
     </div>
 
+    <div class="portal-card" style="margin-bottom:1.25rem">
+      <h2>Ticket Sales</h2>
+      <p class="portal-sub" style="margin-bottom:0"><?= (int)$salesTotal['tickets'] ?> tickets · <?= (int)$salesTotal['orders'] ?> paid orders · <?= tickets_money($salesTotal['gross_cents']) ?> gross (before Stripe fees; all funds go to the Exit 473 Stripe account)</p>
+    </div>
+
     <div class="portal-card">
       <h2>All Other Events <small style="font-weight:400;font-size:.85rem;color:var(--text-light)">(<?= count($others) ?>)</small></h2>
       <?php if (!$others): ?>
@@ -156,6 +166,7 @@ function fmt_short($iso) {
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:.75rem">
+              <?php if (!empty($sales[$ev['id']])): ?><span style="font-size:.85rem;color:var(--text-light)"><?= (int)$sales[$ev['id']]['tickets'] ?> sold · <?= tickets_money($sales[$ev['id']]['gross_cents']) ?></span><?php endif; ?>
               <span class="status-pill status-<?= h($ev['status']) ?>"><?= h($ev['status']) ?></span>
               <a href="../e.php?slug=<?= h($ev['slug']) ?>" class="btn btn-sm btn-outline" target="_blank">View</a>
             </div>
