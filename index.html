@@ -117,7 +117,9 @@
             <a href="directory.html" class="btn btn-primary btn-lg">🍽️ Explore All Businesses</a>
             <a href="about.html" class="btn btn-outline-white btn-lg">Learn Our Story</a>
           </div>
-          <div id="flight-widget" class="flight-widget-link">
+          <!-- AIRPORT WIDGET DISABLED (Oct 2026) - to restore: remove the hidden attribute and style="display:none" on the div below,
+               and set FLIGHT_WIDGET_ENABLED = true in the script near the bottom of this file. See README "Airport widget". -->
+          <div id="flight-widget" class="flight-widget-link" hidden style="display:none">
             <a class="widget-header" href="/flights.html" aria-label="Open full flight board">
               <div class="widget-left">
                 <svg class="icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -463,7 +465,9 @@
         renderWidgetLists();
       }catch(e){ console.warn('Flight widget load failed', e); }
     }
-    renderFlightWidget();
+    // AIRPORT WIDGET DISABLED - to restore, set this to true (and unhide #flight-widget above).
+    const FLIGHT_WIDGET_ENABLED = false;
+    if (FLIGHT_WIDGET_ENABLED) renderFlightWidget();
 
     document.addEventListener('click', (ev) => {
       const toggleBtn = ev.target && ev.target.closest && ev.target.closest('#flight-widget-toggle');
