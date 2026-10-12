@@ -21,3 +21,6 @@ node_modules/
 _vti_*
 /postinfo.html
 /phpsessions/
+
+# Uploaded event/product images are user content (live server only)
+/images/portal-events/*/

@@ -115,6 +115,7 @@ $buildings = [
         <li><a href="carnival.html">Carnival</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li><a href="shop.php">Shop</a></li>
         <li><a href="members.php">Members</a></li>
         <li><a href="directory.html" class="btn btn-primary">Explore Businesses</a></li>
       </ul>

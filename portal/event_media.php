@@ -99,7 +99,7 @@ function media_delete_url($url, $eventId) {
     $prefix = MEDIA_URL_BASE . $eventId . '/';
     if (!is_string($url) || strpos($url, $prefix) !== 0) return;
     $name = basename(substr($url, strlen($prefix)));
-    if (!preg_match('/^(banner|poster)_\d+_[0-9a-f]{12}\.(jpg|png|webp)$/', $name)) return;
+    if (!preg_match('/^(banner|poster|product|logo)_\d+_[0-9a-f]{12}\.(jpg|png|webp)$/', $name)) return;
     $path = media_root_dir() . $eventId . '/' . $name;
     if (is_file($path)) @unlink($path);
 }

@@ -41,3 +41,12 @@ To restore it in `index.html`:
 1. Find `AIRPORT WIDGET DISABLED` near `<div id="flight-widget"`, then remove `hidden style="display:none"` from that div.
 2. Near the bottom script, change `const FLIGHT_WIDGET_ENABLED = false;` to `true`.
 3. Upload `index.html` over FTP.
+
+## Online store (shop with consignment)
+
+- Database: run `portal/schema_06_store.sql` once in the Supabase SQL editor. Until then the shop shows "opening soon" and the admin pages say the database isn't set up.
+- Public pages: `/shop.php` (filter by category or shop), `/shop-product.php?slug=…`, `/shop-store.php?slug=…`, `/shop-cart.php`, `/shop-success.php`.
+- Admin: Admin portal → 🛍️ Store (`/portal/admin/store.php`): Stores & Merchants, Products, Orders, Payouts, Settings.
+- Payments go through Stripe Checkout; the existing ticket webhook (`portal/stripe_webhook_tickets.php`) also handles store orders (`metadata.kind = store`).
+- Commission: consignment stores keep `100 - commission %`; house stores keep nothing (100% retained). Amounts are fixed per item at purchase.
+- Coming-soon sign: set `SHOP_SHOW_COMING_SOON_SIGN` to `false` in `portal/store_lib.php`.
