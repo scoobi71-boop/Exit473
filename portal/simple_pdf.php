@@ -61,7 +61,7 @@ class SimplePdf {
 
     /** Encodes to WinAnsi (core-font-compatible) and escapes PDF literal-string special chars. */
     private function esc($s) {
-        $s = @iconv('UTF-8', 'Windows-1252//TRANSLIT//IGNORE', (string)$s);
+        $s = function_exists('iconv') ? @iconv('UTF-8', 'Windows-1252//TRANSLIT//IGNORE', (string)$s) : false;
         if ($s === false) $s = preg_replace('/[^\x20-\x7E]/', '?', (string)$s);
         return str_replace(['\\', '(', ')'], ['\\\\', '\\(', '\\)'], $s);
     }
