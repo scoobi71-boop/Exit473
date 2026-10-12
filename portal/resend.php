@@ -8,13 +8,17 @@
  */
 require_once __DIR__ . '/supabase.php'; // for portal_config() / portal_url()
 
-function resend_send_email($to, $subject, $html) {
+/**
+ * $attachments: optional list of ['filename'=>..., 'content'=>raw bytes,
+ * 'content_type'=>..., 'content_id'=>... (for inline <img src="cid:...">)].
+ */
+function resend_send_email($to, $subject, $html, array $attachments = []) {
     $cfg = portal_config();
     if (empty($cfg['resend_api_key'])) {
         return ['status' => 0, 'error' => 'Resend API key not configured'];
     }
 
-    $ch = curl_init('https://api.resend.com/emails');
+    $ch = curl_init($cfg['resend_api_base'] ?? 'https://api.resend.com/emails');
     curl_setopt_array($ch, [
         CURLOPT_CUSTOMREQUEST  => 'POST',
         CURLOPT_HTTPHEADER     => [
@@ -26,7 +30,12 @@ function resend_send_email($to, $subject, $html) {
             'to'      => [$to],
             'subject' => $subject,
             'html'    => $html,
-        ]),
+        ] + ($attachments ? ['attachments' => array_map(fn($a) => array_filter([
+            'filename'     => $a['filename'],
+            'content'      => base64_encode($a['content']),
+            'content_type' => $a['content_type'] ?? null,
+            'content_id'   => $a['content_id'] ?? null,
+        ]), $attachments)] : [])),
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 15,
     ]);

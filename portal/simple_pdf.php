@@ -27,6 +27,7 @@ class SimplePdf {
     private $pages = [];
     private $currentContent = '';
     private $hasContent = false;
+    private $images = [];   // name => ['data'=>jpeg bytes,'w'=>px,'h'=>px,'cs'=>colorspace]
 
     // Adobe's standard Helvetica AFM glyph widths (units per 1000em) for
     // printable ASCII 32-126 — this is published PDF-spec core-font metric
@@ -104,6 +105,55 @@ class SimplePdf {
         $this->currentContent .= sprintf("%.2f %.2f %.2f %.2f re %s\n", $x, $py, $w, $h, $op);
     }
 
+    /** Sets fill (and stroke) colour for subsequent shapes and text; 0-255 per channel. */
+    public function setColor($r, $g, $b) {
+        $this->currentContent .= sprintf("%.3f %.3f %.3f rg %.3f %.3f %.3f RG\n", $r/255, $g/255, $b/255, $r/255, $g/255, $b/255);
+    }
+
+    /**
+     * Draws a QR matrix (array of '0'/'1' strings, as from QRcode::text())
+     * as vector squares, $size points wide, top-left at ($x,$y). Adds a white
+     * quiet zone of 4 modules around it.
+     */
+    public function qr($x, $y, $size, array $matrix) {
+        $n = count($matrix);
+        if (!$n) return;
+        $m = $size / ($n + 8);
+        $this->setColor(255, 255, 255);
+        $this->rect($x, $y, $size, $size, true);
+        $this->setColor(0, 0, 0);
+        foreach ($matrix as $r => $row) {
+            $len = strlen($row);
+            for ($c = 0; $c < $len; $c++) {
+                if ($row[$c] !== '1') continue;
+                $run = 1; // merge horizontal runs to keep the stream small
+                while ($c + $run < $len && $row[$c + $run] === '1') $run++;
+                $this->rect($x + (4 + $c) * $m, $y + (4 + $r) * $m, $run * $m + 0.01, $m + 0.01, true);
+                $c += $run - 1;
+            }
+        }
+    }
+
+    /** Registers JPEG bytes as an image (no GD needed). Returns its name, or null if not a usable JPEG. */
+    public function addJpeg($bytes) {
+        $info = @getimagesizefromstring($bytes);
+        if (!$info || $info[2] !== IMAGETYPE_JPEG) return null;
+        $ch = $info['channels'] ?? 3;
+        if ($ch === 4) return null; // CMYK JPEGs: skip
+        $name = 'Im' . (count($this->images) + 1);
+        $this->images[$name] = ['data' => $bytes, 'w' => $info[0], 'h' => $info[1], 'cs' => $ch === 1 ? '/DeviceGray' : '/DeviceRGB'];
+        return $name;
+    }
+
+    public function imageSize($name) { return isset($this->images[$name]) ? [$this->images[$name]['w'], $this->images[$name]['h']] : null; }
+
+    /** Draws a registered image with its top-left at ($x,$y), $w x $h points. */
+    public function image($name, $x, $y, $w, $h) {
+        if (!isset($this->images[$name])) return;
+        $py = $this->pageHeight - $y - $h;
+        $this->currentContent .= sprintf("q %.2f 0 0 %.2f %.2f %.2f cm /%s Do Q\n", $w, $h, $x, $py, $name);
+    }
+
     public function pageHeight() { return $this->pageHeight; }
     public function pageWidth()  { return $this->pageWidth; }
 
@@ -122,6 +172,9 @@ class SimplePdf {
         $fontRegularNum = $n++;
         $fontBoldNum    = $n++;
 
+        $imageNums = [];
+        foreach ($this->images as $name => $_) $imageNums[$name] = $n++;
+
         $pageNums = [];
         $contentNums = [];
         foreach ($this->pages as $content) {
@@ -136,12 +189,20 @@ class SimplePdf {
         $objects[$fontRegularNum] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
         $objects[$fontBoldNum]    = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
 
+        $xobj = '';
+        foreach ($this->images as $name => $img) {
+            $objects[$imageNums[$name]] = "<< /Type /XObject /Subtype /Image /Width {$img['w']} /Height {$img['h']} /ColorSpace {$img['cs']} "
+                . "/BitsPerComponent 8 /Filter /DCTDecode /Length " . strlen($img['data']) . " >>\nstream\n{$img['data']}\nendstream";
+            $xobj .= "/{$name} {$imageNums[$name]} 0 R ";
+        }
+        $xobjRes = $xobj ? " /XObject << {$xobj}>>" : '';
+
         foreach ($this->pages as $i => $content) {
             $pageNum    = $pageNums[$i];
             $contentNum = $contentNums[$i];
             $objects[$pageNum] =
                 "<< /Type /Page /Parent {$pagesNum} 0 R /MediaBox [0 0 {$this->pageWidth} {$this->pageHeight}] "
-                . "/Resources << /Font << /F1 {$fontRegularNum} 0 R /F2 {$fontBoldNum} 0 R >> >> "
+                . "/Resources << /Font << /F1 {$fontRegularNum} 0 R /F2 {$fontBoldNum} 0 R >>{$xobjRes} >> "
                 . "/Contents {$contentNum} 0 R >>";
             $objects[$contentNum] = "<< /Length " . strlen($content) . " >>\nstream\n{$content}endstream";
         }
