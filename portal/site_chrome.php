@@ -55,6 +55,7 @@ function site_nav($active = 'events') {
         <li><a href="/carnival/carnival.html">Carnival</a></li>
         <li><a href="/about.html">About</a></li>
         <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/shop.php"<?= $a('shop') ?>>Shop</a></li>
         <li><a href="/members.php"<?= $a('members') ?>>Members</a></li>
         <li><a href="/portal/events.php" class="btn btn-primary">🎟️ Tickets</a></li>
       </ul>

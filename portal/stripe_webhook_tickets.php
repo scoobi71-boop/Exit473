@@ -11,13 +11,16 @@
  * and put that endpoint's signing secret in portal/config.php as
  * stripe_webhook_secret_tickets.
  *
- * Only sessions with metadata.kind = "tickets" are handled; business-fee
+ * Online-store sessions (metadata.kind = "store", schema_06) are handled
+ * here too, so the shop needs no second endpoint or secret.
+ * Only sessions with metadata.kind = "tickets" or "store" are handled; business-fee
  * sessions belong to stripe_webhook_finance.php. All DB calls are idempotent,
  * so Stripe retries are safe.
  */
 require_once __DIR__ . '/supabase.php';
 require_once __DIR__ . '/stripe.php';
 require_once __DIR__ . '/tickets.php';
+require_once __DIR__ . '/store_lib.php';
 
 $rawBody   = file_get_contents('php://input');
 $sigHeader = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
@@ -53,6 +56,25 @@ if (($type === 'checkout.session.completed' || $type === 'checkout.session.async
             }
         }
     }
+} elseif (($type === 'checkout.session.completed' || $type === 'checkout.session.async_payment_succeeded') && ($obj['metadata']['kind'] ?? '') === 'store') {
+    // Online store (schema_06): same flow as tickets.
+    if (($obj['payment_status'] ?? '') === 'paid') {
+        $r = supabase_rpc('complete_store_order', [
+            'p_session_id'        => $obj['id'],
+            'p_payment_intent_id' => $obj['payment_intent'] ?? null,
+            'p_order_id'          => $obj['metadata']['store_order_id'] ?? null,
+        ], null, true);
+        if ($r['status'] !== 200) { http_response_code(500); die('db error'); }
+        $orderId = $r['data']['order_id'] ?? null;
+        if ($orderId) {
+            $order = store_load_order($orderId);
+            if ($order && empty($order['email_sent_at']) && store_send_order_emails($order)) {
+                supabase_rpc('mark_store_email_sent', ['p_order_id' => $orderId], null, true);
+            }
+        }
+    }
+} elseif ($type === 'checkout.session.expired' && ($obj['metadata']['kind'] ?? '') === 'store') {
+    supabase_rpc('release_store_order', ['p_session_id' => $obj['id'], 'p_order_id' => null], null, true);
 } elseif ($type === 'checkout.session.expired' && is_ticket_obj($obj)) {
     supabase_rpc('release_ticket_order', ['p_session_id' => $obj['id']], null, true);
 } elseif ($type === 'charge.refunded') {
@@ -60,6 +82,7 @@ if (($type === 'checkout.session.completed' || $type === 'checkout.session.async
     $pi = $obj['payment_intent'] ?? '';
     if ($pi && !empty($obj['refunded'])) {
         supabase_rpc('refund_ticket_order', ['p_payment_intent_id' => $pi], null, true);
+        supabase_rpc('refund_store_order', ['p_payment_intent_id' => $pi], null, true); // no-op if not a store order
     }
 }
 
