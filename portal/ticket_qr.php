@@ -82,16 +82,85 @@ function tickets_issued($order) {
 
 function ticket_short_code($code) { return strtoupper(substr($code, 0, 4) . '-' . substr($code, 4, 4) . '-' . substr($code, 8, 4)); }
 
-/** Event banner as JPEG bytes if it's a local .jpg (schema_04 column may be missing; then null). */
-function ticket_event_banner_jpeg($eventId) {
-    $r = supabase_table_select('events', 'id=eq.' . urlencode($eventId) . '&select=banner_url', null, true);
-    $url = ($r['status'] === 200) ? ($r['data'][0]['banner_url'] ?? '') : '';
-    if (!$url) return null;
-    $path = parse_url($url, PHP_URL_PATH) ?: '';
-    if (!preg_match('#^/images/portal-events/[A-Za-z0-9/_-]+\.(jpe?g)$#i', $path)) return null;
-    $file = dirname(__DIR__) . $path;
-    if (!is_file($file) || filesize($file) > 6 * 1024 * 1024) return null;
-    return file_get_contents($file) ?: null;
+/** Max width (px) of the image embedded in the ticket PDF: ~2x the 532pt print width. */
+const TICKET_PDF_IMAGE_MAX_W = 1100;
+
+/**
+ * Raw bytes for an event image URL. Files on our own domain (relative URLs
+ * or exit473.com) are read from disk under /images/; other URLs (an external
+ * cover image) are fetched with a short timeout and a 6 MB cap.
+ */
+function ticket_image_bytes($url) {
+    $url = trim((string)$url);
+    if ($url === '') return null;
+    $host = strtolower((string)parse_url($url, PHP_URL_HOST));
+    $path = (string)parse_url($url, PHP_URL_PATH);
+    if ($host === '' || in_array($host, ['exit473.com', 'www.exit473.com'], true)) {
+        if (!preg_match('#^/images/[A-Za-z0-9/._-]+\.(jpe?g|png|webp|gif)$#i', $path) || strpos($path, '..') !== false) return null;
+        $file = dirname(__DIR__) . $path;
+        return (is_file($file) && filesize($file) <= 6 * 1024 * 1024) ? (file_get_contents($file) ?: null) : null;
+    }
+    if (!preg_match('#^https://#i', $url) || !function_exists('curl_init')) return null;
+    $ch = curl_init($url);
+    $buf = '';
+    curl_setopt_array($ch, [CURLOPT_FOLLOWLOCATION => true, CURLOPT_MAXREDIRS => 3, CURLOPT_TIMEOUT => 6, CURLOPT_CONNECTTIMEOUT => 4,
+        CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
+        CURLOPT_WRITEFUNCTION => function ($c, $d) use (&$buf) { $buf .= $d; return strlen($buf) > 6 * 1024 * 1024 ? 0 : strlen($d); }]);
+    curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return ($code === 200 && $buf !== '') ? $buf : null;
+}
+
+/**
+ * Converts image bytes to a PDF-friendly JPEG. With GD: JPEG/PNG/WebP/GIF in,
+ * resized to TICKET_PDF_IMAGE_MAX_W, transparency flattened onto white,
+ * re-encoded at quality 82. Without GD: JPEGs pass through unchanged, other
+ * formats are skipped (returns null).
+ */
+function ticket_image_to_jpeg($bytes) {
+    $info = @getimagesizefromstring($bytes);
+    if (!$info) return null;
+    $type = $info[2];
+    if (!extension_loaded('gd')) {
+        static $warned = false;
+        if (!$warned) { $warned = true; error_log('[exit473 tickets] GD not available: only JPEG banners can be used in ticket PDFs'); }
+        return $type === IMAGETYPE_JPEG ? $bytes : null;
+    }
+    if ($type === IMAGETYPE_WEBP && !function_exists('imagecreatefromwebp')) return null;
+    if (!in_array($type, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP, IMAGETYPE_GIF], true)) return null;
+    // Small JPEGs are already fine; skip the re-encode.
+    if ($type === IMAGETYPE_JPEG && $info[0] <= TICKET_PDF_IMAGE_MAX_W && ($info['channels'] ?? 3) !== 4) return $bytes;
+    $src = @imagecreatefromstring($bytes);
+    if (!$src) return null;
+    $w = imagesx($src); $h = imagesy($src);
+    $nw = min($w, TICKET_PDF_IMAGE_MAX_W); $nh = max(1, (int)round($h * $nw / $w));
+    $dst = imagecreatetruecolor($nw, $nh);
+    imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $nw, $nh, $w, $h);
+    ob_start(); imagejpeg($dst, null, 82); $out = ob_get_clean();
+    imagedestroy($src); imagedestroy($dst);
+    return $out ?: null;
+}
+
+/**
+ * Image for the ticket PDF header, as JPEG bytes: the event's banner_url
+ * (schema_04 Banner & Posters) if set and usable, else cover_image_url, else
+ * null (plain branded header). Falls back to cover-only when schema_04's
+ * banner_url column doesn't exist.
+ */
+function ticket_event_image_jpeg($eventId) {
+    $r = supabase_table_select('events', 'id=eq.' . urlencode($eventId) . '&select=banner_url,cover_image_url', null, true);
+    if ($r['status'] !== 200) $r = supabase_table_select('events', 'id=eq.' . urlencode($eventId) . '&select=cover_image_url', null, true);
+    $ev = ($r['status'] === 200) ? ($r['data'][0] ?? []) : [];
+    foreach (['banner_url', 'cover_image_url'] as $col) {
+        if (empty($ev[$col])) continue;
+        $raw = ticket_image_bytes($ev[$col]);
+        $jpeg = $raw ? ticket_image_to_jpeg($raw) : null;
+        if ($jpeg) return $jpeg;
+        error_log('[exit473 tickets] ticket PDF: could not use ' . $col . ' for event ' . $eventId);
+    }
+    return null;
 }
 
 /** One-page-per-ticket PDF (US Letter). Returns bytes. */
@@ -102,7 +171,7 @@ function tickets_build_pdf($order, array $tickets) {
     $pdf = new SimplePdf();
     $W = $pdf->pageWidth();
     $banner = null;
-    $bannerBytes = !empty($order['event_id']) ? ticket_event_banner_jpeg($order['event_id']) : null;
+    $bannerBytes = !empty($order['event_id']) ? ticket_event_image_jpeg($order['event_id']) : null;
     if ($bannerBytes) $banner = $pdf->addJpeg($bannerBytes);
     $total = count($tickets);
     foreach ($tickets as $i => $t) {
