@@ -10,6 +10,9 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/site_chrome.php';
 require_once __DIR__ . '/tickets.php';
 
+// COMING-SOON SIGN: set to false to remove the "NOT A REAL EVENT" banner above the event cards.
+const SHOW_COMING_SOON_SIGN = true;
+
 $nowIso = gmdate('Y-m-d\TH:i:s\Z');
 // Upcoming = not yet ended (end_at in future, or no end_at and start_at in future).
 $query = 'status=eq.published'
@@ -76,6 +79,24 @@ function fmt_list_time($iso) {
           <span class="section-label">Coming Up</span>
           <h2 id="upcoming-heading">Tickets on Sale</h2>
         </div>
+
+      <?php if (SHOW_COMING_SOON_SIGN): /* COMING-SOON SIGN (see flag at top of file) */ ?>
+        <div class="coming-soon-sign" role="alert">
+          <span class="cs-icon" aria-hidden="true">🚧</span>
+          <strong>NOT A REAL EVENT - FEATURE COMING SOON!!!!</strong>
+          <span class="cs-icon" aria-hidden="true">🚧</span>
+        </div>
+        <style>
+        .coming-soon-sign { display:flex; align-items:center; justify-content:center; gap:.75rem; text-align:center;
+          background:repeating-linear-gradient(135deg,#CC0000 0 22px,#A80000 22px 44px); color:#fff;
+          border:4px solid #F5C840; border-radius:14px; padding:1.1rem 1.25rem; margin:0 0 2rem;
+          box-shadow:0 10px 30px rgba(204,0,0,.35); }
+        .coming-soon-sign strong { font-family:'Playfair Display',Georgia,serif; font-weight:800; letter-spacing:.03em;
+          font-size:clamp(1.15rem,3.2vw,2rem); line-height:1.2; text-shadow:0 2px 6px rgba(0,0,0,.35); }
+        .coming-soon-sign .cs-icon { font-size:clamp(1.4rem,3.5vw,2.2rem); }
+        @media (max-width:520px) { .coming-soon-sign .cs-icon { display:none; } }
+        </style>
+      <?php endif; ?>
 
       <?php if ($loadError): ?>
         <div class="portal-alert portal-alert-error">Events couldn't be loaded right now. Please try again shortly.</div>
