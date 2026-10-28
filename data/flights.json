@@ -1,14 +1,164 @@
 {
-    "fetched_at": "2026-10-11T16:15:09+00:00",
+    "fetched_at": "2026-10-28T04:21:40+00:00",
     "source": "aerodatabox",
-    "arrivals": [],
-    "departures": [],
+    "arrivals": [
+        {
+            "time": "2026-10-28T21:15:00+00:00",
+            "flight": "BW 241",
+            "from": "Bridgetown (BGI)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T21:15:00+00:00",
+            "flight": "BA 2153",
+            "from": "Bridgetown (BGI)",
+            "airline": "British",
+            "aircraft": "Boeing 777",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T20:25:00+00:00",
+            "flight": "W1 2683",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T19:20:00+00:00",
+            "flight": "AC 1858",
+            "from": "Toronto (YYZ)",
+            "airline": "Air Canada",
+            "aircraft": "Boeing 737",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T18:55:00+00:00",
+            "flight": "JY 748",
+            "from": "Bridgetown (BGI)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T18:35:00+00:00",
+            "flight": "B6 149",
+            "from": "New York (JFK)",
+            "airline": "JetBlue",
+            "aircraft": "Airbus A320",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T18:05:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
+            "aircraft": "Airbus A321",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T17:50:00+00:00",
+            "flight": "BW 240",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T13:10:00+00:00",
+            "flight": "W1 2691",
+            "from": "Argyle (SVD)",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T00:25:00+00:00",
+            "flight": "JY 764",
+            "from": "Argyle (SVD)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        }
+    ],
+    "departures": [
+        {
+            "time": "2026-10-28T22:55:00+00:00",
+            "flight": "BA 2152",
+            "from": "Bridgetown (BGI)",
+            "airline": "British",
+            "aircraft": "Boeing 777",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T22:00:00+00:00",
+            "flight": "BW 241",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T20:20:00+00:00",
+            "flight": "AC 1859",
+            "from": "Toronto (YYZ)",
+            "airline": "Air Canada",
+            "aircraft": "Boeing 737",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T19:50:00+00:00",
+            "flight": "B6 350",
+            "from": "New York (JFK)",
+            "airline": "JetBlue",
+            "aircraft": "Airbus A320",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T19:25:00+00:00",
+            "flight": "JY 749",
+            "from": "Bridgetown (BGI)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T19:06:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
+            "aircraft": "Airbus A321",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T18:35:00+00:00",
+            "flight": "BW 240",
+            "from": "Bridgetown (BGI)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T13:20:00+00:00",
+            "flight": "W1 2682",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-28T12:00:00+00:00",
+            "flight": "JY 703",
+            "from": "Argyle (SVD)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Expected"
+        }
+    ],
     "meta": {
-        "arr_count": 0,
-        "dep_count": 0
-    },
-    "errors": [
-        "Request for 2026-10-10T20:00 - 2026-10-11T08:00 failed (HTTP 429)",
-        "Request for 2026-10-11T08:00 - 2026-10-11T19:59 failed (HTTP 429)"
-    ]
+        "arr_count": 10,
+        "dep_count": 9
+    }
 }
