@@ -1,14 +1,22 @@
 {
-    "fetched_at": "2026-10-11T16:15:09+00:00",
+    "fetched_at": "2026-10-29T15:54:09+00:00",
     "source": "aerodatabox",
-    "arrivals": [],
+    "arrivals": [
+        {
+            "time": "2026-10-29T00:25:00+00:00",
+            "flight": "JY 764",
+            "from": "Argyle (SVD)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        }
+    ],
     "departures": [],
     "meta": {
-        "arr_count": 0,
+        "arr_count": 1,
         "dep_count": 0
     },
     "errors": [
-        "Request for 2026-10-10T20:00 - 2026-10-11T08:00 failed (HTTP 429)",
-        "Request for 2026-10-11T08:00 - 2026-10-11T19:59 failed (HTTP 429)"
+        "Request for 2026-10-29T08:00 - 2026-10-29T19:59 failed (HTTP 0)"
     ]
 }
