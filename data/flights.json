@@ -1,14 +1,124 @@
 {
-    "fetched_at": "2026-10-11T16:15:09+00:00",
+    "fetched_at": "2026-10-30T21:58:42+00:00",
     "source": "aerodatabox",
-    "arrivals": [],
-    "departures": [],
+    "arrivals": [
+        {
+            "time": "2026-10-30T20:25:00+00:00",
+            "flight": "W1 2683",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T19:55:00+00:00",
+            "flight": "PTGMU",
+            "from": "Orlando (MCO)",
+            "airline": "Unknown/Private owner",
+            "aircraft": "Cessna 525B Citation CJ3",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-30T18:55:00+00:00",
+            "flight": "JY 748",
+            "from": "Bridgetown (BGI)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T18:35:00+00:00",
+            "flight": "B6 149",
+            "from": "New York (JFK)",
+            "airline": "JetBlue",
+            "aircraft": "Airbus A321 NEO",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-30T18:05:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
+            "aircraft": "Airbus A321",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-30T13:10:00+00:00",
+            "flight": "W1 2691",
+            "from": "Argyle (SVD)",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T12:10:00+00:00",
+            "flight": "BW 430",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T00:25:00+00:00",
+            "flight": "JY 764",
+            "from": "Argyle (SVD)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        }
+    ],
+    "departures": [
+        {
+            "time": "2026-10-30T19:50:00+00:00",
+            "flight": "B6 350",
+            "from": "New York (JFK)",
+            "airline": "JetBlue",
+            "aircraft": "Airbus A320",
+            "status": "Expected"
+        },
+        {
+            "time": "2026-10-30T19:25:00+00:00",
+            "flight": "JY 749",
+            "from": "Bridgetown (BGI)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T19:06:00+00:00",
+            "flight": "AA 1546",
+            "from": "Miami (MIA)",
+            "airline": "American",
+            "aircraft": "Airbus A321",
+            "status": "Departed"
+        },
+        {
+            "time": "2026-10-30T13:20:00+00:00",
+            "flight": "W1 2682",
+            "from": "Karriakou",
+            "airline": "World Ticket Ltd",
+            "aircraft": "De Havilland Canada DHC-6 Twin Otter",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T12:55:00+00:00",
+            "flight": "BW 431",
+            "from": "Port of Spain (POS)",
+            "airline": "Caribbean",
+            "aircraft": "ATR 72",
+            "status": "Unknown"
+        },
+        {
+            "time": "2026-10-30T12:00:00+00:00",
+            "flight": "JY 703",
+            "from": "Argyle (SVD)",
+            "airline": "interCaribbean",
+            "aircraft": "ATR 42-300",
+            "status": "Unknown"
+        }
+    ],
     "meta": {
-        "arr_count": 0,
-        "dep_count": 0
-    },
-    "errors": [
-        "Request for 2026-10-10T20:00 - 2026-10-11T08:00 failed (HTTP 429)",
-        "Request for 2026-10-11T08:00 - 2026-10-11T19:59 failed (HTTP 429)"
-    ]
+        "arr_count": 8,
+        "dep_count": 6
+    }
 }
